@@ -1,0 +1,203 @@
+@media screen and (max-width: 360px) {
+  
+} 
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 360px;
+  height: 1000px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(76, 74, 74, 0.181);
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.container > * {
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 30px;
+  font-size: 12px;
+}
+
+.title h1 {
+  font-size: 20px;
+}
+
+.title p {
+  color: #717171;
+  margin-top: 6px;
+}
+
+/* form */
+
+.form_container {
+  display: flex;
+  flex-direction: column;
+  height: 700px;
+  justify-content: space-around;
+}
+
+.form_container h2 {
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.star {
+  color: #FF9F4E;
+}
+
+.form_input {
+  margin-top: 20px;
+}
+
+.form_input label{
+  color: black;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.input_style {
+  width: 300px;
+  height: 40px;
+  background-color: #EFEFEF;
+  border-radius: 20px;
+  border: none;
+  padding: 10px;
+}
+
+.form_input_nick {
+  position: relative;
+}
+
+.form_input_nick button {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 8px;
+  right: 16px;
+}
+
+.button_container {
+  display: flex;
+  justify-content: right;
+}
+
+.checkbutton {
+  width: 124px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  margin-top: 20px;
+  background-color: #FFC493;
+}
+
+.invalid {
+  background-color: #FFE0E0;
+}
+
+button:hover,
+button:active {
+  background-color: #FFC493;
+  cursor: pointer;
+}
+
+button:disabled,
+button:disabled:hover,
+button:disabled:active {
+  background-color: #EFEFEF;
+  cursor: not-allowed;
+}
+
+
+/* profile img */
+
+.profile_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile_input {
+  display: none;
+}
+
+.profile_container img, .defaultimg{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.label_container {
+  width: 160px;
+  height: 40px;
+  background-color: #FFC493;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* form tags */
+
+.form_input_exercise {
+  position: relative;
+}
+
+.form_input_exercise button {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 8px;
+  right: 16px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tag {
+  width: 74px;
+  height: 31px;
+  border-radius: 16px;
+  margin-right: 7px;
+  margin-bottom: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #DDFFD6;
+}
+
+.label_container, .profile_label {
+  cursor: pointer;
+}
+
+.presentation > *{
+  margin-bottom: 10px;
+}
+
+.presentation textarea {
+  width: 300px;
+  height: 100px;
+  background-color: #EFEFEF;
+  border-radius: 20px;
+  padding: 10px;
+  resize: none;
+  border: none;
+}
+
+.next_button {
+  width: 200px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #FFC493;
+  margin: 0 auto;
+  border: none;
+}
+
