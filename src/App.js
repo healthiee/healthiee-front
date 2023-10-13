@@ -4,8 +4,7 @@ import GlobalStyle from './styles/GlobalStyle';
 import theme from './styles/theme';
 import SplashScreen from './pages/SplashScreen';
 import StartPage from './pages/StartPage';
-import EmailLogin from './pages/EmailAuth/EmailLogin'
-
+import EmailLogin from './pages/EmailAuth/EmailLogin';
 
 function App() {
   return (
