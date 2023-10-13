@@ -25,7 +25,7 @@ const StartPage = () => {
   return (
     <>
       <MainLogo src={mainLogo} alt="healthiee main logo" />
-      <Button onClick={() => navigate('/enteremail')}>시작하기</Button>
+      <Button onClick={() => navigate('/emaillogin')}>시작하기</Button>
     </>
   );
 };
