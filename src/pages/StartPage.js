@@ -23,10 +23,10 @@ const Button = styled.button`
 const StartPage = () => {
   const navigate = useNavigate();
   return (
-    <React.Fragment>
+    <>
       <MainLogo src={mainLogo} alt="healthiee main logo" />
       <Button onClick={() => navigate('/enteremail')}>시작하기</Button>
-    </React.Fragment>
+    </>
   );
 };
 
