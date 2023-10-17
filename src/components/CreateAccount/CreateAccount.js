@@ -1,8 +1,16 @@
 import React, {useState, useRef} from "react";
 import styles from './CreateAccount.module.css';
 import useAccountInput from "../../hooks/use-accountInput";
+
+//img
 import {ReactComponent as BackArrow} from '../../assets/images/backArrow.svg';
 import {ReactComponent as DefaultProfile} from '../../assets/images/defaultProfile.svg';
+import {ReactComponent as Close} from '../../assets/images/close.svg';
+import {ReactComponent as Done} from '../../assets/images/done.svg';
+import {ReactComponent as Search} from '../../assets/images/search.svg';
+
+
+
 
 const SignupPage = ()=> {
 
@@ -11,6 +19,7 @@ const SignupPage = ()=> {
   const [tag, setTag] = useState('');
   const [exercises, setExercises] = useState([]);
   const presentationRef = useRef();
+  const [doubleCheck, setDoubleCheck] = useState(false);
 
   // const randomColor = "#"+(parseInt(Math.random()*0xffffff)).toString(16);
 
@@ -22,6 +31,13 @@ const SignupPage = ()=> {
 
   const clearNickHandelr = () => {
     nickNameValue('');
+  }
+
+  // form : nickname double check
+
+  const doubleCheckHandler = () => {
+    //if true
+    setDoubleCheck(true);
   }
 
   // form : profile img
@@ -78,7 +94,7 @@ const SignupPage = ()=> {
 
   // form : next button activate
 
-  const buttonValid = !nameError && !nicknameError && nameValid && nicknameValid;
+  const buttonValid = !nameError && !nicknameError && nameValid && nicknameValid && doubleCheck;
 
   // form : from submit
 
@@ -97,9 +113,11 @@ const SignupPage = ()=> {
     NicknameReset();
   }
 
+  //button valid style
+
   const nameStyleControl = nameError ? `${styles.input_style} ${styles.invalid}` : styles.input_style
 
-  const nicknameStyleControl = nicknameError ? `${styles.input_style} ${styles.invalid}` : styles.input_style
+  const nicknameStyleControl = nicknameError ? `${styles.input_style} ${styles.invalid}` : doubleCheck ? `${styles.input_style} ${styles.valid}` : styles.input_style
 
   return(
     <div className={styles.container}>
@@ -121,11 +139,12 @@ const SignupPage = ()=> {
           <label htmlFor="nickname">닉네임 <span className={styles.star}>*</span></label>
           <div className={styles.form_input_nick}>
             <input id="nickname" onChange={inputNicknameHandler} onBlur={blurNicknameHandler} type="text" value={inputNickname} className={nicknameStyleControl} placeholder="20자 이하의 영문 대소문자, 숫자, 언더바"/>
-            {inputNickname && <button type="button" onClick={clearNickHandelr}>x</button>}
+            {inputNickname && !doubleCheck&& <button type="button" onClick={clearNickHandelr}><Close width="24px" height="24px"/></button>}
+            {inputNickname && doubleCheck && <button><Done/></button>}
           </div>
 
           <div className={styles.button_container}>
-          <button disabled={!nicknameValid} className={styles.checkbutton} type="button">중복 확인</button>
+          <button disabled={!nicknameValid} className={styles.checkbutton} type="button" onClick={doubleCheckHandler}>중복 확인</button>
         </div>
 
         </div>
@@ -142,11 +161,15 @@ const SignupPage = ()=> {
 
         <h2>지금 하고 있는 운동을 알려주세요. (최대 5개)</h2>
         <div className={styles.form_input_exercise}>
-          <button onClick={addTagButton} disabled={tagButtonValid} type="button">+</button>
+          <Search className={styles.search_icon}/>
           <input type="text" placeholder="내가 하는 운동 검색하기" className={styles.input_style} onChange={addTagHandler} value={tag}/>
+          <button onClick={addTagButton} disabled={tagButtonValid} type="button">확인</button>
         </div>
         <div className={styles.tags}>
-          {exercises.map(tag => <div key={tag} className={styles.tag} onClick={deleteTagHandler}>{tag}</div>)}
+          {exercises.map(tag => <div key={tag} className={styles.tag} onClick={deleteTagHandler}>
+            {tag}
+            <Close width="10px" height="10px"/>
+          </div>)}
         </div>
 
         <div className={styles.presentation}>

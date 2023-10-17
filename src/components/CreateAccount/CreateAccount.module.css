@@ -77,10 +77,15 @@
 
 .form_input_nick button {
   position: absolute;
-  width: 24px;
-  height: 24px;
   top: 8px;
   right: 16px;
+  border: none;
+  background-color: transparent;
+}
+
+.form_input_nick button:hover,
+.form_input_nick button:active {
+  background-color: transparent;
 }
 
 .button_container {
@@ -99,6 +104,10 @@
 
 .invalid {
   background-color: #FFE0E0;
+}
+
+.valid { 
+  background-color: #DCFFD6;
 }
 
 button:hover,
@@ -145,21 +154,35 @@ button:disabled:active {
 
 /* form tags */
 
-.form_input_exercise {
+.form_input_exercise{
+  display: flex;
+  justify-content: space-between;
   position: relative;
 }
 
-.form_input_exercise button {
+.search_icon {
   position: absolute;
-  width: 24px;
-  height: 24px;
   top: 8px;
-  right: 16px;
+  left: 12px;
+}
+
+.form_input_exercise button {
+  width: 80px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #FFC493;
+  border: none;
+}
+
+.form_input_exercise input {
+  width: 212px;
+  padding-left: 45px;
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 10px;
 }
 
 .tag {
@@ -169,9 +192,11 @@ button:disabled:active {
   margin-right: 7px;
   margin-bottom: 7px;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   background-color: #DDFFD6;
+  padding: 0 4px;
+  cursor: pointer;
 }
 
 .label_container, .profile_label {
