@@ -3,7 +3,7 @@ import {ReactComponent as AttachFile} from '../../assets/images/attachFile.svg';
 
 const Contents = () => {
   return (
-  <article>
+  <article className={styles.article}>
     <div className={styles.content_info}>
       <div className={styles.profile}>
         <div className={styles.profile_img}></div>

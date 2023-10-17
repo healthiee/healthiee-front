@@ -8,7 +8,7 @@ import Contents from './Contents';
 const Home  = () => {
   return(
     <Fragment>
-      <header>
+      <header className={styles.header}>
         <div>
           <img src={logo} alt="logo" />
         </div>
