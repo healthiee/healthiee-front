@@ -21,6 +21,7 @@ const colors = {
   lightRed: '#FFE0E0',
   orange: '#FF9F4E',
   lighOrange: '#FFC493',
+  lightGreen: '#DDFFD6',
 };
 
 const theme = {
