@@ -10,7 +10,11 @@ const BackButton = styled.button`
   position: absolute;
   top: 3px;
   left: 17px;
-  background-color: transparent;
+  background-color: ${(props) => (props.clicked ? 'white' : 'transparent')};
+
+  &:active {
+    background-color: white;
+  }
   }
 `;
 
@@ -122,6 +126,7 @@ function CreateAccount() {
   const [isEmail, setIsEmail] = useState(false);
   const [showDoneIcon, setShowDoneIcon] = useState(false);
   const [showErrorIcon, setShowErrorIcon] = useState(false);
+  const [btnClicked, setBtnClicked] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -167,8 +172,9 @@ function CreateAccount() {
     <>
       <BackButton
         type='button'
+        $clicked={btnClicked}
         onClick={() => {
-          navigate(-1);
+            navigate(-1);
         }}>
         <ArrowBackIcon />
       </BackButton>
