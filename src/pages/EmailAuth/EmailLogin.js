@@ -117,7 +117,7 @@ const Button = styled.button`
   }
 `;
 
-function CreateAccount() {
+function EmailLogin() {
   // 상태 관리 초기값
   const [email, setEmail] = useState('');
   // 오류 메세지 상태 저장
@@ -212,4 +212,4 @@ function CreateAccount() {
   );
 };
 
-export default CreateAccount;
+export default EmailLogin;
