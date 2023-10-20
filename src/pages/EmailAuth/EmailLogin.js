@@ -96,8 +96,8 @@ const ErrorIcon = styled(Error_Icon)`
 const EmailMessage = styled.span`
   @media screen and (max-width: 360px) {
     display: block;
-    text-align: right;
     width: 300px;
+    text-align: ${props => (props.$success ? 'none' : 'right')};
     font-size: ${({ theme }) => theme.fontSize.sm};
     color: ${props => (props.$success ? '#000000' : '#FF0000')};
   }
