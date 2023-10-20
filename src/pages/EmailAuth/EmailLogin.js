@@ -12,7 +12,7 @@ const BackButton = styled.button`
   left: 17px;
   background-color: ${(props) => (props.clicked ? 'white' : 'transparent')};
 
-  &:active {
+  &:focus {
     background-color: white;
   }
   }
