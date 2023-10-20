@@ -59,7 +59,7 @@ const FooterText = styled.p`
   font-size: 12px;
 `;
 
-function ContinueLogin() {
+function EmailAuthLink() {
   return (
     <Container>
       <MainLogo src={Logo} alt="main logo" />
@@ -76,4 +76,4 @@ function ContinueLogin() {
   );
 }
 
-export default ContinueLogin;
+export default EmailAuthLink;
