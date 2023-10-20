@@ -9,7 +9,7 @@ const BackButton = styled.button`
  @media screen and (max-width: 360px) {
   position: absolute;
   top: 3px;
-  left: 17px;
+  left: 22px;
   background-color: ${(props) => (props.clicked ? 'white' : 'transparent')};
 
   &:focus {
