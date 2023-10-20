@@ -99,7 +99,7 @@ const EmailMessage = styled.span`
     text-align: right;
     width: 300px;
     font-size: ${({ theme }) => theme.fontSize.sm};
-    color: #FF0000;
+    color: ${props => (props.$success ? '#000000' : '#FF0000')};
   }
 `;
 
@@ -114,6 +114,10 @@ const Button = styled.button`
     font-weight: ${({ theme }) => theme.fontWeight.bold};
     background-color: ${props => (props.$isValid ? '#EFEFEF' : '#FFC493')};
     color: ${props => (props.$isValid ? '#717171' : '#000000')};
+
+    &:focus {
+      background-color: ${props => (props.$isValid ? '#EFEFEF' : '#FFC493')};
+    }
   }
 `;
 
@@ -126,7 +130,8 @@ function EmailLogin() {
   const [isEmail, setIsEmail] = useState(false);
   const [showDoneIcon, setShowDoneIcon] = useState(false);
   const [showErrorIcon, setShowErrorIcon] = useState(false);
-  const [btnClicked, setBtnClicked] = useState(false);
+  const [isBackBtnClicked, setIsBackBtnClicked] = useState(false);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -172,14 +177,14 @@ function EmailLogin() {
     <>
       <BackButton
         type='button'
-        $clicked={btnClicked}
+        $clicked={isBackBtnClicked}
         onClick={() => {
             navigate(-1);
         }}>
         <ArrowBackIcon />
       </BackButton>
       <Wrapper>
-        <Title>이메일 주소를 입력해 주세요.</Title>
+        <Title>{isButtonClicked ? '환영합니다!' : '이메일 주소를 입력해 주세요.'}</Title>
         <EmailForm>
           <Label>이메일 주소</Label>
           <InputForm
@@ -189,23 +194,28 @@ function EmailLogin() {
               name="email"
               onChange={onChangeEmail}
               placeholder="healthiee@abc.com"
+              disabled={isButtonClicked} // Button 클릭 후에만 비활성화
             />
             {showDoneIcon && <DoneIcon />}
             {showErrorIcon && <ErrorIcon />}
           </InputForm>
-          <EmailMessage>{emailMessage}</EmailMessage>
-          <Button
+          <EmailMessage $success={isButtonClicked}>{emailMessage}</EmailMessage>
+          {!isButtonClicked && (
+            <Button
             type="button"
             $isValid={!isEmail}
             onClick={(e) => {
               if (isEmail) {
                 e.stopPropagation();
+                setIsButtonClicked(true);
+                setEmailMessage('회원가입 링크가 위의 이메일로 전송되었습니다.');
               } else {
                 setEmailMessage("올바른 형식의 이메일을 입력해 주세요.");
               }
             }
             }
           >다음</Button>
+          )}
         </EmailForm>
       </Wrapper>
     </>
