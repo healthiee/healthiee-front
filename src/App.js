@@ -15,6 +15,7 @@ import MainRoot from './pages/MainRoot';
 import SplashScreen from './pages/SplashScreen';
 import StartPage from './pages/StartPage';
 import EmailLogin from './pages/EmailAuth/EmailLogin';
+import AuthCompleted from './pages/EmailAuth/AuthCompleted'
 
 const router = createBrowserRouter([
   {path: '/',
@@ -29,7 +30,8 @@ const router = createBrowserRouter([
   {path: '/createAccount', element: <CreateAccount/>},
   {path: '/screen', element: <SplashScreen />},
   {path: '/startpage', element: <StartPage />},
-  {path: '/emaillogin', element: <EmailLogin />}
+  {path: '/emaillogin', element: <EmailLogin />},
+  {path: '/authcompleted', element: <AuthCompleted />},
 ]);
 
 function App() {
