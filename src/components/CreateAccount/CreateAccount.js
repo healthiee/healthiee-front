@@ -19,7 +19,6 @@ const SignupPage = ()=> {
   const [tag, setTag] = useState('');
   const [exercises, setExercises] = useState([]);
   const presentationRef = useRef();
-  const [doubleCheck, setDoubleCheck] = useState(false);
 
   // const randomColor = "#"+(parseInt(Math.random()*0xffffff)).toString(16);
 
@@ -27,7 +26,7 @@ const SignupPage = ()=> {
 
   const {enterValue:inputName, error:nameError, inputHandler:inputNameHandler, blurHandler:blurNameHandler, enterValid:nameValid,reset:nameReset } = useAccountInput(value => value.trim().length >= 2);
 
-  const {enterValue:inputNickname, error:nicknameError, inputHandler:inputNicknameHandler, blurHandler:blurNicknameHandler,enterValid:nicknameValid, reset:NicknameReset, setEnterValue:nickNameValue } = useAccountInput(value => value.trim().length >= 4);
+  const {enterValue:inputNickname, error:nicknameError, inputHandler:inputNicknameHandler, blurHandler:blurNicknameHandler,enterValid:nicknameValid, reset:NicknameReset, setEnterValue:nickNameValue, doubleCheck, setDoubleCheck } = useAccountInput(value => value.trim().length >= 4);
 
   const clearNickHandelr = () => {
     nickNameValue('');
