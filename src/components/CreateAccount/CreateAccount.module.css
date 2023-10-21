@@ -194,9 +194,9 @@ button:disabled:active {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: #DDFFD6;
   padding: 0 4px;
   cursor: pointer;
+  z-index: 100;
 }
 
 .label_container, .profile_label {

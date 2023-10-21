@@ -68,20 +68,21 @@ const SignupPage = ()=> {
       return;
     }
     for (const exercise of exercises) {
-      if (exercise === tag) {
+      if (exercise.name === tag) {
         return;
       }
     }
-    setExercises([...exercises, tag])
+    setExercises([...exercises, {name: tag, color: "#"+(parseInt(Math.random()*0xffffff)).toString(16)}]);
     setTag('');
   }
 
   const deleteTagHandler = (event) => {
+    console.log(event);
 
     for (const exercise of exercises) {
-      if (exercise === event.target.innerText ) {
+      if (exercise.name === event.target.innerText ) {
         const upload = exercises.filter(data => {
-          return data !== exercise;
+          return data.name !== exercise.name;
         })
         setExercises(upload);
         setTag('');
@@ -166,8 +167,8 @@ const SignupPage = ()=> {
           <button onClick={addTagButton} disabled={tagButtonValid} type="button">확인</button>
         </div>
         <div className={styles.tags}>
-          {exercises.map(tag => <div key={tag} className={styles.tag} onClick={deleteTagHandler}>
-            {tag}
+          {exercises.map(tag => <div key={tag.name} className={styles.tag} style={{backgroundColor:`${tag.color}`}} onClick={deleteTagHandler}>
+            {tag.name}
             <Close width="10px" height="10px"/>
           </div>)}
         </div>
