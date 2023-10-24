@@ -48,7 +48,7 @@ const ContinueBtn = styled.button`
     height: 40px;
     font-size: ${({ theme }) => theme.fontSize.lg};
     font-weight: ${({ theme }) => theme.fontWeight.bold};
-    background-color: ${({ theme }) => theme.colors.orange};
+    background-color: ${({ theme }) => theme.colors.lighOrange};
   }
 `;
 
