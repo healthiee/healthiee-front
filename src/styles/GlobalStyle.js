@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import reset from 'styled-reset';
+import '../assets/fonts/fonts.css'
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -7,9 +8,8 @@ const GlobalStyle = createGlobalStyle`
       box-sizing: border-box;
     }
 
-    body {
+    html, body, p {
       font-family: 'Noto Sans KR', sans-serif;
-      line-height: 1.2;
     }
 
     html, body, div, span, h1, h2, h3, h4, h5, h6, p, 
@@ -28,6 +28,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     button {
+      font-family: 'Noto Sans KR';
       border: none;
       background-color: #EFEFEF;
       border-radius: 20px;
