@@ -19,7 +19,6 @@ const SignupPage = ()=> {
   const [tag, setTag] = useState('');
   const [exercises, setExercises] = useState([]);
   const presentationRef = useRef();
-  const [doubleCheck, setDoubleCheck] = useState(false);
 
   // const randomColor = "#"+(parseInt(Math.random()*0xffffff)).toString(16);
 
@@ -27,7 +26,7 @@ const SignupPage = ()=> {
 
   const {enterValue:inputName, error:nameError, inputHandler:inputNameHandler, blurHandler:blurNameHandler, enterValid:nameValid,reset:nameReset } = useAccountInput(value => value.trim().length >= 2);
 
-  const {enterValue:inputNickname, error:nicknameError, inputHandler:inputNicknameHandler, blurHandler:blurNicknameHandler,enterValid:nicknameValid, reset:NicknameReset, setEnterValue:nickNameValue } = useAccountInput(value => value.trim().length >= 4);
+  const {enterValue:inputNickname, error:nicknameError, inputHandler:inputNicknameHandler, blurHandler:blurNicknameHandler,enterValid:nicknameValid, reset:NicknameReset, setEnterValue:nickNameValue, doubleCheck, setDoubleCheck } = useAccountInput(value => value.trim().length >= 4);
 
   const clearNickHandelr = () => {
     nickNameValue('');
@@ -68,20 +67,21 @@ const SignupPage = ()=> {
       return;
     }
     for (const exercise of exercises) {
-      if (exercise === tag) {
+      if (exercise.name === tag) {
         return;
       }
     }
-    setExercises([...exercises, tag])
+    setExercises([...exercises, {name: tag, color: "#"+(parseInt(Math.random()*0xffffff)).toString(16)}]);
     setTag('');
   }
 
   const deleteTagHandler = (event) => {
+    console.log(event);
 
     for (const exercise of exercises) {
-      if (exercise === event.target.innerText ) {
+      if (exercise.name === event.target.innerText ) {
         const upload = exercises.filter(data => {
-          return data !== exercise;
+          return data.name !== exercise.name;
         })
         setExercises(upload);
         setTag('');
@@ -166,8 +166,8 @@ const SignupPage = ()=> {
           <button onClick={addTagButton} disabled={tagButtonValid} type="button">확인</button>
         </div>
         <div className={styles.tags}>
-          {exercises.map(tag => <div key={tag} className={styles.tag} onClick={deleteTagHandler}>
-            {tag}
+          {exercises.map(tag => <div key={tag.name} className={styles.tag} style={{backgroundColor:`${tag.color}`}} onClick={deleteTagHandler}>
+            {tag.name}
             <Close width="10px" height="10px"/>
           </div>)}
         </div>
