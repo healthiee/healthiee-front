@@ -8,6 +8,7 @@ import {ReactComponent as DefaultProfile} from '../../assets/images/defaultProfi
 import {ReactComponent as Close} from '../../assets/images/close.svg';
 import {ReactComponent as Done} from '../../assets/images/done.svg';
 import {ReactComponent as Search} from '../../assets/images/search.svg';
+import { legacy_createStore } from "redux";
 
 
 
@@ -19,8 +20,6 @@ const SignupPage = ()=> {
   const [tag, setTag] = useState('');
   const [exercises, setExercises] = useState([]);
   const presentationRef = useRef();
-
-  // const randomColor = "#"+(parseInt(Math.random()*0xffffff)).toString(16);
 
   // form : name & nickname
 
@@ -71,12 +70,16 @@ const SignupPage = ()=> {
         return;
       }
     }
-    setExercises([...exercises, {name: tag, color: "#"+(parseInt(Math.random()*0xffffff)).toString(16)}]);
+
+    const randomColor = ['#FCADFF', '#FFE0E0', '#FFC493', '#DDFFD6', '#B1E7FF', '#FBFF93', '#C9CDFF', '#D3D3D3', '#E6C9FF'];
+    
+    const colorPick = Math.floor(Math.random()*randomColor.length);
+
+    setExercises([...exercises, {name: tag, color: randomColor[colorPick]}]);
     setTag('');
   }
 
   const deleteTagHandler = (event) => {
-    console.log(event);
 
     for (const exercise of exercises) {
       if (exercise.name === event.target.innerText ) {
@@ -167,7 +170,7 @@ const SignupPage = ()=> {
         </div>
         <div className={styles.tags}>
           {exercises.map(tag => <div key={tag.name} className={styles.tag} style={{backgroundColor:`${tag.color}`}} onClick={deleteTagHandler}>
-            {tag.name}
+            <p>{tag.name}</p>
             <Close width="10px" height="10px"/>
           </div>)}
         </div>

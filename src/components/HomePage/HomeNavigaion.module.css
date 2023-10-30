@@ -16,3 +16,7 @@
   width: 28px;
   height: 28px;
 }
+
+.nav a:hover, .nav a.active {
+  fill: #FF9F4E;
+}

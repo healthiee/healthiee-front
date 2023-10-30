@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import styles from './HomeNavigaion.module.css';
 import {ReactComponent as Home} from '../../assets/images/home.svg';
 import {ReactComponent as Location} from '../../assets/images/location.svg';
@@ -7,22 +7,25 @@ import {ReactComponent as PostAdd} from '../../assets/images/postAdd.svg';
 import {ReactComponent as Search} from '../../assets/images/search.svg';
 
 const HomeNavigation = () => {
+
+  const activeStyle = ({isActive}) => isActive ? styles.active : '';
+
   return(
     <nav className={styles.nav}>
       <div className={styles.nav_icon}>
-        <Link to='first'><Search/></Link>
+        <NavLink to='first' className={activeStyle}><Search/></NavLink>
       </div>
       <div className={styles.nav_icon}>
-        <Link to='second'><Location/></Link>
+        <NavLink to='second' className={activeStyle}><Location/></NavLink>
       </div>
       <div className={styles.nav_icon}>
-        <Link to='/'><Home/></Link>
+        <NavLink to='/' className={activeStyle} end><Home/></NavLink>
       </div>
       <div className={styles.nav_icon}>
-        <Link to='third'><PostAdd/></Link>
+        <NavLink to='third' className={activeStyle}><PostAdd/></NavLink>
       </div>
       <div className={styles.nav_icon}>
-        <Link to='forth'><Person/></Link>
+        <NavLink to='forth' className={activeStyle}><Person/></NavLink>
       </div>
     </nav>
   )
