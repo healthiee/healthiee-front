@@ -4,13 +4,10 @@ import useAccountInput from "../../hooks/use-accountInput";
 
 //img
 import {ReactComponent as BackArrow} from '../../assets/images/backArrow.svg';
-import {ReactComponent as DefaultProfile} from '../../assets/images/defaultProfile.svg';
 import {ReactComponent as Close} from '../../assets/images/close.svg';
 import {ReactComponent as Done} from '../../assets/images/done.svg';
 import {ReactComponent as Search} from '../../assets/images/search.svg';
-import { legacy_createStore } from "redux";
-
-
+import defaultProfile from '../../assets/images/defaultProfile.png';
 
 
 const SignupPage = ()=> {
@@ -73,7 +70,13 @@ const SignupPage = ()=> {
 
     const randomColor = ['#FCADFF', '#FFE0E0', '#FFC493', '#DDFFD6', '#B1E7FF', '#FBFF93', '#C9CDFF', '#D3D3D3', '#E6C9FF'];
     
-    const colorPick = Math.floor(Math.random()*randomColor.length);
+    let colorPick = Math.floor(Math.random()*randomColor.length);
+
+    for (const exercise of exercises) {
+      if (exercise.color === randomColor[colorPick]) {
+        colorPick = Math.floor(Math.random()*randomColor.length);
+      }
+    }
 
     setExercises([...exercises, {name: tag, color: randomColor[colorPick]}]);
     setTag('');
@@ -156,7 +159,7 @@ const SignupPage = ()=> {
 
         <div className={styles.profile_container}>
           <input className={styles.profile_input} type="file" accept="image/*" id="profileimg" onChange={saveImgFile} ref={imgRef}/>
-          {imgFile ? <img src={imgFile} alt="profile img"/> : <DefaultProfile className={styles.defaultimg}/>}
+          {imgFile ? <img src={imgFile} alt="profile img"/> : <img src={defaultProfile} className={styles.defaultimg}/>}
           <div className={styles.label_container}>
             <label htmlFor="profileimg" className={styles.profile_label}>사진 등록하기</label>
           </div>
