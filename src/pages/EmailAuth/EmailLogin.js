@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 import { ReactComponent as ArrowBack_Icon } from '../../assets/icons/ArrowBack_icon.svg';
 import { ReactComponent as Done_Icon } from '../../assets/icons/Done_icon.svg';
 import { ReactComponent as Error_Icon } from '../../assets/icons/Error_icon.svg'
@@ -173,6 +174,38 @@ function EmailLogin() {
     }
   }
 
+  const onClickButton = () => {
+    if(isEmail) {
+      // 유효한 이메일이면 서버로 이메일 보냄
+      const requestPayload = {
+        email: email,
+      };
+
+      axios.post('https://api.healthiee.net/v1/auth', requestPayload, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Request-ID': 'your-uuid-here', // 실제 UUID로 대체
+        }
+      })
+      .then(response => {
+      if (response.data && response.data.code === 200 && response.data.data) {
+          // 이메일이 성공적으로 등록되었을 때
+          setIsButtonClicked(true);
+          setEmailMessage('회원가입 링크가 위의 이메일로 전송되었습니다.');
+        } else {
+          // 다른 상황에 대한 처리
+          setEmailMessage('이메일 등록에 실패했습니다.');
+        }
+      })
+      .catch(error => {
+        // 요청이 실패했을 때의 처리
+        setEmailMessage('이메일 전송 중 오류가 발생했습니다.');
+      });
+    } else {
+      setEmailMessage("올바른 형식의 이메일을 입력해 주세요.");
+    }
+  }
+
   return (
     <>
       <BackButton
@@ -204,16 +237,7 @@ function EmailLogin() {
             <Button
             type="button"
             $isValid={!isEmail}
-            onClick={(e) => {
-              if (isEmail) {
-                e.stopPropagation();
-                setIsButtonClicked(true);
-                setEmailMessage('회원가입 링크가 위의 이메일로 전송되었습니다.');
-              } else {
-                setEmailMessage("올바른 형식의 이메일을 입력해 주세요.");
-              }
-            }
-            }
+            onClick={onClickButton}
           >다음</Button>
           )}
         </EmailForm>
