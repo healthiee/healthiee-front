@@ -8,7 +8,6 @@ import {ReactComponent as DefaultProfile} from '../../assets/images/defaultProfi
 import {ReactComponent as Close} from '../../assets/images/close.svg';
 import {ReactComponent as Done} from '../../assets/images/done.svg';
 import {ReactComponent as Search} from '../../assets/images/search.svg';
-import { legacy_createStore } from "redux";
 
 
 

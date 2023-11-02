@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styles from './HomeNavigaion.module.css';
 import {ReactComponent as Home} from '../../assets/images/home.svg';
 import {ReactComponent as Location} from '../../assets/images/location.svg';
@@ -25,7 +25,7 @@ const HomeNavigation = () => {
         <NavLink to='third' className={activeStyle}><PostAdd/></NavLink>
       </div>
       <div className={styles.nav_icon}>
-        <NavLink to='forth' className={activeStyle}><Person/></NavLink>
+        <NavLink to='profile' className={activeStyle}><Person/></NavLink>
       </div>
     </nav>
   )
