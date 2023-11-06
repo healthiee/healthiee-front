@@ -1,6 +1,7 @@
 import React, {useState, useRef} from "react";
 import styles from './CreateAccount.module.css';
 import useAccountInput from "../../hooks/use-accountInput";
+import axios from "axios";
 
 //img
 import {ReactComponent as BackArrow} from '../../assets/images/backArrow.svg';
@@ -112,13 +113,31 @@ const SignupPage = ()=> {
     if(!nameValid || !nicknameValid) {
       return
     }
+    
+    const data = {
+      'code' : '2188a8c8-1918-4163-9471-33608833f780',
+      'name' : inputName,
+      'nickname' : inputNickname,
+      'bio' : exercises,
+      'workouts' : presentationRef,
+    };
 
-    console.log(inputName);
-    console.log(inputNickname);
-    console.log(exercises);
-    console.log(presentationRef.current.value);
-    nameReset();
-    NicknameReset();
+    const formdata = new FormData();
+    //formdata.append('image', imgFile)
+    formdata.append('data', data);
+
+
+    axios.post("http://prod.healthiee.net/v1/auth/register",formdata,
+    {
+      headers: {
+        'X-Request-ID' : 'UUID',
+        'Content-Type' : "application/json"
+      }
+    }).then(response => {
+      console.log(response.data)
+    }).catch(error => {
+      console.log(error);
+    })
   }
 
   //button valid style
