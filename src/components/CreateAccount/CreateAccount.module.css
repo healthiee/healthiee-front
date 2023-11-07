@@ -194,7 +194,6 @@ button:disabled:active {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  z-index: 100;
   padding: 0 12px;
 }
 
