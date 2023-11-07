@@ -1,5 +1,5 @@
 import styles from './Home.module.css';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import {ReactComponent as Tune} from '../../assets/images/tune.svg';
 import {ReactComponent as Notification} from '../../assets/images/notification.svg';
 import logo from '../../assets/images/logo.png'
@@ -7,6 +7,7 @@ import Contents from './Contents';
 import { Link } from 'react-router-dom'
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import defaultImg from '../../assets/images/defaultImg.png';
+import Search from './Search';
 
 const dummy = [{
   nickname : 'chorong_2',
@@ -29,6 +30,19 @@ const dummy = [{
 }]
 
 const Home  = () => {
+
+  const [backdrop, setBackdrop] = useState(false);
+
+  const searchHandler = () => {
+    if(backdrop) {
+      setBackdrop(false);
+    } else {
+      setBackdrop(true);
+    }
+  }
+
+  const searchButtonStyle = backdrop? styles.active : '';
+
   return(
     <Fragment>
       <header className={styles.header}>
@@ -41,7 +55,8 @@ const Home  = () => {
       </header>
 
       <div className={styles.tune}>
-        <Tune/>
+        <Tune className={searchButtonStyle} style={{cursor:'pointer'}} onClick={searchHandler}/>
+        {backdrop && <Search onBackdrop={searchHandler}/>}
       </div>
 
       <div className={styles.contents}>
