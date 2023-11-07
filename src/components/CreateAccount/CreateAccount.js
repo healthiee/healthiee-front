@@ -1,6 +1,7 @@
 import React, {useState, useRef} from "react";
 import styles from './CreateAccount.module.css';
 import useAccountInput from "../../hooks/use-accountInput";
+import axios from "axios";
 
 //img
 import {ReactComponent as BackArrow} from '../../assets/images/backArrow.svg';
@@ -8,7 +9,6 @@ import {ReactComponent as Close} from '../../assets/images/close.svg';
 import {ReactComponent as Done} from '../../assets/images/done.svg';
 import {ReactComponent as Search} from '../../assets/images/search.svg';
 import defaultProfile from '../../assets/images/defaultProfile.png';
-
 
 
 
@@ -33,6 +33,7 @@ const SignupPage = ()=> {
   // form : nickname double check
 
   const doubleCheckHandler = () => {
+    console.log('double')
     //if true
     setDoubleCheck(true);
   }
@@ -107,18 +108,37 @@ const SignupPage = ()=> {
   // form : from submit
 
   const submitHandler = (event) => {
+    
+    console.log('submit')
     event.preventDefault();
 
     if(!nameValid || !nicknameValid) {
       return
     }
 
-    console.log(inputName);
-    console.log(inputNickname);
-    console.log(exercises);
-    console.log(presentationRef.current.value);
-    nameReset();
-    NicknameReset();
+    const data = {
+      'code' : '2188a8c8-1918-4163-9471-33608833f780',
+      'name' : inputName,
+      'nickname' : inputNickname,
+      'bio' : presentationRef.current.value,
+      'worksout' : exercises
+    }
+    
+    const formdata = new FormData();
+    formdata.append('data',  new Blob([JSON.stringify(data)], {
+      type: "application/json"
+  }))
+
+    axios.post('http://prod.healthiee.net/v1/auth/register', formdata, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then(response => {
+      console.log(response.data)
+    }).catch(error => {
+      console.log('에러발생', error);
+    })
+
   }
 
   //button valid style
@@ -140,15 +160,15 @@ const SignupPage = ()=> {
       <form className={styles.form_container} onSubmit={submitHandler}>
         <div className={styles.form_input}>
           <label htmlFor="name">이름 <span className={styles.star}>*</span></label>
-          <input id="name" onChange={inputNameHandler} onBlur={blurNameHandler} type="text" value={inputName} className={nameStyleControl} placeholder="이름을 입력해주세요."/>
+          <input id="name" onChange={inputNameHandler} onBlur={blurNameHandler} type="text" value={inputName} className={nameStyleControl} placeholder="이름을 입력해주세요." name="name"/>
         </div>
 
         <div className={styles.form_input}>
           <label htmlFor="nickname">닉네임 <span className={styles.star}>*</span></label>
           <div className={styles.form_input_nick}>
-            <input id="nickname" onChange={inputNicknameHandler} onBlur={blurNicknameHandler} type="text" value={inputNickname} className={nicknameStyleControl} placeholder="20자 이하의 영문 대소문자, 숫자, 언더바"/>
+            <input id="nickname" name="nickname" onChange={inputNicknameHandler} onBlur={blurNicknameHandler} type="text" value={inputNickname} className={nicknameStyleControl} placeholder="20자 이하의 영문 대소문자, 숫자, 언더바"/>
             {inputNickname && !doubleCheck&& <button type="button" onClick={clearNickHandelr}><Close width="24px" height="24px"/></button>}
-            {inputNickname && doubleCheck && <button><Done/></button>}
+            {inputNickname && doubleCheck && <span><Done/></span>}
           </div>
 
           <div className={styles.button_container}>
@@ -160,7 +180,7 @@ const SignupPage = ()=> {
         <h2>프로필 사진</h2>
 
         <div className={styles.profile_container}>
-          <input className={styles.profile_input} type="file" accept="image/*" id="profileimg" onChange={saveImgFile} ref={imgRef}/>
+          <input name="image" className={styles.profile_input} type="file" accept="image/*" id="profileimg" onChange={saveImgFile} ref={imgRef}/>
           {imgFile ? <img src={imgFile} alt="profile img"/> : <img src={defaultProfile} className={styles.defaultimg}/>}
           <div className={styles.label_container}>
             <label htmlFor="profileimg" className={styles.profile_label}>사진 등록하기</label>
@@ -170,7 +190,7 @@ const SignupPage = ()=> {
         <h2>지금 하고 있는 운동을 알려주세요. (최대 5개)</h2>
         <div className={styles.form_input_exercise}>
           <Search className={styles.search_icon}/>
-          <input type="text" placeholder="내가 하는 운동 검색하기" className={styles.input_style} onChange={addTagHandler} value={tag}/>
+          <input name="workouts" type="text" placeholder="내가 하는 운동 검색하기" className={styles.input_style} onChange={addTagHandler} value={tag}/>
           <button onClick={addTagButton} disabled={tagButtonValid} type="button">확인</button>
         </div>
         <div className={styles.tags}>
@@ -182,7 +202,7 @@ const SignupPage = ()=> {
 
         <div className={styles.presentation}>
           <h2>자기소개</h2>
-          <textarea name="presentation" cols="30" rows="10" placeholder="간단하게 자신을 소개해주세요.(50자이내)" ref={presentationRef}></textarea>
+          <textarea name="bio" cols="30" rows="10" placeholder="간단하게 자신을 소개해주세요.(50자이내)" ref={presentationRef}></textarea>
         </div>
         <button disabled={!buttonValid} className={styles.next_button} type="submit">다음</button>
       </form>
