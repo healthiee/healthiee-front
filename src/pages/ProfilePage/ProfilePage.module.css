@@ -25,6 +25,8 @@
 
 .header h1 {
   font-size: 20px;
+  color: #000000;
+  font-weight: bold;
 }
 
 /* profile */
@@ -38,7 +40,6 @@
   width: 75px;
   height: 75px;
   border-radius: 50%;
-  border: 1px solid black;
 }
 
 .follow {
@@ -49,6 +50,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-weight: bold;
 }
 
 .follow p {
@@ -68,12 +70,28 @@
 .profile_info > * {
   font-size: 12px;
   margin-bottom: 5px;
+  color: #000000;
+}
+
+.profile_info h3 {
+  font-weight: 600;
 }
 
 /* profile tag */
 .profile_tags {
   height: 80px;
-  border: 1px solid black;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tag {
+  height: 28px;
+  margin-right: 12px;
+  margin-bottom: 12px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
 }
 
 /* profile button */
