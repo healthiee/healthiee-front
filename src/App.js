@@ -21,8 +21,6 @@ import StartPage from './pages/StartPage';
 import EmailLogin from './pages/EmailAuth/EmailLogin';
 import EmailAuthLink from './pages/EmailAuth/EmailAuthLink';
 import AuthCompleted from './pages/EmailAuth/AuthCompleted';
-import NotificationPage from './pages/NotificationPage'
-
 
 const router = createBrowserRouter([
   {path: '/',
@@ -45,7 +43,6 @@ const router = createBrowserRouter([
   {path: '/emaillogin', element: <EmailLogin />},
   {path: '/emailauthlink', element: <EmailAuthLink/>},
   {path: '/authcompleted', element: <AuthCompleted />},
-  {path: '/notification', element: <NotificationPage />}
 ]);
 
 function App() {
