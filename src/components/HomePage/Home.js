@@ -7,7 +7,7 @@ import Contents from './Contents';
 import { Link } from 'react-router-dom'
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import defaultImg from '../../assets/images/defaultImg.png';
-import Search from './Search';
+import Search from './SearchPage/Search';
 
 const dummy = [{
   nickname : 'chorong_2',

@@ -27,8 +27,7 @@
   width: 200px;
   height: 267px;
   position: absolute;
-  top: 52px;
-  right: 20px;
+  top: 90px;
   background-color: white;
   z-index: 4;
 }
@@ -56,6 +55,8 @@
   left: 14px;
 }
 
+/* 전체선택 */
+
 .choose {
   height: 40px;
   border-bottom: 2px solid #D3D3D3;
@@ -69,11 +70,43 @@
   height: 20px;
   font-size: 12px;
   color: #717171;
+  background-color: #EFEFEF;
+}
+
+.choose .active {
+  background-color: #FFE0E0;
+}
+
+
+
+/* checkbox */
+
+.checkboxs {
+  height: 130px;
+  padding-left: 6px;
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
+  overflow-y: scroll;
+}
+
+.checkboxs::-webkit-scrollbar {
+  display: none;
 }
 
 .checkbox {
-  height: 130px;
+  height: 15px;
+  font-size: 12px;
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  accent-color: #FFC493;
 }
+
+.checkbox input {
+  margin-right: 8px;
+}
+
+/* buttons */
 
 .btns {
   height: 49px;
