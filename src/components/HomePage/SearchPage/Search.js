@@ -1,23 +1,41 @@
 import styles from './Search.module.css'
 import {ReactComponent as Searchimg} from '../../../assets/images/search.svg';
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 
-const checkBoxList = ['오운완', '맛집', '멤버 모집', '장비', '운동 소식', '핫플레이스', '축구', '농구', '테니스']
+const dummy = ['오운완', '맛집', '멤버 모집', '장비', '운동 소식', '핫플레이스', '축구', '농구', '테니스']
 
 const Search = (props) => {
 
   const [checkedList, setCheckedList] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
+  const [keyword, setKeyword] = useState('');
+  const [isKeyword, setIsKeyword] = useState(false);
+  const [checkBoxList, setCheckBoxList] = useState(dummy);
 
   const cancleButtonHandler = () => {
     props.onBackdrop();
   };
 
-  const searchHandelr = (event) => {
+  const searchHandler = (event) => {
     event.preventDefault();
 
     console.log('checkedList', checkedList);
   };
+
+  const keywordHandler = (event) => {
+    setKeyword(event.target.value)
+  }
+
+  useEffect(()=> {
+    if (keyword.trim().length === 0) {
+      setIsKeyword(false);
+      setCheckBoxList(dummy);
+    } else {
+      setIsKeyword(true);
+      const data = dummy.filter(item => item.includes(keyword));
+      setCheckBoxList(data);
+    }
+  },[keyword])
 
   //checkbox
 
@@ -39,7 +57,7 @@ const Search = (props) => {
     checkedItemHandler(value, event.target.checked);
   };
 
-  const AllcheckHandler = () => {
+  const allcheckHandler = () => {
 
     if(!isChecked) {
       setCheckedList(checkBoxList);
@@ -56,14 +74,14 @@ const Search = (props) => {
     <Fragment>
     <div className={styles.backdrop} onClick={cancleButtonHandler}></div>
 
-    <form onSubmit={searchHandelr} className={styles.container}>
+    <form onSubmit={searchHandler} className={styles.container}>
       <div>
         <Searchimg className={styles.icon}/>
-        <input className={styles.search} placeholder='보고 싶은 키워드 검색하기' type="text" />
+        <input onChange={keywordHandler} className={styles.search} placeholder='보고 싶은 키워드 검색하기' type="text" />
       </div>
 
       <div className={styles.choose}>
-        <button className={allCheckStyle} type='button' onClick={AllcheckHandler}>전체 선택</button>
+        <button className={allCheckStyle} type='button' onClick={allcheckHandler}>전체 선택</button>
       </div>
 
       <div className={styles.checkboxs}>
@@ -72,7 +90,7 @@ const Search = (props) => {
           <input type="checkbox" id={item} checked={checkedList.includes(item)} onChange={e => checkHandler(e, item)}/>
           <label htmlFor={item}>{item}</label>
         </div>
-      ))}
+        ))}
       </div>
 
       <div className={styles.btns}>
