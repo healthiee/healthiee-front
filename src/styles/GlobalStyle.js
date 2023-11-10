@@ -9,7 +9,11 @@ const GlobalStyle = createGlobalStyle`
     }
 
     html, body, p {
+<<<<<<< HEAD
       font-family: 'NotoSansRegular';
+=======
+      font-family: 'Noto Sans KR', sans-serif;
+>>>>>>> parent of 9637e6f (Merge branch 'dev' into NotificationPage)
     }
 
     html, body, div, span, h1, h2, h3, h4, h5, h6, p, 
