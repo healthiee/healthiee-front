@@ -1,15 +1,22 @@
 @font-face {
-  font-family: 'Noto Sans KR';
-  src: url("./NotoSansKR-Regular.woff") format("woff");
+  font-family: 'NotoSansRegular';
+  src: url("./NotoSans-Regular.woff") format("woff");
   font-weight: normal;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
-
 @font-face {
-  font-family: 'Noto Sans KR';
-  src: url("./NotoSansKR-Bold.woff") format("woff");
+  font-family: 'NotoSansSemiBold';
+  src: url("./NotoSans-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: fallback;
+}
+@font-face {
+  font-family: 'NotoSansBold';
+  src: url("./NotoSans-Bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
+

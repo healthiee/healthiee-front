@@ -1,5 +1,5 @@
 const mobileSize = {
-  mobile: `screen and (max-width: 360px)`,
+  mobile: 'screen and (max-width: 360px)',
 };
 
 const fontSize = {
@@ -11,6 +11,7 @@ const fontSize = {
 
 const fontWeight = {
   regular: 400,
+  semibold: 600,
   bold: 700,
 };
 
@@ -20,7 +21,7 @@ const colors = {
   red: '#FF0000',
   lightRed: '#FFE0E0',
   orange: '#FF9F4E',
-  lighOrange: '#FFC493',
+  lightOrange: '#FFC493',
   lightGreen: '#DDFFD6',
 };
 

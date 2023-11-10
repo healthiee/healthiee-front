@@ -20,8 +20,7 @@ import SplashScreen from './pages/SplashScreen';
 import StartPage from './pages/StartPage';
 import EmailLogin from './pages/EmailAuth/EmailLogin';
 import EmailAuthLink from './pages/EmailAuth/EmailAuthLink';
-import AuthCompleted from './pages/EmailAuth/AuthCompleted'
-
+import AuthCompleted from './pages/EmailAuth/AuthCompleted';
 
 const router = createBrowserRouter([
   {path: '/',
