@@ -4,7 +4,7 @@ import {ReactComponent as Menu} from '../../assets/images/menu.svg';
 import {ReactComponent as Description} from '../../assets/images/description.svg';
 import {ReactComponent as EventAvailable} from '../../assets/images/eventAvailable.svg';
 
-const ProfilePage = () => {
+const ForthPage = () => {
 
   const activeStyle = ({isActive}) => isActive ? `${styles.nav_icon} ${styles.active}` : styles.nav_icon;
 
@@ -58,4 +58,4 @@ const ProfilePage = () => {
   )
 };
 
-export default ProfilePage;
+export default ForthPage;

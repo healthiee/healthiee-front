@@ -1,10 +1,11 @@
 import styles from './Home.module.css';
-import { Fragment, useState } from 'react';
+
+import { Fragment, useState, useEffect, useRef } from 'react';
 import {ReactComponent as Tune} from '../../assets/images/tune.svg';
 import {ReactComponent as Notification} from '../../assets/images/notification.svg';
 import logo from '../../assets/images/logo.png'
 import Contents from './Contents';
-import { Link } from 'react-router-dom'
+import NotificationPopup from '../../pages/Notification';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import defaultImg from '../../assets/images/defaultImg.png';
 import Search from './SearchPage/Search';
@@ -32,7 +33,9 @@ const dummy = [{
 const Home  = () => {
 
   const [backdrop, setBackdrop] = useState(false);
-
+  const [popupVisible, setPopupVisible] = useState(false);
+  const swipeRef = useRef(null);
+  
   const searchHandler = () => {
     if(backdrop) {
       setBackdrop(false);
@@ -40,18 +43,33 @@ const Home  = () => {
       setBackdrop(true);
     }
   }
+  
+  const showNotification = () => {
+    setPopupVisible(true);
+  };
+  const showHomePage = () => {
+    setPopupVisible(false);
+  };
+
+  useEffect(() => {
+  swipeRef.current.classList.toggle(styles.showNotificaton) 
+  }, [popupVisible]);
 
   const searchButtonStyle = backdrop? styles.active : '';
 
   return(
     <Fragment>
+      <div className={styles.NotificationPopup} ref={swipeRef}>
+        {popupVisible && <NotificationPopup onClose={showHomePage} />}
+      </div>
+
       <header className={styles.header}>
         <div>
           <img src={logo} alt="logo" />
         </div>
-        <Link to="/notification">
-          <Notification />
-        </Link>
+        <div className={styles.notifiaction}>
+          <Notification onClick={showNotification} />
+        </div>
       </header>
 
       <div className={styles.tune}>
@@ -63,7 +81,7 @@ const Home  = () => {
         {dummy.map(post => <Contents key={post.nickname} post={post}/>)}
       </div>
     </Fragment>
-  )
+  );
 };
 
 export default Home;

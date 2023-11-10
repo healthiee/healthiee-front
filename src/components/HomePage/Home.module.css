@@ -13,6 +13,17 @@
   height: 32px;
 }
 
+.NotificationPopup {
+  position: fixed;
+  left: 100%;
+  transition: left 0.5s;
+  z-index: 999;
+}
+
+.NotificationPopup.showNotificaton {
+  left: 0;
+}
+
 .tune {
   display: flex;
   align-items: center;
