@@ -17,8 +17,6 @@ const Contents = (props) => {
     }
   };
 
-  console.log(heart);
-
   const heartStyle = heart ? styles.active : styles.heart;
 
   return (
@@ -31,7 +29,7 @@ const Contents = (props) => {
         <div className={styles.profile_box}>
           <h1>{props.post.nickname}</h1>
           <div className={styles.profile_tags}>
-            {props.post.tags.map(tag => <div className={styles.profile_tag} style={{backgroundColor:`${tag.color}`}}>{tag.name}</div>)}
+            {props.post.tags.map(tag => <div className={styles.profile_tag} key={tag.name} style={{backgroundColor:`${tag.color}`}}>{tag.name}</div>)}
           </div>
         </div>
       </div>

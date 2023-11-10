@@ -1,0 +1,123 @@
+/* backdrop */
+
+.backdrop {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  height: 592px;
+  width: 360px;
+  z-index: 2;
+}
+
+.backdrop::after {
+  height: 592px;
+  width: 360px;
+  content: '';
+  background-color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1.5;
+  opacity: 0.5;
+}
+
+/* container */
+
+.container {
+  width: 200px;
+  height: 267px;
+  position: absolute;
+  top: 90px;
+  background-color: white;
+  z-index: 4;
+}
+
+.container > * {
+  width: 184px;
+  margin: 0 auto;
+}
+
+.search {
+  width: 184px;
+  height: 40px;
+  background-color: #EFEFEF;
+  border-radius: 20px;
+  border: none;
+  padding-left: 32px;
+  font-size: 12px;
+  color: #717171;
+  margin-top: 8px;
+}
+
+.icon {
+  position: absolute;
+  top: 16px;
+  left: 14px;
+}
+
+/* 전체선택 */
+
+.choose {
+  height: 40px;
+  border-bottom: 2px solid #D3D3D3;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.choose button {
+  width: 62px;
+  height: 20px;
+  font-size: 12px;
+  color: #717171;
+  background-color: #EFEFEF;
+}
+
+.choose .active {
+  background-color: #FFE0E0;
+}
+
+
+
+/* checkbox */
+
+.checkboxs {
+  height: 130px;
+  padding-left: 6px;
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
+  overflow-y: scroll;
+}
+
+.checkboxs::-webkit-scrollbar {
+  display: none;
+}
+
+.checkbox {
+  height: 15px;
+  font-size: 12px;
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  accent-color: #FFC493;
+}
+
+.checkbox input {
+  margin-right: 8px;
+}
+
+/* buttons */
+
+.btns {
+  height: 49px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.btns button {
+  width: 80px;
+  height: 28px;
+  font-size: 12px;
+  color: #717171;
+}

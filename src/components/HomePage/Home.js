@@ -1,12 +1,14 @@
 import styles from './Home.module.css';
+
 import { Fragment, useState, useEffect, useRef } from 'react';
-import { ReactComponent as Tune } from '../../assets/images/tune.svg';
-import { ReactComponent as Notification } from '../../assets/images/notification.svg';
-import logo from '../../assets/images/logo.png';
+import {ReactComponent as Tune} from '../../assets/images/tune.svg';
+import {ReactComponent as Notification} from '../../assets/images/notification.svg';
+import logo from '../../assets/images/logo.png'
 import Contents from './Contents';
 import NotificationPopup from '../../pages/Notification';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import defaultImg from '../../assets/images/defaultImg.png';
+import Search from './SearchPage/Search';
 
 const dummy = [{
   nickname : 'chorong_2',
@@ -28,10 +30,20 @@ const dummy = [{
   love : 19,
 }]
 
-const Home = () => {
+const Home  = () => {
+
+  const [backdrop, setBackdrop] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const swipeRef = useRef(null);
-
+  
+  const searchHandler = () => {
+    if(backdrop) {
+      setBackdrop(false);
+    } else {
+      setBackdrop(true);
+    }
+  }
+  
   const showNotification = () => {
     setPopupVisible(true);
   };
@@ -43,7 +55,9 @@ const Home = () => {
   swipeRef.current.classList.toggle(styles.showNotificaton) 
   }, [popupVisible]);
 
-  return (
+  const searchButtonStyle = backdrop? styles.active : '';
+
+  return(
     <Fragment>
       <div className={styles.NotificationPopup} ref={swipeRef}>
         {popupVisible && <NotificationPopup onClose={showHomePage} />}
@@ -59,7 +73,8 @@ const Home = () => {
       </header>
 
       <div className={styles.tune}>
-        <Tune />
+        <Tune className={searchButtonStyle} style={{cursor:'pointer'}} onClick={searchHandler}/>
+        {backdrop && <Search onBackdrop={searchHandler}/>}
       </div>
 
       <div className={styles.contents}>

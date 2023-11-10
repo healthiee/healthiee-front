@@ -25,10 +25,18 @@
 }
 
 .tune {
+  display: flex;
+  align-items: center;
+  justify-content: right;
   border-bottom: 2px solid #D3D3D3;
-  margin: 4px auto;
-  text-align: right;
-  width: 320px;
+  width: 360px;
+  height: 42px;
+  padding-right: 20px;
+}
+
+.active {
+  fill: #FF9F4E;
+  z-index: 100;
 }
 
 .contents {
