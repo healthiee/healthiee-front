@@ -1,0 +1,12 @@
+.container {
+  width: 360px;
+  height: 540px;
+  background-color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.container h1 {
+  text-align: center;
+}
