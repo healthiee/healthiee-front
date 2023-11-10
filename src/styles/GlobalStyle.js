@@ -9,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     html, body, p {
-      font-family: 'NotoSansKRRegular', sans-serif;
+      font-family: 'Noto Sans KR', sans-serif;
     }
 
     html, body, div, span, h1, h2, h3, h4, h5, h6, p, 
@@ -28,7 +28,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     button {
-      font-family: 'NotoSansKRRegular';
+      font-family: 'Noto Sans KR';
       border: none;
       background-color: #EFEFEF;
       border-radius: 20px;

@@ -4,7 +4,6 @@ import {ReactComponent as Tune} from '../../assets/images/tune.svg';
 import {ReactComponent as Notification} from '../../assets/images/notification.svg';
 import logo from '../../assets/images/logo.png'
 import Contents from './Contents';
-import { Link } from 'react-router-dom'
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import defaultImg from '../../assets/images/defaultImg.png';
 
@@ -35,9 +34,7 @@ const Home  = () => {
         <div>
           <img src={logo} alt="logo" />
         </div>
-        <Link to="/notification">
-          <Notification />
-        </Link>
+        <Notification/>
       </header>
 
       <div className={styles.tune}>
