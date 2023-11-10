@@ -4,12 +4,7 @@ import { ReactComponent as Tune } from '../../assets/images/tune.svg';
 import { ReactComponent as Notification } from '../../assets/images/notification.svg';
 import logo from '../../assets/images/logo.png';
 import Contents from './Contents';
-<<<<<<< HEAD
 import NotificationPopup from '../../pages/Notification';
-=======
-import defaultProfile from '../../assets/images/defaultProfile.png';
-import defaultImg from '../../assets/images/defaultImg.png';
->>>>>>> parent of 9637e6f (Merge branch 'dev' into NotificationPage)
 
 const Home = () => {
   const [popupVisible, setPopupVisible] = useState(false);
