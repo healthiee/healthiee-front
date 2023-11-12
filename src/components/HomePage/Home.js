@@ -1,5 +1,4 @@
 import styles from './Home.module.css';
-
 import { Fragment, useState, useEffect, useRef } from 'react';
 import {ReactComponent as Tune} from '../../assets/images/tune.svg';
 import {ReactComponent as Notification} from '../../assets/images/notification.svg';
@@ -9,6 +8,7 @@ import NotificationPopup from '../../pages/Notification';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import defaultImg from '../../assets/images/defaultImg.png';
 import Search from './SearchPage/Search';
+import Comment from './Comment';
 
 const dummy = [{
   nickname : 'chorong_2',
@@ -34,8 +34,12 @@ const Home  = () => {
 
   const [backdrop, setBackdrop] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
+  const [commentVisible, setCommentVisible] = useState(false);
   const swipeRef = useRef(null);
+  const swipeCommentRef = useRef(null);
   
+  // Search Page
+
   const searchHandler = () => {
     if(backdrop) {
       setBackdrop(false);
@@ -43,26 +47,40 @@ const Home  = () => {
       setBackdrop(true);
     }
   }
+
+  const searchButtonStyle = backdrop? styles.active : '';
+
+  // Notification Page
   
   const showNotification = () => {
     setPopupVisible(true);
   };
   const showHomePage = () => {
     setPopupVisible(false);
+    setCommentVisible(false);
   };
+
+  const showCommentPage = () => {
+    setCommentVisible(true);
+  }
 
   useEffect(() => {
   swipeRef.current.classList.toggle(styles.showNotificaton) 
   }, [popupVisible]);
 
-  const searchButtonStyle = backdrop? styles.active : '';
+  // Comment Page
+  useEffect(() => {
+    swipeCommentRef.current.classList.toggle(styles.showComment)
+  }, [commentVisible]);
 
   return(
     <Fragment>
+      <div className={styles.commentPagePopup} ref={swipeCommentRef}>
+        {commentVisible && <Comment />}
+      </div>
       <div className={styles.NotificationPopup} ref={swipeRef}>
         {popupVisible && <NotificationPopup onClose={showHomePage} />}
       </div>
-
       <header className={styles.header}>
         <div>
           <img src={logo} alt="logo" />
@@ -78,7 +96,7 @@ const Home  = () => {
       </div>
 
       <div className={styles.contents}>
-        {dummy.map(post => <Contents key={post.nickname} post={post}/>)}
+        {dummy.map(post => <Contents key={post.nickname} post={post} onShowCommentPage={showCommentPage} />)}
       </div>
     </Fragment>
   );
