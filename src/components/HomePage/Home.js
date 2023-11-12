@@ -75,10 +75,10 @@ const Home  = () => {
 
   return(
     <Fragment>
-      <div className={styles.commentPagePopup} ref={swipeCommentRef}>
+      <div className={styles.commentModalPopup} ref={swipeCommentRef}>
         {commentVisible && <Comment />}
       </div>
-      <div className={styles.NotificationPopup} ref={swipeRef}>
+      <div className={styles.notificationPopup} ref={swipeRef}>
         {popupVisible && <NotificationPopup onClose={showHomePage} />}
       </div>
       <header className={styles.header}>
