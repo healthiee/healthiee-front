@@ -5,22 +5,38 @@ import { ReactComponent as heart } from '../../assets/images/heart.svg';
 import { ReactComponent as replyIcon } from '../../assets/images/replyIcon.svg';
 
 const CommentModal = styled.div`
- width: 360px;
- height: 640px;
- background-color: #FFFFFF;
+  width: 360px;
+  max-height: 640px;
+  overflow-y: auto;
+  background-color: #FFFFFF;
+  -ms-overflow-style: none;
+   
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 // Header
+const HeaderWrapper = styled.div`
+  position: fixed;  
+  height: 75px;
+  width: 360px;
+  background-color: #FFFFFF;
+  z-index: 1;
+`
 
 const Header = styled.div`
+  position: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 360px;
+  background-color: #FFFFFF;
   height: 75px;
   border: 5px solid #D3D3D3;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
+  z-index: 2;
 `;
 
 const Dots = styled.div`
@@ -50,6 +66,7 @@ const Title = styled.p`
 const Card = styled.ul`
   display: flex;
   flex-direction: column;
+  margin-top: 75px;
 `;
 
 const CardContent = styled.li`
@@ -102,6 +119,7 @@ const ReplyIcon = styled(replyIcon)`
   height: 13.5px;
   margin-right: 8px;
   margin-top: 4px;
+  fill: #717171;
 `;
 
 const ReplyCardContentImg = styled(defaultProfile)`
@@ -173,17 +191,254 @@ const Comment = ({ onCloseCommentPage, onShowHomePage }) => {
 
   return (
     <CommentModal>
-      <Header>
-        <Dots>
-          <Dot />
-          <Dot />
-          <Dot />
-        </Dots>
-        <Title>댓글</Title>
-      </Header>
+      <HeaderWrapper>
+        <Header>
+          <Dots>
+            <Dot />
+            <Dot />
+            <Dot />
+          </Dots>
+          <Title>댓글</Title>
+        </Header>
+      </HeaderWrapper>
 
       <Card>
         {/* Fist Comment */}
+        <CardContent>
+          <CardContentImg />
+          <NameAndValue>
+            <CardUser>healthiee</CardUser>
+            <CardValue>수고했어요~! 내일은 같이 운동해요!</CardValue>
+
+            <ReplyCommentWrapper>
+              <ReplyComment>
+                <ReplyIcon />
+                <ReplyCardContentImg />
+                <ReplyNameAndValue>
+                  <ReplyCardUser>Wowowow</ReplyCardUser>
+                  <ReplayCardValue>
+                    <CardOtherUser>@healthiee</CardOtherUser> 네~
+                  </ReplayCardValue>
+                </ReplyNameAndValue>
+              </ReplyComment>
+            </ReplyCommentWrapper>
+            <ReplyCommentDetail>답글 1개 더보기</ReplyCommentDetail>
+
+          </NameAndValue>
+
+          <DateAndIcon>
+            <Time>2023년 9월 20일 19:38</Time>
+            <HeartWrapper onClick={heartClickHandler}>
+              <HeartIcon $isActive={heartClicked} />
+              <HeartNumber>{heartCount}</HeartNumber>
+            </HeartWrapper>
+          </DateAndIcon>
+        </CardContent>
+
+        {/* Second Comment */}
+        <CardContent>
+          <CardContentImg />
+          <NameAndValue>
+            <CardUser>healthiee</CardUser>
+            <CardValue>안녕하세요!</CardValue>
+            <ReplyCommentDetail>답글 1개 더보기</ReplyCommentDetail>
+          </NameAndValue>
+          <DateAndIcon>
+            <Time>2023년 9월 20일 19:38</Time>
+            <HeartWrapper onClick={heartClickHandler}>
+              <HeartIcon $isActive={heartClicked} />
+              <HeartNumber>{heartCount}</HeartNumber>
+            </HeartWrapper>
+          </DateAndIcon>
+        </CardContent>
+        <CardContent>
+          <CardContentImg />
+          <NameAndValue>
+            <CardUser>healthiee</CardUser>
+            <CardValue>수고했어요~! 내일은 같이 운동해요!</CardValue>
+
+            <ReplyCommentWrapper>
+              <ReplyComment>
+                <ReplyIcon />
+                <ReplyCardContentImg />
+                <ReplyNameAndValue>
+                  <ReplyCardUser>Wowowow</ReplyCardUser>
+                  <ReplayCardValue>
+                    <CardOtherUser>@healthiee</CardOtherUser> 네~
+                  </ReplayCardValue>
+                </ReplyNameAndValue>
+              </ReplyComment>
+            </ReplyCommentWrapper>
+            <ReplyCommentDetail>답글 1개 더보기</ReplyCommentDetail>
+
+          </NameAndValue>
+
+          <DateAndIcon>
+            <Time>2023년 9월 20일 19:38</Time>
+            <HeartWrapper onClick={heartClickHandler}>
+              <HeartIcon $isActive={heartClicked} />
+              <HeartNumber>{heartCount}</HeartNumber>
+            </HeartWrapper>
+          </DateAndIcon>
+        </CardContent>
+
+        {/* Second Comment */}
+        <CardContent>
+          <CardContentImg />
+          <NameAndValue>
+            <CardUser>healthiee</CardUser>
+            <CardValue>안녕하세요!</CardValue>
+            <ReplyCommentDetail>답글 1개 더보기</ReplyCommentDetail>
+          </NameAndValue>
+          <DateAndIcon>
+            <Time>2023년 9월 20일 19:38</Time>
+            <HeartWrapper onClick={heartClickHandler}>
+              <HeartIcon $isActive={heartClicked} />
+              <HeartNumber>{heartCount}</HeartNumber>
+            </HeartWrapper>
+          </DateAndIcon>
+        </CardContent>
+        <CardContent>
+          <CardContentImg />
+          <NameAndValue>
+            <CardUser>healthiee</CardUser>
+            <CardValue>수고했어요~! 내일은 같이 운동해요!</CardValue>
+
+            <ReplyCommentWrapper>
+              <ReplyComment>
+                <ReplyIcon />
+                <ReplyCardContentImg />
+                <ReplyNameAndValue>
+                  <ReplyCardUser>Wowowow</ReplyCardUser>
+                  <ReplayCardValue>
+                    <CardOtherUser>@healthiee</CardOtherUser> 네~
+                  </ReplayCardValue>
+                </ReplyNameAndValue>
+              </ReplyComment>
+            </ReplyCommentWrapper>
+            <ReplyCommentDetail>답글 1개 더보기</ReplyCommentDetail>
+
+          </NameAndValue>
+
+          <DateAndIcon>
+            <Time>2023년 9월 20일 19:38</Time>
+            <HeartWrapper onClick={heartClickHandler}>
+              <HeartIcon $isActive={heartClicked} />
+              <HeartNumber>{heartCount}</HeartNumber>
+            </HeartWrapper>
+          </DateAndIcon>
+        </CardContent>
+
+        {/* Second Comment */}
+        <CardContent>
+          <CardContentImg />
+          <NameAndValue>
+            <CardUser>healthiee</CardUser>
+            <CardValue>안녕하세요!</CardValue>
+            <ReplyCommentDetail>답글 1개 더보기</ReplyCommentDetail>
+          </NameAndValue>
+          <DateAndIcon>
+            <Time>2023년 9월 20일 19:38</Time>
+            <HeartWrapper onClick={heartClickHandler}>
+              <HeartIcon $isActive={heartClicked} />
+              <HeartNumber>{heartCount}</HeartNumber>
+            </HeartWrapper>
+          </DateAndIcon>
+        </CardContent>
+        <CardContent>
+          <CardContentImg />
+          <NameAndValue>
+            <CardUser>healthiee</CardUser>
+            <CardValue>수고했어요~! 내일은 같이 운동해요!</CardValue>
+
+            <ReplyCommentWrapper>
+              <ReplyComment>
+                <ReplyIcon />
+                <ReplyCardContentImg />
+                <ReplyNameAndValue>
+                  <ReplyCardUser>Wowowow</ReplyCardUser>
+                  <ReplayCardValue>
+                    <CardOtherUser>@healthiee</CardOtherUser> 네~
+                  </ReplayCardValue>
+                </ReplyNameAndValue>
+              </ReplyComment>
+            </ReplyCommentWrapper>
+            <ReplyCommentDetail>답글 1개 더보기</ReplyCommentDetail>
+
+          </NameAndValue>
+
+          <DateAndIcon>
+            <Time>2023년 9월 20일 19:38</Time>
+            <HeartWrapper onClick={heartClickHandler}>
+              <HeartIcon $isActive={heartClicked} />
+              <HeartNumber>{heartCount}</HeartNumber>
+            </HeartWrapper>
+          </DateAndIcon>
+        </CardContent>
+
+        {/* Second Comment */}
+        <CardContent>
+          <CardContentImg />
+          <NameAndValue>
+            <CardUser>healthiee</CardUser>
+            <CardValue>안녕하세요!</CardValue>
+            <ReplyCommentDetail>답글 1개 더보기</ReplyCommentDetail>
+          </NameAndValue>
+          <DateAndIcon>
+            <Time>2023년 9월 20일 19:38</Time>
+            <HeartWrapper onClick={heartClickHandler}>
+              <HeartIcon $isActive={heartClicked} />
+              <HeartNumber>{heartCount}</HeartNumber>
+            </HeartWrapper>
+          </DateAndIcon>
+        </CardContent>
+        <CardContent>
+          <CardContentImg />
+          <NameAndValue>
+            <CardUser>healthiee</CardUser>
+            <CardValue>수고했어요~! 내일은 같이 운동해요!</CardValue>
+
+            <ReplyCommentWrapper>
+              <ReplyComment>
+                <ReplyIcon />
+                <ReplyCardContentImg />
+                <ReplyNameAndValue>
+                  <ReplyCardUser>Wowowow</ReplyCardUser>
+                  <ReplayCardValue>
+                    <CardOtherUser>@healthiee</CardOtherUser> 네~
+                  </ReplayCardValue>
+                </ReplyNameAndValue>
+              </ReplyComment>
+            </ReplyCommentWrapper>
+            <ReplyCommentDetail>답글 1개 더보기</ReplyCommentDetail>
+
+          </NameAndValue>
+
+          <DateAndIcon>
+            <Time>2023년 9월 20일 19:38</Time>
+            <HeartWrapper onClick={heartClickHandler}>
+              <HeartIcon $isActive={heartClicked} />
+              <HeartNumber>{heartCount}</HeartNumber>
+            </HeartWrapper>
+          </DateAndIcon>
+        </CardContent>
+
+        {/* Second Comment */}
+        <CardContent>
+          <CardContentImg />
+          <NameAndValue>
+            <CardUser>healthiee</CardUser>
+            <CardValue>안녕하세요!</CardValue>
+            <ReplyCommentDetail>답글 1개 더보기</ReplyCommentDetail>
+          </NameAndValue>
+          <DateAndIcon>
+            <Time>2023년 9월 20일 19:38</Time>
+            <HeartWrapper onClick={heartClickHandler}>
+              <HeartIcon $isActive={heartClicked} />
+              <HeartNumber>{heartCount}</HeartNumber>
+            </HeartWrapper>
+          </DateAndIcon>
+        </CardContent>
         <CardContent>
           <CardContentImg />
           <NameAndValue>
