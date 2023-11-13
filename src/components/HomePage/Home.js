@@ -1,5 +1,4 @@
 import styles from './Home.module.css';
-
 import { Fragment, useState, useEffect, useRef } from 'react';
 import {ReactComponent as Tune} from '../../assets/images/tune.svg';
 import {ReactComponent as Notification} from '../../assets/images/notification.svg';
@@ -8,14 +7,19 @@ import Contents from './Contents';
 import NotificationPopup from '../../pages/Notification';
 import Search from './SearchPage/Search';
 import axios from 'axios';
+import Comment from './Comment';
 
 const Home  = () => {
 
   const [backdrop, setBackdrop] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
+  const [commentVisible, setCommentVisible] = useState(false);
   const swipeRef = useRef(null);
+  const swipeCommentRef = useRef(null);
   const [dummy, setDummy] = useState([]);
   
+  // Search Page
+
   const searchHandler = () => {
     if(backdrop) {
       setBackdrop(false);
@@ -23,18 +27,36 @@ const Home  = () => {
       setBackdrop(true);
     }
   }
+
+  const searchButtonStyle = backdrop? styles.active : '';
+
+  // Notification Page
   
   const showNotification = () => {
     setPopupVisible(true);
   };
-  const showHomePage = () => {
-    setPopupVisible(false);
+
+  const showCommentPage = () => {
+    setCommentVisible(true);
+  }
+
+  const closeNotification = () => {
+    swipeRef.current.classList.toggle(styles.showNotificaton);
+    setTimeout(() => {
+      setPopupVisible(false);
+    }, 500);
   };
 
   useEffect(() => {
-  swipeRef.current.classList.toggle(styles.showNotificaton) 
+  swipeRef.current.classList.toggle(styles.showNotificaton, popupVisible) 
   }, [popupVisible]);
+  
+  // Comment Page
+  useEffect(() => {
+    swipeCommentRef.current.classList.toggle(styles.showComment)
+  }, [commentVisible]);
 
+  // server post 정보 받아오기
   useEffect(() => {
     axios.get('http://prod.healthiee.net/v1/posts',{
       headers: {
@@ -53,10 +75,12 @@ const Home  = () => {
 
   return(
     <Fragment>
-      <div className={styles.NotificationPopup} ref={swipeRef}>
-        {popupVisible && <NotificationPopup onClose={showHomePage} />}
+      <div className={styles.notificationPopup} ref={swipeRef}>
+        {popupVisible && <NotificationPopup onClose={closeNotification} />}
       </div>
-
+      <div className={styles.commentModalPopup} ref={swipeCommentRef}>
+        {commentVisible && <Comment />}
+      </div>
       <header className={styles.header}>
         <div>
           <img src={logo} alt="logo" />
@@ -72,7 +96,7 @@ const Home  = () => {
       </div>
 
       <div className={styles.contents}>
-        {dummy.map(post => <Contents key={post.postId} post={post}/>)}
+        {dummy.map(post => <Contents key={post.postId} post={post} onShowCommentPage={showCommentPage}/>)}
       </div>
     </Fragment>
   );

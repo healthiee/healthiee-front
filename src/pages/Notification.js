@@ -35,17 +35,20 @@ const NotificationImg = styled(Notification)`
     margin-left: 116px;
   }
 `;
-const Card = styled.div`
+const Card = styled.ul`
   @media screen and (max-width: 360px) {
     display: flex;
     padding: 12px 16px;
-    height: 64px;
+    height: auto;
     align-items: flex-start;
     background-color: #FFFFFF;
     box-shadow:-2px 3px 6px #00000029;
     margin-bottom: 3px;
   }
 `;
+const CardContent = styled.li`
+  display: flex;
+`
 const CardContentImg = styled(defaultProfile)`
   @media screen and (max-width: 360px) {
     width: 40px;
@@ -53,7 +56,7 @@ const CardContentImg = styled(defaultProfile)`
     margin-right: 16px;
   }
 `;
-const CardContent = styled.div`
+const TimeandValue = styled.div`
   @media screen and (max-width: 360px) {
     display: flex;
     flex-direction: column;
@@ -103,43 +106,28 @@ const NotificationPage = ({ onClose }) => {
         <ArrowBackIcon onClick={hideNotification} />
         <NotificationImg />
       </Header>
-        <Card>
-          <CardContentImg onClick={showProfile} /> 
-          <CardContent>
+
+      <Card>
+        <CardContent>
+          <CardContentImg onClick={showProfile} />
+          <TimeandValue>
             <CardTime>1분전</CardTime>
             <CardContentDetail><BoldText onClick={showProfile}>chorong_2</BoldText>님이 회원님의 게시물을 좋아합니다.</CardContentDetail>
-          </CardContent>
-        <Dot />
-        </Card>
-        <Card>
+          </TimeandValue>
+          <Dot />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent>
           <CardContentImg onClick={showProfile} />
-          <CardContent>
-            <CardTime>1일전</CardTime>
+          <TimeandValue>
+            <CardTime>1분전</CardTime>
             <CardContentDetail><BoldText onClick={showProfile}>chorong_2</BoldText>님이 회원님의 게시물을 좋아합니다.</CardContentDetail>
-          </CardContent>
-        <Dot />
-        </Card>
-        <Card>
-          <CardContentImg onClick={showProfile} />
-          <CardContent>
-            <CardTime>2023년 9월 28일</CardTime>
-            <CardContentDetail><BoldText onClick={showProfile}>chorong_2</BoldText>님이 회원님의 게시물을 좋아합니다.</CardContentDetail>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContentImg onClick={showProfile} />
-          <CardContent>
-            <CardTime>2023년 9월 28일</CardTime>
-            <CardContentDetail><BoldText onClick={showProfile}>chorong_2</BoldText>님이 회원님의 게시물에 댓글을 남겼습니다.</CardContentDetail>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContentImg onClick={showProfile} />
-          <CardContent>
-            <CardTime>2023년 9월 28일</CardTime>
-            <CardContentDetail><BoldText onClick={showProfile}>chorong_2</BoldText>님이 회원님을 팔로우하기 시작했습니다.</CardContentDetail>
-          </CardContent>
-        </Card>
+          </TimeandValue>
+          <Dot />
+        </CardContent>
+      </Card>
     </Wrapper>
   );
 };

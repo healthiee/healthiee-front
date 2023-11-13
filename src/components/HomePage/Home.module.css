@@ -13,15 +13,26 @@
   height: 32px;
 }
 
-.NotificationPopup {
+.notificationPopup {
   position: fixed;
   left: 100%;
   transition: left 0.5s;
   z-index: 999;
 }
 
-.NotificationPopup.showNotificaton {
+.notificationPopup.showNotificaton {
   left: 0;
+}
+
+.commentModalPopup {
+  position: fixed;
+  top: 100%;
+  transition: top 0.5s;
+  z-index: 999;
+}
+
+.commentModalPopup.showComment {
+  top: 0;
 }
 
 .tune {

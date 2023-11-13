@@ -5,6 +5,7 @@ import { useState } from 'react';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import defaultImg from '../../assets/images/defaultImg.png';
 
+
 const Contents = (props) => {
 
   //좋아요
@@ -32,6 +33,10 @@ const Contents = (props) => {
 
   const heartStyle = heart ? styles.active : styles.heart;
 
+  const showCommentPage = () => {
+    props.onShowCommentPage();
+  }
+
   return (
   <article className={styles.article}>
     <div className={styles.content_info}>
@@ -45,7 +50,6 @@ const Contents = (props) => {
             {props.post.member.workouts.map(tag => <div className={styles.profile_tag} key={tag} style={{backgroundColor:'#E6C9FF'}}>{tag}</div>)}
           </div>
         </div>
-      </div>
 
       <div className={styles.icons}>
         <AttachFile style={{marginBottom:'10px'}}/>
@@ -54,7 +58,6 @@ const Contents = (props) => {
           <p>{props.post.likeCount}</p>
         </div>
       </div>
-    </div>
 
     <div className={styles.content_img}>
       <img src={defaultImg} alt="content_img" />
