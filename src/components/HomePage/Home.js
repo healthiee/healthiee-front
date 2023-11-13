@@ -55,17 +55,20 @@ const Home  = () => {
   const showNotification = () => {
     setPopupVisible(true);
   };
-  const showHomePage = () => {
-    setPopupVisible(false);
-    setCommentVisible(false);
-  };
 
   const showCommentPage = () => {
     setCommentVisible(true);
   }
 
+  const closeNotification = () => {
+    swipeRef.current.classList.toggle(styles.showNotificaton);
+    setTimeout(() => {
+      setPopupVisible(false);
+    }, 500);
+  };
+
   useEffect(() => {
-  swipeRef.current.classList.toggle(styles.showNotificaton) 
+  swipeRef.current.classList.toggle(styles.showNotificaton, popupVisible) 
   }, [popupVisible]);
 
   // Comment Page
@@ -75,11 +78,11 @@ const Home  = () => {
 
   return(
     <Fragment>
+      <div className={styles.notificationPopup} ref={swipeRef}>
+        {popupVisible && <NotificationPopup onClose={closeNotification} />}
+      </div>
       <div className={styles.commentModalPopup} ref={swipeCommentRef}>
         {commentVisible && <Comment />}
-      </div>
-      <div className={styles.notificationPopup} ref={swipeRef}>
-        {popupVisible && <NotificationPopup onClose={showHomePage} />}
       </div>
       <header className={styles.header}>
         <div>
