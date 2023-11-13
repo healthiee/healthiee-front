@@ -21,6 +21,7 @@ import StartPage from './pages/StartPage';
 import EmailLogin from './pages/EmailAuth/EmailLogin';
 import EmailAuthLink from './pages/EmailAuth/EmailAuthLink';
 import AuthCompleted from './pages/EmailAuth/AuthCompleted';
+import ReplyCommentModal from './components/HomePage/ReplyCommentModal';
 
 const router = createBrowserRouter([
   {path: '/',
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
   {path: '/emaillogin', element: <EmailLogin />},
   {path: '/emailauthlink', element: <EmailAuthLink/>},
   {path: '/authcompleted', element: <AuthCompleted />},
+  {path: '/reply', element: <ReplyCommentModal />},
 ]);
 
 function App() {
