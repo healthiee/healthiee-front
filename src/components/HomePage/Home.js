@@ -6,35 +6,15 @@ import {ReactComponent as Notification} from '../../assets/images/notification.s
 import logo from '../../assets/images/logo.png'
 import Contents from './Contents';
 import NotificationPopup from '../../pages/Notification';
-import defaultProfile from '../../assets/images/defaultProfile.png';
-import defaultImg from '../../assets/images/defaultImg.png';
 import Search from './SearchPage/Search';
-
-const dummy = [{
-  nickname : 'chorong_2',
-  tags : [{name: '오운완', color: '#FCADFF'}, {name: '필라테스', color: '#B1E7FF'}, {name: '축구', color: '#FBFF93'}],
-  profileImg : defaultProfile,
-  postImg : defaultImg,
-  created_at : '2023년 9월 21일',  // post 생성날짜로 대체
-  body : '오늘 운동도 끝',
-  comments : 4,
-  love : 25
-},{
-  nickname : 'chorong_4',
-  tags : [{name: '오운완', color: '#FCADFF'}, {name: '필라테스', color: '#B1E7FF'}],
-  profileImg : defaultProfile,
-  postImg : defaultImg,
-  created_at : '2023년 11월 29일',  // post 생성날짜로 대체
-  body : '오늘 운동도 끝',
-  comments : 10,
-  love : 19,
-}]
+import axios from 'axios';
 
 const Home  = () => {
 
   const [backdrop, setBackdrop] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const swipeRef = useRef(null);
+  const [dummy, setDummy] = useState([]);
   
   const searchHandler = () => {
     if(backdrop) {
@@ -54,6 +34,20 @@ const Home  = () => {
   useEffect(() => {
   swipeRef.current.classList.toggle(styles.showNotificaton) 
   }, [popupVisible]);
+
+  useEffect(() => {
+    axios.get('http://prod.healthiee.net/v1/posts',{
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
+      }
+    }).then(
+      response => {
+        setDummy(response.data.data.content);
+      }
+    ).catch(error => {
+      console.log('에러발생', error);
+    });   
+  },[]);
 
   const searchButtonStyle = backdrop? styles.active : '';
 
@@ -78,7 +72,7 @@ const Home  = () => {
       </div>
 
       <div className={styles.contents}>
-        {dummy.map(post => <Contents key={post.nickname} post={post}/>)}
+        {dummy.map(post => <Contents key={post.postId} post={post}/>)}
       </div>
     </Fragment>
   );

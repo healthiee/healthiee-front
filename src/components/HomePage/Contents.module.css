@@ -99,7 +99,6 @@
 /* comment */
 
 .comment {
-  height: 50px;
   margin-top: 10px;
 }
 
@@ -115,5 +114,20 @@
 
 .comment p {
   font-size: 12px;
-  margin-top: 4px;
+  margin-top: 15px;
+  line-height: 14px;
+}
+
+.comment p.more {
+  height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+}
+
+.comment button {
+  font-size: 12px;
+  background: none;
+  color: grey;
 }
