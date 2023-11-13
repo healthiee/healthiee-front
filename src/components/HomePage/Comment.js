@@ -7,7 +7,7 @@ import ReplyCommentModal from './ReplyCommentModal';
 
 const CommentModal = styled.div`
   width: 360px;
-  max-height: 640px;
+  height: 640px;
   overflow-y: auto;
   background-color: #FFFFFF;
   -ms-overflow-style: none;
