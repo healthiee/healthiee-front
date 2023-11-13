@@ -71,7 +71,7 @@ const SignupPage = ()=> {
       }
     }
 
-    const randomColor = ['#FCADFF', '#FFE0E0', '#FFC493', '#DDFFD6', '#B1E7FF', '#FBFF93', '#C9CDFF', '#D3D3D3', '#E6C9FF'];
+    const randomColor = ['#FCADFF', '#FFE0E0', '#A7FFF5', '#DDFFD6', '#B1E7FF', '#FBFF93', '#C9CDFF', '#D3D3D3', '#E6C9FF'];
     
     let colorPick = Math.floor(Math.random()*randomColor.length);
 
