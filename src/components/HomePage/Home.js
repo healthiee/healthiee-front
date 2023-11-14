@@ -52,6 +52,7 @@ const Home  = () => {
   }, [popupVisible]);
   
   // Comment Page
+
   useEffect(() => {
     swipeCommentRef.current.classList.toggle(styles.showComment)
   }, [commentVisible]);
@@ -90,6 +91,7 @@ const Home  = () => {
 export default Home;
 
 //server에서 정보 받아오기
+
 export async function loader () {
   const response = await axios.get('http://prod.healthiee.net/v1/posts',{
       headers: {

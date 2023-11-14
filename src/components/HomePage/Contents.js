@@ -5,6 +5,10 @@ import { useState } from 'react';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import defaultImg from '../../assets/images/defaultImg.png';
 
+// tag color
+
+const randomColor = ['#FCADFF', '#FFE0E0', '#A7FFF5', '#DDFFD6', '#B1E7FF', '#FBFF93', '#C9CDFF', '#D3D3D3', '#E6C9FF'];
+const shuffleColor = randomColor.sort(()=> Math.random() - 0.5);
 
 const Contents = (props) => {
 
@@ -24,6 +28,10 @@ const Contents = (props) => {
     }
   };
 
+  const heartStyle = heart ? styles.active : styles.heart;
+
+  // 게시물 더보기
+
   const moreHandler = () => {
     setMore(false);
   };
@@ -31,10 +39,19 @@ const Contents = (props) => {
   const date = props.post.createdDate
   const dateFormat = `${date.slice(0,4)}년 ${date.slice(5,7)}월 ${date.slice(8,10)}일`
 
-  const heartStyle = heart ? styles.active : styles.heart;
-
   const showCommentPage = () => {
     props.onShowCommentPage();
+  }
+
+  // tag color 
+  const workouts = props.post.member.workouts;
+  const tags = [];
+  let i = 0;
+
+  for( const workout of workouts) {
+    const tag = {'name': workout, 'color': shuffleColor[i]};
+    tags.push(tag);
+    i++;
   }
 
   return (
@@ -47,7 +64,7 @@ const Contents = (props) => {
         <div className={styles.profile_box}>
           <h1>{props.post.member.nickname}</h1>
           <div className={styles.profile_tags}>
-            {props.post.member.workouts.map(tag => <div className={styles.profile_tag} key={tag} style={{backgroundColor:'#E6C9FF'}}>{tag}</div>)}
+            {tags.map(tag => <div className={styles.profile_tag} key={tag.name} style={{backgroundColor:`${tag.color}`}}>{tag.name}</div>)}
           </div>
         </div>
       </div>

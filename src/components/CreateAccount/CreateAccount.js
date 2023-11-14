@@ -79,15 +79,9 @@ const SignupPage = ()=> {
 
     const randomColor = ['#FCADFF', '#FFE0E0', '#A7FFF5', '#DDFFD6', '#B1E7FF', '#FBFF93', '#C9CDFF', '#D3D3D3', '#E6C9FF'];
     
-    let colorPick = Math.floor(Math.random()*randomColor.length);
+    const shuffleColor = randomColor.sort(()=> Math.random() - 0.5);
 
-    for (const exercise of exercises) {
-      if (exercise.color === randomColor[colorPick]) {
-        colorPick = Math.floor(Math.random()*randomColor.length);
-      }
-    }
-
-    setExercises([...exercises, {name: tag, color: randomColor[colorPick]}]);
+    setExercises([...exercises, {name: tag, color: shuffleColor[Math.floor(Math.random())]}]);
     setTag('');
   }
 
