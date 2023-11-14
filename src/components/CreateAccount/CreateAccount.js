@@ -2,6 +2,7 @@ import React, {useState, useRef} from "react";
 import styles from './CreateAccount.module.css';
 import useAccountInput from "../../hooks/use-accountInput";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 //img
 import {ReactComponent as BackArrow} from '../../assets/images/backArrow.svg';
@@ -19,6 +20,7 @@ const SignupPage = ()=> {
   const [tag, setTag] = useState('');
   const [exercises, setExercises] = useState([]);
   const presentationRef = useRef();
+  const navigate = useNavigate();
 
   // form : name & nickname
 
@@ -77,15 +79,9 @@ const SignupPage = ()=> {
 
     const randomColor = ['#FCADFF', '#FFE0E0', '#A7FFF5', '#DDFFD6', '#B1E7FF', '#FBFF93', '#C9CDFF', '#D3D3D3', '#E6C9FF'];
     
-    let colorPick = Math.floor(Math.random()*randomColor.length);
+    const shuffleColor = randomColor.sort(()=> Math.random() - 0.5);
 
-    for (const exercise of exercises) {
-      if (exercise.color === randomColor[colorPick]) {
-        colorPick = Math.floor(Math.random()*randomColor.length);
-      }
-    }
-
-    setExercises([...exercises, {name: tag, color: randomColor[colorPick]}]);
+    setExercises([...exercises, {name: tag, color: shuffleColor[Math.floor(Math.random())]}]);
     setTag('');
   }
 
@@ -143,6 +139,8 @@ const SignupPage = ()=> {
       console.log('에러발생', error);
     })
 
+    //error 발생시 return
+    navigate('/');
   }
 
   //button valid style

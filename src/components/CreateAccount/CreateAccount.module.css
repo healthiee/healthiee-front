@@ -10,7 +10,7 @@
 
 .container {
   width: 360px;
-  height: 1000px;
+  height: 930px;
   display: flex;
   flex-direction: column;
   margin: 0 auto;

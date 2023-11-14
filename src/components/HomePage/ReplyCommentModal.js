@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { ReactComponent as defaultProfile } from '../../assets/images/defaultProfile2.svg'
 import { ReactComponent as ArrowBack_icon } from '../../assets/icons/ArrowBack_icon.svg';
 import { ReactComponent as heart } from '../../assets/images/heart.svg';
-
 const Wrapper = styled.div`
   @media screen and (max-width: 360px) {
     background-color: #F7F7F7;
@@ -28,14 +27,12 @@ const ArrowBackIcon = styled(ArrowBack_icon)`
     height: 33px;
   }
 `;
-
 // Card
 const Card = styled.ul`
   display: flex;
   flex-direction: column;
   background-color: #FFFFFF;
 `;
-
 const CardContent = styled.li`
   display: flex;
   align-items: flex-start;
@@ -44,69 +41,58 @@ const CardContent = styled.li`
   padding: 12px 16px 9px 32px;
   box-shadow:-2px 3px 6px #00000029;
 `
-
 const CardContentImg = styled(defaultProfile)`
   position: absolute;
   width: 30px;
   height: 30px;
   margin-right: 8px;
 `;
-
 const NameAndValue = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 38px;
 `;
-
 const CardUser = styled.span`
   font-size: 8px;
   color: ${({ theme }) => theme.colors.gray};
   margin: 0 160px 4px 0;
 `;
-
 const CardValue = styled.p`
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: #000000;
   line-height: 1.7;
   margin-bottom: 8px;
 `;
-
 const ReplyCommentDetail = styled.span`
   font-size: 8px;
   color: ${({ theme }) => theme.colors.gray};
 `;
-
 const DateAndIcon = styled.div`
   display: flex;
   align-items: flex-end;
   flex-direction: column;
   white-space: nowrap;
 `;
-
 const Time = styled.span`
   font-size: 8px;
   color: ${({ theme }) => theme.colors.gray};
   margin-bottom: 6px;
   white-space: nowrap;
 `;
-
 const HeartWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
-
 const HeartIcon = styled(heart)`
   width: 16px;
   height: 16px;
   fill: ${({ $isActive }) => ($isActive ? '#FF0000' : '#D3D3D3')};
 `;
-
 const HeartNumber = styled.span`
   font-size: 9px;
   color: ${({ theme }) => theme.colors.gray};
 `;
-
 // ReplyComment
 const ReplyCardContent = styled.li`
   display: flex;
@@ -116,53 +102,43 @@ const ReplyCardContent = styled.li`
   padding: 16px 16px 8px 72px;
   box-shadow:-2px 3px 6px #00000029;
 `;
-
 const ReplyNameAndValue = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 32px;
 `
-
 const ReplyCardContentImg = styled(defaultProfile)`
   position: absolute;
   width: 24px;
   height: 24px;
   margin-right: 8px;
 `
-
 const ReplyCardUser = styled.span`
   font-size: 8px;
   color: ${({ theme }) => theme.colors.gray};
 `
-
 const CardOtherUser = styled.span`
   color: ${({ theme }) => theme.colors.orange};
 `;
-
 const ReplayCardValue = styled.p`
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: #000000;
 `;
-
 const ReplyCommentModal = ({ onClose, isVisible }) => {
   const [heartClicked, setHeartClicked] = useState(false);
   const [heartCount, setHeartCount] = useState(32);
-
   const heartClickHandler = () => {
     setHeartClicked(!heartClicked);
     setHeartCount(heartClicked ? heartCount - 1 : heartCount + 1);
   };
-
   const hideComment = () => {
     onClose();
   }
-
   return (
     <Wrapper isVisible={isVisible}>
       <Header>
         <ArrowBackIcon onClick={hideComment} />
       </Header>
-
       {/* card */}
       <Card>
         <CardContent>
@@ -180,7 +156,6 @@ const ReplyCommentModal = ({ onClose, isVisible }) => {
             </HeartWrapper>
           </DateAndIcon>
         </CardContent>
-
         <ReplyCardContent>
           <ReplyCardContentImg />
           <ReplyNameAndValue>
@@ -197,7 +172,6 @@ const ReplyCommentModal = ({ onClose, isVisible }) => {
             </HeartWrapper>
           </DateAndIcon>
         </ReplyCardContent>
-
         {/* <ReplyCardContent>
           <ReplyNameAndValue>
               <ReplyComment>
@@ -223,5 +197,4 @@ const ReplyCommentModal = ({ onClose, isVisible }) => {
     </Wrapper>
   );
 };
-
 export default ReplyCommentModal;

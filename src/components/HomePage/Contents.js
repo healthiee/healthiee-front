@@ -4,7 +4,12 @@ import {ReactComponent as Heart} from '../../assets/images/heart.svg';
 import { useState } from 'react';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import defaultImg from '../../assets/images/defaultImg.png';
+import axios from 'axios';
 
+// tag color
+
+const randomColor = ['#FCADFF', '#FFE0E0', '#A7FFF5', '#DDFFD6', '#B1E7FF', '#FBFF93', '#C9CDFF', '#D3D3D3', '#E6C9FF'];
+const shuffleColor = randomColor.sort(()=> Math.random() - 0.5);
 
 const Contents = (props) => {
 
@@ -18,11 +23,17 @@ const Contents = (props) => {
     if (heart) {
       setHeart(false);
       props.post.likeCount -= 1;
+      data('DELETE');
     } else {
       setHeart(true);
       props.post.likeCount += 1;
+      data('POST');
     }
   };
+
+  const heartStyle = heart ? styles.active : styles.heart;
+
+  // 게시물 더보기
 
   const moreHandler = () => {
     setMore(false);
@@ -31,10 +42,36 @@ const Contents = (props) => {
   const date = props.post.createdDate
   const dateFormat = `${date.slice(0,4)}년 ${date.slice(5,7)}월 ${date.slice(8,10)}일`
 
-  const heartStyle = heart ? styles.active : styles.heart;
-
   const showCommentPage = () => {
     props.onShowCommentPage();
+  }
+
+  // tag color 
+  const workouts = props.post.member.workouts;
+  const tags = [];
+  let i = 0;
+
+  for( const workout of workouts) {
+    const tag = {'name': workout, 'color': shuffleColor[i]};
+    tags.push(tag);
+    i++;
+  }
+
+  const postId = '87f3748d-1e0d-410a-8a53-3811208bfa24';
+
+  // 좋아요 server 전송
+  const data = (method) => {
+    axios({
+      method: method,
+      url: `http://prod.healthiee.net/v1/posts/${postId}/like`,
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
+      }
+    }).then(response => {
+      console.log(response);
+      }).catch(error => {
+        console.log(error);
+      })
   }
 
   return (
@@ -47,7 +84,7 @@ const Contents = (props) => {
         <div className={styles.profile_box}>
           <h1>{props.post.member.nickname}</h1>
           <div className={styles.profile_tags}>
-            {props.post.member.workouts.map(tag => <div className={styles.profile_tag} key={tag} style={{backgroundColor:'#E6C9FF'}}>{tag}</div>)}
+            {tags.map(tag => <div className={styles.profile_tag} key={tag.name} style={{backgroundColor:`${tag.color}`}}>{tag.name}</div>)}
           </div>
         </div>
       </div>
