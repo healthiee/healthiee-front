@@ -13,9 +13,7 @@
   height: 1000px;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(76, 74, 74, 0.181);
   margin: 0 auto;
-  margin-top: 20px;
 }
 
 .container > * {
@@ -75,7 +73,7 @@
   position: relative;
 }
 
-.form_input_nick button {
+.form_input_nick button, .form_input_nick span {
   position: absolute;
   top: 8px;
   right: 16px;
@@ -100,6 +98,7 @@
   border: none;
   margin-top: 20px;
   background-color: #FFC493;
+  font-size: 16px;
 }
 
 .invalid {
@@ -150,6 +149,10 @@ button:disabled:active {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.profile_label {
+  font-size: 16px;
 }
 
 /* form tags */
