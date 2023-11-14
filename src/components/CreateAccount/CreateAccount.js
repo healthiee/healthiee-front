@@ -2,6 +2,7 @@ import React, {useState, useRef} from "react";
 import styles from './CreateAccount.module.css';
 import useAccountInput from "../../hooks/use-accountInput";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 //img
 import {ReactComponent as BackArrow} from '../../assets/images/backArrow.svg';
@@ -19,6 +20,7 @@ const SignupPage = ()=> {
   const [tag, setTag] = useState('');
   const [exercises, setExercises] = useState([]);
   const presentationRef = useRef();
+  const navigate = useNavigate();
 
   // form : name & nickname
 
@@ -143,6 +145,8 @@ const SignupPage = ()=> {
       console.log('에러발생', error);
     })
 
+    //error 발생시 return
+    navigate('/');
   }
 
   //button valid style

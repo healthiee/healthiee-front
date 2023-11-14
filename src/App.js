@@ -7,6 +7,9 @@ import theme from './styles/theme';
 // Root route
 import MainRoot from './pages/MainRoot';
 
+//loader
+import {loader as HomeLoader} from '../src/components/HomePage/Home';
+
 // router
 import CreateAccount from './components/CreateAccount/CreateAccount';
 import HomePage from './pages/HomePage';
@@ -27,7 +30,7 @@ const router = createBrowserRouter([
   {path: '/',
    element: <MainRoot/>, 
    children: [
-    {index: true , element: <HomePage/>},
+    {index: true , element: <HomePage/>, loader: HomeLoader},
     {path: 'first', element: <FirstPage/>},
     {path: 'second', element: <SecondPage/>},
     {path: 'third', element: <ThirdPage/>},
