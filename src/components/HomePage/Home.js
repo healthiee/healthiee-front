@@ -28,8 +28,6 @@ const Home  = () => {
     }
   }
 
-  const searchButtonStyle = backdrop? styles.active : '';
-
   // Notification Page
   
   const showNotification = () => {

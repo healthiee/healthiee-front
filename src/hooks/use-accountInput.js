@@ -30,7 +30,6 @@ const useAccountInput = (condition) => {
     inputHandler,
     blurHandler,
     reset,
-    setEnterValue,
     setDoubleCheck,
   });
 }

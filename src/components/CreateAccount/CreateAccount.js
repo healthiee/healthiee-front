@@ -24,10 +24,14 @@ const SignupPage = ()=> {
 
   const {enterValue:inputName, error:nameError, inputHandler:inputNameHandler, blurHandler:blurNameHandler, enterValid:nameValid,reset:nameReset } = useAccountInput(value => value.trim().length >= 2);
 
-  const {enterValue:inputNickname, error:nicknameError, inputHandler:inputNicknameHandler, blurHandler:blurNicknameHandler,enterValid:nicknameValid, reset:NicknameReset, setEnterValue:nickNameValue, doubleCheck, setDoubleCheck } = useAccountInput(value => value.trim().length >= 4);
+  const {enterValue:inputNickname, error:nicknameError, inputHandler:inputNicknameHandler, blurHandler:blurNicknameHandler,enterValid:nicknameValid, reset:nicknameReset, doubleCheck, setDoubleCheck } = useAccountInput(value => value.trim().length >= 4);
 
-  const clearNickHandelr = () => {
-    nickNameValue('');
+  const clearNameHandler = () => {
+    nameReset();
+  }
+
+  const clearNickHandler = () => {
+    nicknameReset();
   }
 
   // form : nickname double check
@@ -160,28 +164,30 @@ const SignupPage = ()=> {
       <form className={styles.form_container} onSubmit={submitHandler}>
         <div className={styles.form_input}>
           <label htmlFor="name">이름 <span className={styles.star}>*</span></label>
-          <input id="name" onChange={inputNameHandler} onBlur={blurNameHandler} type="text" value={inputName} className={nameStyleControl} placeholder="이름을 입력해주세요." name="name"/>
+          <div className={styles.form_input_nick}>
+            <input id="name" name="name" onChange={inputNameHandler} onBlur={blurNameHandler} type="text" value={inputName} className={nameStyleControl} placeholder="이름을 입력해주세요"/>
+            {inputName && <button type="button" onClick={clearNameHandler}><Close width="24px" height="24px"/></button>}
+          </div>
         </div>
 
         <div className={styles.form_input}>
           <label htmlFor="nickname">닉네임 <span className={styles.star}>*</span></label>
           <div className={styles.form_input_nick}>
             <input id="nickname" name="nickname" onChange={inputNicknameHandler} onBlur={blurNicknameHandler} type="text" value={inputNickname} className={nicknameStyleControl} placeholder="20자 이하의 영문 대소문자, 숫자, 언더바"/>
-            {inputNickname && !doubleCheck&& <button type="button" onClick={clearNickHandelr}><Close width="24px" height="24px"/></button>}
+            {inputNickname && !doubleCheck&& <button type="button" onClick={clearNickHandler}><Close width="24px" height="24px"/></button>}
             {inputNickname && doubleCheck && <span><Done/></span>}
           </div>
 
           <div className={styles.button_container}>
-          <button disabled={!nicknameValid} className={styles.checkbutton} type="button" onClick={doubleCheckHandler}>중복 확인</button>
-        </div>
-
+            <button disabled={!nicknameValid} className={styles.checkbutton} type="button" onClick={doubleCheckHandler}>중복 확인</button>
+          </div>
         </div>
 
         <h2>프로필 사진</h2>
 
         <div className={styles.profile_container}>
           <input name="image" className={styles.profile_input} type="file" accept="image/*" id="profileimg" onChange={saveImgFile} ref={imgRef}/>
-          {imgFile ? <img src={imgFile} alt="profile img"/> : <img src={defaultProfile} className={styles.defaultimg}/>}
+          {imgFile ? <img src={imgFile} alt="profile img"/> : <img src={defaultProfile} alt="profile img" className={styles.defaultimg}/>}
           <div className={styles.label_container}>
             <label htmlFor="profileimg" className={styles.profile_label}>사진 등록하기</label>
           </div>

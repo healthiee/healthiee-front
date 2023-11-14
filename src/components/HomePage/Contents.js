@@ -67,11 +67,11 @@ const Contents = (props) => {
     <div className={styles.comment}>
       <div className={styles.comment_head}>
         <h2>{dateFormat}</h2>
-        <h2>댓글 {props.post.commentCount}개</h2>
+        <h2 onClick={showCommentPage}>댓글 {props.post.commentCount}개</h2>
       </div>
       <p className={more ? `${styles.more}` : ''}>{more ? props.post.content.slice(0,60) : props.post.content} {more ? <button onClick={moreHandler}>...더보기</button> : ''}</p>
     </div>
-    
+
   </article>)
 };
 
