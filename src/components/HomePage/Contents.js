@@ -4,6 +4,7 @@ import {ReactComponent as Heart} from '../../assets/images/heart.svg';
 import { useState } from 'react';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import defaultImg from '../../assets/images/defaultImg.png';
+import axios from 'axios';
 
 // tag color
 
@@ -22,9 +23,11 @@ const Contents = (props) => {
     if (heart) {
       setHeart(false);
       props.post.likeCount -= 1;
+      data('DELETE');
     } else {
       setHeart(true);
       props.post.likeCount += 1;
+      data('POST');
     }
   };
 
@@ -52,6 +55,23 @@ const Contents = (props) => {
     const tag = {'name': workout, 'color': shuffleColor[i]};
     tags.push(tag);
     i++;
+  }
+
+  const postId = '87f3748d-1e0d-410a-8a53-3811208bfa24';
+
+  // 좋아요 server 전송
+  const data = (method) => {
+    axios({
+      method: method,
+      url: `http://prod.healthiee.net/v1/posts/${postId}/like`,
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
+      }
+    }).then(response => {
+      console.log(response);
+      }).catch(error => {
+        console.log(error);
+      })
   }
 
   return (
