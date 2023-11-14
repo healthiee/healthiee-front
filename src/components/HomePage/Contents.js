@@ -50,7 +50,7 @@ const Contents = (props) => {
             {props.post.member.workouts.map(tag => <div className={styles.profile_tag} key={tag} style={{backgroundColor:'#E6C9FF'}}>{tag}</div>)}
           </div>
         </div>
-
+      </div>
       <div className={styles.icons}>
         <AttachFile style={{marginBottom:'10px'}}/>
         <div onClick={heartClickHandler}>
@@ -58,6 +58,7 @@ const Contents = (props) => {
           <p>{props.post.likeCount}</p>
         </div>
       </div>
+    </div>
 
     <div className={styles.content_img}>
       <img src={defaultImg} alt="content_img" />
@@ -70,6 +71,7 @@ const Contents = (props) => {
       </div>
       <p className={more ? `${styles.more}` : ''}>{more ? props.post.content.slice(0,60) : props.post.content} {more ? <button onClick={moreHandler}>...더보기</button> : ''}</p>
     </div>
+    
   </article>)
 };
 
