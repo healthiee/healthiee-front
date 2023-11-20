@@ -5,6 +5,7 @@ import { useState } from 'react';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import defaultImg from '../../assets/images/defaultImg.png';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 // tag color
 
@@ -23,11 +24,11 @@ const Contents = (props) => {
     if (heart) {
       setHeart(false);
       props.post.likeCount -= 1;
-      data('DELETE');
+      heartData('DELETE');
     } else {
       setHeart(true);
       props.post.likeCount += 1;
-      data('POST');
+      heartData('POST');
     }
   };
 
@@ -57,10 +58,11 @@ const Contents = (props) => {
     i++;
   }
 
+  //params로 대체
   const postId = '87f3748d-1e0d-410a-8a53-3811208bfa24';
 
   // 좋아요 server 전송
-  const data = (method) => {
+  const heartData = (method) => {
     axios({
       method: method,
       url: `http://prod.healthiee.net/v1/posts/${postId}/like`,
@@ -97,10 +99,11 @@ const Contents = (props) => {
       </div>
     </div>
 
-    <div className={styles.content_img}>
-      <img src={defaultImg} alt="content_img" />
-    </div>
-
+    <Link key={props.post.postId} to={`/post/${props.post.postId}`}>
+      <div className={styles.content_img}>
+        <img src={defaultImg} alt="content_img" />
+      </div>
+    </Link>
     <div className={styles.comment}>
       <div className={styles.comment_head}>
         <h2>{dateFormat}</h2>
