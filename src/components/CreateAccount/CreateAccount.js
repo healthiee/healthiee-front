@@ -133,13 +133,22 @@ const SignupPage = ()=> {
       return
     }
 
+    const workouts = [];
+
+    for (const exercise of exercises) {
+      const workout = exercise.name;
+      workouts.push(workout);
+    }
+
     const data = {
-      'code' : '2188a8c8-1918-4163-9471-33608833f780',
+      'code' : '355ae679-4df2-4e36-890f-6abce78b8f45',
       'name' : inputName,
       'nickname' : inputNickname,
       'bio' : presentationRef.current.value,
-      'worksout' : exercises
+      'workouts' : workouts
     }
+
+    console.log(data);
     
     const formdata = new FormData();
     formdata.append('data',  new Blob([JSON.stringify(data)], {
