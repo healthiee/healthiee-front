@@ -82,7 +82,7 @@ const Home  = () => {
       </div>
 
       <div className={styles.contents}>
-        {dummy.map(post => <Contents key={post.postId} post={post} onShowCommentPage={showCommentPage}/>)}
+        {dummy.map(post =><Contents key={post.postId} post={post} onShowCommentPage={showCommentPage}/>)}
       </div>
     </Fragment>
   );

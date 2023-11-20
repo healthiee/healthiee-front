@@ -25,6 +25,7 @@ import EmailLogin from './pages/EmailAuth/EmailLogin';
 import EmailAuthLink from './pages/EmailAuth/EmailAuthLink';
 import AuthCompleted from './pages/EmailAuth/AuthCompleted';
 import ReplyCommentModal from './components/HomePage/ReplyCommentModal';
+import Post, {loader as PostLoader} from './components/HomePage/Post/Post';
 
 const router = createBrowserRouter([
   {path: '/',
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
       {path: 'event', element: <Event/>},
     ]},
   ]},
+  {path: '/post/:id', element: <Post/>, loader: PostLoader},
   {path: '/createAccount', element: <CreateAccount/>},
   {path: '/screen', element: <SplashScreen />},
   {path: '/startpage', element: <StartPage />},
