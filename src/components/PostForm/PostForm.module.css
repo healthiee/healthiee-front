@@ -1,0 +1,161 @@
+.container {
+  width: 360px;
+}
+
+.back {
+  width: 312px;
+  height: 48px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+/* form */
+.form_container {
+  width: 328px;
+  margin: 0 auto;
+}
+
+.form_container h1 {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.form_container > * {
+  padding: 0 8px;
+  border-bottom: 2px solid #D3D3D3;
+}
+
+/* photo */
+.photo_container {
+  height: 148px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.photo_title {
+  display: flex;
+}
+
+.photo_title p {
+  font-size: 12px;
+  color: #717171;
+  margin-left: 10px;
+}
+
+/* content */
+.content_container {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.content_container textarea {
+  width: 312px;
+  height: 300px;
+  margin-top: -10px;
+  background-color: #EFEFEF;
+  padding: 10px;
+  resize: none;
+  border: none;
+}
+
+/* tag */
+.tag_container {
+  height: 230px;
+}
+
+.tag_container h1 {
+  height: 75px;
+  display: flex;
+  align-items: center;
+}
+
+.tag_container span {
+  font-size: 12px;
+  color: #717171;
+  margin-left: 10px;
+  font-weight: normal;
+}
+
+.form_input_exercise{
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.search_icon {
+  position: absolute;
+  top: 8px;
+  left: 6px;
+}
+
+.form_input_exercise button {
+  width: 69px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #FFC493;
+  border: none;
+}
+
+.form_input_exercise input {
+  width: 231px;
+  padding-left: 38px;
+  font-size: 12px;
+  background-color: #EFEFEF;
+  border-radius: 20px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.tag {
+  height: 31px;
+  border-radius: 16px;
+  margin-right: 7px;
+  margin-bottom: 7px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 0 12px;
+}
+
+.tag p {
+  height: 15px;
+  margin-right: 4px;
+}
+
+/* location */
+.location_container {
+  height: 420px;
+}
+
+.location_container h1 {
+  height: 75px;
+  display: flex;
+  align-items: center;
+}
+
+/* button */
+
+.btn {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 0;
+  border: none;
+}
+
+.btn button {
+  width: 144px;
+  height: 48px;
+  font-size: 16px;
+  background-color: #D3D3D3;
+  border-radius: 24px;
+}
