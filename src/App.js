@@ -15,7 +15,7 @@ import CreateAccount from './components/CreateAccount/CreateAccount';
 import HomePage from './pages/HomePage';
 import FirstPage from './pages/First';
 import SecondPage from './pages/Second';
-import ThirdPage from './pages/Third';
+import CreatePost from './pages/CreatePost';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import Description from './pages/ProfilePage/Description';
 import Event from './pages/ProfilePage/Event';
@@ -34,7 +34,6 @@ const router = createBrowserRouter([
     {index: true , element: <HomePage/>, loader: HomeLoader},
     {path: 'first', element: <FirstPage/>},
     {path: 'second', element: <SecondPage/>},
-    {path: 'third', element: <ThirdPage/>},
     {path: 'profile', 
     element: <ProfilePage/>,
     children: [
@@ -42,6 +41,7 @@ const router = createBrowserRouter([
       {path: 'event', element: <Event/>},
     ]},
   ]},
+  {path: 'createPost', element: <CreatePost/>},
   {path: '/post/:id', element: <Post/>, loader: PostLoader},
   {path: '/createAccount', element: <CreateAccount/>},
   {path: '/screen', element: <SplashScreen />},
