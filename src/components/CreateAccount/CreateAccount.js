@@ -2,6 +2,7 @@ import React, {useState, useRef} from "react";
 import styles from './CreateAccount.module.css';
 import useAccountInput from "../../hooks/use-accountInput";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 //img
 import {ReactComponent as BackArrow} from '../../assets/images/backArrow.svg';
@@ -13,7 +14,8 @@ import defaultProfile from '../../assets/images/defaultProfile.png';
 
 
 const SignupPage = ()=> {
-
+  const location = useLocation();
+  const [code, setCode] = useState(location.state?.code);
   const [imgFile, setImgFile] = useState('');
   const imgRef = useRef();
   const [tag, setTag] = useState('');
@@ -117,7 +119,7 @@ const SignupPage = ()=> {
     }
 
     const data = {
-      'code' : '2188a8c8-1918-4163-9471-33608833f780',
+      'code' : code,
       'name' : inputName,
       'nickname' : inputNickname,
       'bio' : presentationRef.current.value,
