@@ -7,6 +7,8 @@ import defaultImg from '../../../assets/images/defaultImg.png';
 import {ReactComponent as AttachFile} from '../../../assets/images/attachFile.svg';
 import {ReactComponent as Heart} from '../../../assets/images/heart.svg';
 import {ReactComponent as ArrowBack} from '../../../assets/icons/ArrowBack_icon.svg';
+import {ReactComponent as Menu} from '../../../assets/images/menu.svg';
+import Popup from './Popup';
 
 const randomColor = ['#FCADFF', '#FFE0E0', '#A7FFF5', '#DDFFD6', '#B1E7FF', '#FBFF93', '#C9CDFF', '#D3D3D3', '#E6C9FF'];
 const shuffleColor = randomColor.sort(()=> Math.random() - 0.5);
@@ -14,9 +16,20 @@ const shuffleColor = randomColor.sort(()=> Math.random() - 0.5);
 const Post = () => {
   
   const [heart, setHeart] = useState(false);
+  const [popup, setPopup] = useState(false);
   const loaderdata = useLoaderData();
   const data = loaderdata[0]
 
+  //팝업창
+  const popupHandler = () => {
+    if(!popup) {
+      setPopup(true);
+    } else {
+      setPopup(false);
+    }
+  };
+
+  //좋아요
   const heartClickHandler = () => {
     if (heart) {
       setHeart(false);
@@ -63,8 +76,11 @@ const Post = () => {
   return(
     <div className={styles.container}>
 
+      {popup && <Popup postId={data.postId} onPopup={setPopup}/>}
+
       <div className={styles.arrow}>
         <Link to='..'><ArrowBack/></Link>
+        <div style={{cursor:'pointer'}}><Menu onClick={popupHandler}/></div>
       </div>
 
       <div className={styles.content_info}>
