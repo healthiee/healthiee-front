@@ -26,7 +26,7 @@ const SignupPage = ()=> {
 
   const {enterValue:inputName, error:nameError, inputHandler:inputNameHandler, blurHandler:blurNameHandler, enterValid:nameValid,reset:nameReset } = useAccountInput(value => value.trim().length >= 2);
 
-  const {enterValue:inputNickname, error:nicknameError, inputHandler:inputNicknameHandler, blurHandler:blurNicknameHandler,enterValid:nicknameValid, reset:nicknameReset, doubleCheck, setDoubleCheck } = useAccountInput(value => value.trim().length >= 4);
+  const {enterValue:inputNickname, error:nicknameError, inputNicknameHandler, blurHandler:blurNicknameHandler,enterValid:nicknameValid, reset:nicknameReset, doubleCheck, setDoubleCheck, invalid, setInvalid} = useAccountInput(value => value.trim().length >= 4);
 
   const clearNameHandler = () => {
     nameReset();
@@ -34,14 +34,31 @@ const SignupPage = ()=> {
 
   const clearNickHandler = () => {
     nicknameReset();
+    setInvalid(false);
   }
 
   // form : nickname double check
 
   const doubleCheckHandler = () => {
     console.log('double')
-    //if true
-    setDoubleCheck(true);
+
+    axios.get(`http://prod.healthiee.net/v1/members/${inputNickname}/check`)
+    .then(
+      response => {
+        console.log(response);
+
+        if(response.status === 200) {
+          setDoubleCheck(true);
+          return
+        } else {
+          setInvalid(true);
+          return
+        }
+
+      }
+    ).catch(error => {
+      console.log(error);
+    })
   }
 
   // form : profile img
@@ -116,13 +133,22 @@ const SignupPage = ()=> {
       return
     }
 
+    const workouts = [];
+
+    for (const exercise of exercises) {
+      const workout = exercise.name;
+      workouts.push(workout);
+    }
+
     const data = {
-      'code' : '2188a8c8-1918-4163-9471-33608833f780',
+      'code' : '355ae679-4df2-4e36-890f-6abce78b8f45',
       'name' : inputName,
       'nickname' : inputNickname,
       'bio' : presentationRef.current.value,
-      'worksout' : exercises
+      'workouts' : workouts
     }
+
+    console.log(data);
     
     const formdata = new FormData();
     formdata.append('data',  new Blob([JSON.stringify(data)], {
@@ -175,6 +201,7 @@ const SignupPage = ()=> {
             {inputNickname && !doubleCheck&& <button type="button" onClick={clearNickHandler}><Close width="24px" height="24px"/></button>}
             {inputNickname && doubleCheck && <span><Done/></span>}
           </div>
+          {invalid && <p>이미 사용 중인 닉네임입니다.</p>}
 
           <div className={styles.button_container}>
             <button disabled={!nicknameValid} className={styles.checkbutton} type="button" onClick={doubleCheckHandler}>중복 확인</button>
