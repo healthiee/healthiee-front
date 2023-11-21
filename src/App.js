@@ -22,7 +22,6 @@ import Event from './pages/ProfilePage/Event';
 import SplashScreen from './pages/SplashScreen';
 import StartPage from './pages/StartPage';
 import EmailLogin from './pages/EmailAuth/EmailLogin';
-import EmailAuthLink from './pages/EmailAuth/EmailAuthLink';
 import AuthCompleted from './pages/EmailAuth/AuthCompleted';
 import ReplyCommentModal from './components/HomePage/ReplyCommentModal';
 import Post, {loader as PostLoader} from './components/HomePage/Post/Post';
@@ -47,7 +46,6 @@ const router = createBrowserRouter([
   {path: '/screen', element: <SplashScreen />},
   {path: '/startpage', element: <StartPage />},
   {path: '/emaillogin', element: <EmailLogin />},
-  {path: '/emailauthlink', element: <EmailAuthLink/>},
   {path: '/authcompleted', element: <AuthCompleted />},
   {path: '/reply', element: <ReplyCommentModal />},
 ]);
