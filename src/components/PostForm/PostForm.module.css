@@ -44,6 +44,47 @@
   margin-left: 10px;
 }
 
+.imglist {
+  display: flex;
+}
+
+.addbtn {
+  width: 61px;
+  height: 61px;
+  border-radius: 15px;
+  background-color: #EFEFEF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 4px;
+}
+
+.img {
+  width: 250px;
+  height: 61px;
+  display: flex;
+  overflow-x: scroll;
+  flex-wrap: nowrap;
+  scroll-snap-type: x mandatory;
+}
+
+.images {
+  width: 61px;
+  height: 61px;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-left: 4px;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  position: relative;
+}
+
+.closebtn {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  z-index: 5;
+}
 /* content */
 .content_container {
   height: 400px;

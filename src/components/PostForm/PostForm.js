@@ -4,11 +4,33 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {ReactComponent as Search} from '../../assets/images/search.svg';
 import {ReactComponent as Close} from '../../assets/images/close.svg';
+import {ReactComponent as AddBox} from '../../assets/images/addBox.svg';
 
 const PostForm = (props) => {
 
   const [tag, setTag] = useState('');
   const [exercises, setExercises] = useState([]);
+  const [imgList, setImgList] = useState([]);
+
+  // form : upload images
+
+  // 이미지 상대경로 저장
+  const addImagesHandler = (event) => {
+    const imageLists = event.target.files;
+    const imageUrlList = [...imgList];
+
+    for (let i = 0; i < imageLists.length; i++) {
+      const currentImageUrl = URL.createObjectURL(imageLists[i]);
+      imageUrlList.push(currentImageUrl);
+    }
+
+    setImgList(imageUrlList);
+  }
+
+  // x버튼 클릭 시 이미지 삭제
+  const deleteImageHandler = (id) => {
+    setImgList(imgList.filter((_, index) => index !== id))
+  }
 
   // form : add tags
 
@@ -70,14 +92,28 @@ const PostForm = (props) => {
             <h1>사진등록</h1>
             <p>최대 8장까지 업로드할 수 있습니다.</p>
           </div>
-          <div>
-            photo img
+          <div className={styles.imglist}>
+            <label htmlFor="input-file" onChange={addImagesHandler}>
+              <input hidden type="file" id='input-file' multiple/>
+              <div className={styles.addbtn}>
+                <AddBox width='24' height='24'/>
+              </div>
+            </label>
+
+            <div className={styles.img}>
+              {imgList.map((image, id) => (
+                <div className={styles.images} key={id}>
+                  <img src={image} alt={id} />
+                  <Close onClick={()=>deleteImageHandler(id)} className={styles.closebtn} width='20' height='20'/>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
         <div className={styles.content_container}>
           <h1>게시글 작성</h1>
-          <textarea name="" id="" cols="30" rows="10">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum expedita incidunt iure perferendis aliquam nemo, sint ratione autem. Error molestias deserunt cumque placeat. Vel pariatur fuga quidem nostrum culpa odio.</textarea>
+          <textarea name="bios" id="" cols="30" rows="10"></textarea>
         </div>
 
         <div className={styles.tag_container}>
