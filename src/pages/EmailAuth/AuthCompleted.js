@@ -64,7 +64,11 @@ const AuthCompleted = () => {
 
     API.get(`v1/auth/verify/${code}`, {AuthCode})
     .then(response => {
-      navigate('/createaccount', {AuthCode})
+      navigate('/createAccount', {
+        state: {
+          code: code
+        }
+      })
     })
     .catch(error => {
       console.log(error);
