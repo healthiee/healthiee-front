@@ -1,17 +1,19 @@
 import styles from './PostForm.module.css';
 import {ReactComponent as ArrowBack} from '../../assets/icons/ArrowBack_icon.svg';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {ReactComponent as Search} from '../../assets/images/search.svg';
 import {ReactComponent as Close} from '../../assets/images/close.svg';
 import {ReactComponent as AddBox} from '../../assets/images/addBox.svg';
-import Kakko from '../../Api/Kakao';
+import Kakko from './Kakao';
 
 const PostForm = (props) => {
 
   const [tag, setTag] = useState('');
   const [exercises, setExercises] = useState([]);
   const [imgList, setImgList] = useState([]);
+  const [location, setLocation] = useState('');
+  const textRef = useRef();
 
   // form : upload images
 
@@ -74,6 +76,14 @@ const PostForm = (props) => {
 
   const tagButtonValid = exercises.length >= 5;
 
+  // form : 위치정보 가져오기
+
+  const locationHandler = (event) => {
+    setLocation(event);
+  };
+
+  // form 제출
+  
   const submitHandler = (event) => {
     event.preventDefault();
 
@@ -113,7 +123,7 @@ const PostForm = (props) => {
 
         <div className={styles.content_container}>
           <h1>게시글 작성</h1>
-          <textarea name="bios" id="" cols="30" rows="10"></textarea>
+          <textarea ref={textRef} name="bios" id="" cols="30" rows="10"></textarea>
         </div>
 
         <div className={styles.tag_container}>
@@ -133,7 +143,7 @@ const PostForm = (props) => {
 
         <div className={styles.location_container}>
           <h1>위치 등록</h1>
-          <Kakko/>       
+          <Kakko onLocation={locationHandler}/>       
         </div>
 
         <div className={styles.btn}>
