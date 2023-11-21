@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import {ReactComponent as Search} from '../../assets/images/search.svg';
 import {ReactComponent as Close} from '../../assets/images/close.svg';
 import {ReactComponent as AddBox} from '../../assets/images/addBox.svg';
+import Kakko from '../../Api/Kakao';
 
 const PostForm = (props) => {
 
@@ -79,7 +80,6 @@ const PostForm = (props) => {
 
   };
 
-
   return(
     <div className={styles.container}>
       <div className={styles.back}>
@@ -133,6 +133,7 @@ const PostForm = (props) => {
 
         <div className={styles.location_container}>
           <h1>위치 등록</h1>
+          <Kakko/>       
         </div>
 
         <div className={styles.btn}>
