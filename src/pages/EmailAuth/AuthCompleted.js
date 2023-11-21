@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import mainLogo from '../../assets/images/mainLogo.png'
+import API from '../../utils/API';
 
 const Container = styled.div`
   display: flex;
@@ -53,6 +55,22 @@ const ContinueBtn = styled.button`
 `;
 
 const AuthCompleted = () => {
+  const navigate = useNavigate();
+  const handleContinue = () => {
+    const code = new URLSearchParams(window.location.search).get('code');
+    const AuthCode = {
+      code: code,
+    };
+
+    API.get(`v1/auth/verify/${code}`, {AuthCode})
+    .then(response => {
+      navigate('/createaccount', {AuthCode})
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+
   return (
     <Container>
       <MainLogo src={mainLogo} alt="healtiee main logo" />
@@ -64,7 +82,7 @@ const AuthCompleted = () => {
           계속해서 회원가입을 진행하여 주세요.
         </ContinueSingupMessage>
       </Wrapper>
-      <ContinueBtn>계속 진행하기</ContinueBtn>
+      <ContinueBtn onClick={handleContinue}>계속 진행하기</ContinueBtn>
     </Container>
   );
 };
