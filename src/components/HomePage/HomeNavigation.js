@@ -22,7 +22,7 @@ const HomeNavigation = () => {
         <NavLink to='/' className={activeStyle} end><Home/></NavLink>
       </div>
       <div className={styles.nav_icon}>
-        <NavLink to='third' className={activeStyle}><PostAdd/></NavLink>
+        <NavLink to='createPost' className={activeStyle}><PostAdd/></NavLink>
       </div>
       <div className={styles.nav_icon}>
         <NavLink to='profile' className={activeStyle}><Person/></NavLink>

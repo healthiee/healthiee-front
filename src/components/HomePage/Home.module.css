@@ -52,8 +52,11 @@
 
 .contents {
   padding: 0 20px;
-  height: 422px;
   overflow-y: scroll;
+}
+
+a {
+  text-decoration: none;
 }
 
 /* ( 크롬, 사파리, 오페라, 엣지 ) 동작 */
