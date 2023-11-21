@@ -15,7 +15,7 @@ import defaultProfile from '../../assets/images/defaultProfile.png';
 
 const SignupPage = ()=> {
   const location = useLocation();
-  const [code, setCode] = useState(location.state?.code);
+  const { code } = location.state;
   const [imgFile, setImgFile] = useState('');
   const imgRef = useRef();
   const [tag, setTag] = useState('');
