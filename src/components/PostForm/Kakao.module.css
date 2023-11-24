@@ -1,0 +1,64 @@
+.map {
+  width: 320px;
+  height: 200px;
+  border-radius: 30px;
+  border: 3px solid #FFC493;
+  margin: 0 auto;
+}
+
+.search {
+  width: 310px;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search_input {
+  position: relative;
+}
+
+.search_icon {
+  position: absolute;
+  top: 8px;
+  left: 6px;
+}
+
+.search_input input{
+  width: 231px;
+  height: 40px;
+  background-color: #EFEFEF;
+  border-radius: 20px;
+  padding-left: 40px;
+}
+
+.search_btn button{
+  width: 69px;
+  height: 40px;
+  background-color: #FFC493;
+  border-radius: 20px;
+}
+
+.location {
+  width: 280px;
+  height: 36px;
+  border-bottom: 2px solid #FF9F4E;
+  display: flex;
+  margin: 20px auto;
+}
+
+.lo_img {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFC493;
+  border-radius: 50%;
+}
+
+.lo_address {
+  display: flex;
+  align-items: center;
+  margin-left: 7px;
+}

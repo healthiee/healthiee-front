@@ -25,8 +25,7 @@ const Popup = (props) => {
 
   const deletePostHandler = () => {
 
-    const postId = 'adb16388-6294-4d5b-bd71-3d5b848f21db'
-    //postid = props.postId
+    const postId = props.postId
     axios.delete(`http://prod.healthiee.net/v1/posts/${postId}`, {
       headers: {
         Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
