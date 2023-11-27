@@ -32,11 +32,10 @@ const Popup = (props) => {
       }
     }).then(response => {
       console.log(response);
+      navigate('/')
     }).catch(error => {
       console.log(error);
     })
-
-    navigate('/')
   }
 
   return(

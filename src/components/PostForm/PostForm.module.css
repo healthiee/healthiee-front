@@ -96,7 +96,6 @@
 .content_container textarea {
   width: 312px;
   height: 300px;
-  margin-top: -10px;
   background-color: #EFEFEF;
   padding: 10px;
   resize: none;
@@ -108,10 +107,15 @@
   height: 230px;
 }
 
-.tag_container h1 {
+.tag_title {
   height: 75px;
   display: flex;
   align-items: center;
+}
+
+.tag_title p {
+  margin-left: 10px;
+  padding-top: 4px;
 }
 
 .tag_container span {
