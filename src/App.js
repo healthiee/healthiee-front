@@ -36,12 +36,12 @@ function App() {
       <Route path="/emaillogin" element={<EmailLogin />} />
       <Route path='/' element={<MainRoot />}>
         <Route index element={<HomePage />} loader={HomeLoader} />
-          <Route path="first" element={<FirstPage />} />
-          <Route path="second" element={<SecondPage />} />
-          <Route path="profile" element={<ProfilePage />}>
-            <Route index element={<Description />} />
-            <Route path="event" element={<Event />} />
-          </Route>
+        <Route path="first" element={<FirstPage />} />
+        <Route path="second" element={<SecondPage />} />
+        <Route path="profile" element={<ProfilePage />}>
+          <Route index element={<Description />} />
+          <Route path="event" element={<Event />} />
+        </Route>
       </Route>
       <Route path="/email-login" element={<AuthLogin/>} />
       <Route path="/authcompleted" element={<AuthCompleted />} />

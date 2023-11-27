@@ -48,7 +48,7 @@ const Contents = (props) => {
   }
 
   // tag color 
-  const workouts = props.post.member.workouts;
+  const workouts = props.post.hashtags;
   const tags = [];
   let i = 0;
 

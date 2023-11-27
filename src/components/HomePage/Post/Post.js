@@ -43,7 +43,7 @@ const Post = () => {
   };
 
   // tag color 
-  const workouts = data.member.workouts;
+  const workouts = data.hashtags;
   const tags = [];
   let i = 0;
 
