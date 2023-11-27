@@ -24,7 +24,6 @@ const Kakao = (props) => {
   },[])
 
   const successHandler = (response) => {
-		console.log(response);
 		const { latitude, longitude } = response.coords;
 		setPosition({ lat: latitude, lng: longitude });
 	};

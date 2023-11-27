@@ -1,7 +1,7 @@
 import styles from './PostForm.module.css';
 import {ReactComponent as ArrowBack} from '../../assets/icons/ArrowBack_icon.svg';
 import { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {ReactComponent as Search} from '../../assets/images/search.svg';
 import {ReactComponent as Close} from '../../assets/images/close.svg';
 import {ReactComponent as AddBox} from '../../assets/images/addBox.svg';
@@ -15,7 +15,13 @@ const PostForm = (props) => {
   const [showImgList, setShowImgList] = useState([]); // 이미지 미리보기
   const [imgList, setImgList] = useState([]); // 서버에 보내는 이미지
   const [location, setLocation] = useState({});
+  const [valid, setValid] = useState({
+    imgValid : true,
+    contentValid : true,
+    hashtagsValid : true
+  });
   const textRef = useRef();
+  const navigate = useNavigate();
 
   // form : upload images
 
@@ -93,6 +99,35 @@ const PostForm = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
 
+    // Required 판단
+
+    const info = {...valid};
+
+    if (imgList.length === 0) {
+      info.imgValid = false;
+    } else {
+      info.imgValid = true;
+    }
+
+    if (!textRef.current.value) {
+      info.contentValid = false;
+    } else {
+      info.contentValid = true;
+    }
+
+    if (exercises.length === 0) {
+      info.hashtagsValid = false;
+    } else {
+      info.hashtagsValid = true;
+    }
+
+    if(imgList.length === 0 || textRef.current.value.trim().length === 0 || exercises.length === 0) {
+      setValid(info);
+      return
+    };
+
+    // Required 충족시 form 제출
+
     const workouts = [];
 
     for (const exercise of exercises) {
@@ -116,16 +151,14 @@ const PostForm = (props) => {
       type: "application/json"
       }))
 
-    // formData.append('data', JSON.stringify(data))
-
-
     axios.post('http://prod.healthiee.net/v1/posts', formData, {
       headers: {
         'Content-Type' : 'multipart/form-data',
         Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
       }
     }).then(response => {
-      console.log(response.data)
+      console.log(response.data);
+      navigate('/');
     }).catch(error => {
       console.log('에러발생', error);
     })
@@ -143,6 +176,7 @@ const PostForm = (props) => {
             <h1>사진등록</h1>
             <p>최대 8장까지 업로드할 수 있습니다.</p>
           </div>
+          {!valid.imgValid && <p style={{color: 'red'}}>이미지를 1장 이상 등록해주세요.</p>}
           <div className={styles.imglist}>
             <label htmlFor="input-file" onChange={addImagesHandler}>
               <input hidden type="file" id='input-file' multiple/>
@@ -164,11 +198,15 @@ const PostForm = (props) => {
 
         <div className={styles.content_container}>
           <h1>게시글 작성</h1>
+          {!valid.contentValid && <p style={{color: 'red'}}>게시글을 작성해주세요.</p>}
           <textarea ref={textRef} name="bios" id="" cols="30" rows="10"></textarea>
         </div>
 
         <div className={styles.tag_container}>
-          <h1>태그 등록 <span>(최대 5개)</span></h1>
+          <div className={styles.tag_title}>
+            <h1>태그 등록 <span>(최대 5개)</span></h1>
+            {!valid.hashtagsValid && <p style={{color: 'red'}}>태그를 한개 이상 등록해주세요.</p>}
+          </div>
           <div className={styles.form_input_exercise}>
             <Search className={styles.search_icon}/>
             <input name="workouts" type="text" placeholder="관련 태그를 등록해주세요." className={styles.input_style} onChange={addTagHandler} value={tag}/>
