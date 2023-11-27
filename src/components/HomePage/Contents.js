@@ -18,7 +18,6 @@ const Contents = (props) => {
   const [heart, setHeart] = useState(false);
   //... 더보기
   const [more, setMore] = useState(true);
-  
 
   const heartClickHandler = () => {
     if (heart) {
@@ -48,7 +47,7 @@ const Contents = (props) => {
   }
 
   // tag color 
-  const workouts = props.post.member.workouts;
+  const workouts = props.post.hashtags;
   const tags = [];
   let i = 0;
 
@@ -58,8 +57,7 @@ const Contents = (props) => {
     i++;
   }
 
-  //params로 대체
-  const postId = '87f3748d-1e0d-410a-8a53-3811208bfa24';
+  const postId = props.post.postId;
 
   // 좋아요 server 전송
   const heartData = (method) => {

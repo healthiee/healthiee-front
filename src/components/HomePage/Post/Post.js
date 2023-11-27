@@ -20,6 +20,8 @@ const Post = () => {
   const loaderdata = useLoaderData();
   const data = loaderdata[0]
 
+  console.log(data)
+
   //팝업창
   const popupHandler = () => {
     if(!popup) {
@@ -43,7 +45,7 @@ const Post = () => {
   };
 
   // tag color 
-  const workouts = data.member.workouts;
+  const workouts = data.hashtags;
   const tags = [];
   let i = 0;
 

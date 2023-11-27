@@ -2,11 +2,12 @@ import { useState, Fragment, useEffect } from "react";
 import { Map, MapMarker,} from "react-kakao-maps-sdk";
 import {ReactComponent as LocationOn} from '../../assets/images/locationOn.svg';
 import {ReactComponent as Search} from '../../assets/images/search.svg';
-import {ReactComponent as LocationAddress} from '../../assets/images/locationAddress.svg';
 import styles from './Kakao.module.css';
+import locationAddress from '../../assets/images/locationAddress.png'
 
 
 const { kakao } = window;
+const markerImg = locationAddress;
 
 const Kakao = (props) => {
 
@@ -72,8 +73,8 @@ const Kakao = (props) => {
 
   // 주소값 보내기
   useEffect(()=>{
-    props.onLocation(address);
-  },[address])
+    props.onLocation(position, address);
+  },[position,address])
 
   return(
     <Fragment>
@@ -93,10 +94,10 @@ const Kakao = (props) => {
         <div className={styles.lo_address}>{address}</div>
       </div>
 
-      <Map className={styles.map} center={position} isPanto={true}   // 지도의 중심 좌표
-      style={{ width: '300px', height: '200px' }} // 지도 크기
+      <Map className={styles.map} center={position} isPanto={true}
+      style={{ width: '300px', height: '200px' }}
       level={3} onClick={addressHandler}>
-        {position && <MapMarker position={position} />}
+        {position && <MapMarker position={position} image={{src:markerImg, size:{width:22, height:22}}}/>}
       </Map>
     
     </Fragment>

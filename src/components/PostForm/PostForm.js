@@ -6,13 +6,15 @@ import {ReactComponent as Search} from '../../assets/images/search.svg';
 import {ReactComponent as Close} from '../../assets/images/close.svg';
 import {ReactComponent as AddBox} from '../../assets/images/addBox.svg';
 import Kakko from './Kakao';
+import axios from 'axios';
 
 const PostForm = (props) => {
 
   const [tag, setTag] = useState('');
   const [exercises, setExercises] = useState([]);
-  const [imgList, setImgList] = useState([]);
-  const [location, setLocation] = useState('');
+  const [showImgList, setShowImgList] = useState([]); // 이미지 미리보기
+  const [imgList, setImgList] = useState([]); // 서버에 보내는 이미지
+  const [location, setLocation] = useState({});
   const textRef = useRef();
 
   // form : upload images
@@ -20,19 +22,23 @@ const PostForm = (props) => {
   // 이미지 상대경로 저장
   const addImagesHandler = (event) => {
     const imageLists = event.target.files;
-    const imageUrlList = [...imgList];
+    const imageUrlList = [...showImgList];
+    const imageFile = [...imgList];
 
     for (let i = 0; i < imageLists.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
       imageUrlList.push(currentImageUrl);
+      imageFile.push(imageLists[i]);
     }
 
-    setImgList(imageUrlList);
+    setImgList(imageFile);
+    setShowImgList(imageUrlList);
   }
 
   // x버튼 클릭 시 이미지 삭제
   const deleteImageHandler = (id) => {
-    setImgList(imgList.filter((_, index) => index !== id))
+    setShowImgList(showImgList.filter((_, index) => index !== id));
+    setImgList(imgList.filter((_, index) => index !== id));
   }
 
   // form : add tags
@@ -78,8 +84,8 @@ const PostForm = (props) => {
 
   // form : 위치정보 가져오기
 
-  const locationHandler = (event) => {
-    setLocation(event);
+  const locationHandler = (position, address) => {
+    setLocation({'position' : position, 'address': address});
   };
 
   // form 제출
@@ -87,7 +93,42 @@ const PostForm = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
 
+    const workouts = [];
 
+    for (const exercise of exercises) {
+      const workout = exercise.name;
+      workouts.push(workout);
+    }
+
+    const formData = new FormData();
+
+    for (let i=0; i<imgList.length; i++) {
+      formData.append('images', imgList[i])
+    }
+
+    const data = {
+      'content' : textRef.current.value,
+      'location' : {'latitude': location.position.lat, 'longitude': location.position.lng, 'addressName': location.address},
+      'hashtags' : workouts
+    }
+
+    formData.append('data', new Blob([JSON.stringify(data)], {
+      type: "application/json"
+      }))
+
+    // formData.append('data', JSON.stringify(data))
+
+
+    axios.post('http://prod.healthiee.net/v1/posts', formData, {
+      headers: {
+        'Content-Type' : 'multipart/form-data',
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
+      }
+    }).then(response => {
+      console.log(response.data)
+    }).catch(error => {
+      console.log('에러발생', error);
+    })
   };
 
   return(
@@ -111,7 +152,7 @@ const PostForm = (props) => {
             </label>
 
             <div className={styles.img}>
-              {imgList.map((image, id) => (
+              {showImgList.map((image, id) => (
                 <div className={styles.images} key={id}>
                   <img src={image} alt={id} />
                   <Close onClick={()=>deleteImageHandler(id)} className={styles.closebtn} width='20' height='20'/>
