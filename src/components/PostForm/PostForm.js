@@ -224,6 +224,9 @@ const PostForm = (props) => {
     })
   };
 
+  // method === patch 일 경우 사진 추가 아이콘 숨김
+  const method = props.method === 'patch';
+
   return(
     <div className={styles.container}>
       <div className={styles.back}>
@@ -238,12 +241,12 @@ const PostForm = (props) => {
           </div>
           {!valid.imgValid && <p style={{color: 'red'}}>이미지를 1장 이상 등록해주세요.</p>}
           <div className={styles.imglist}>
-            <label htmlFor="input-file" onChange={addImagesHandler}>
+            {!method ? <label htmlFor="input-file" onChange={addImagesHandler}>
               <input hidden type="file" id='input-file' multiple/>
               <div className={styles.addbtn}>
                 <AddBox width='24' height='24'/>
               </div>
-            </label>
+            </label> : ''}
 
             <div className={styles.img}>
               {showImgList.map((image, id) => (
