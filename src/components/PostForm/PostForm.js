@@ -9,11 +9,38 @@ import Kakko from './Kakao';
 import axios from 'axios';
 
 const PostForm = (props) => {
+  
+  const data = props.data;
+  const defaultImg = [];
+  const defaultTag = [];
+  const defaultImgId = [];
+
+  // 이미지 불러오기
+
+  if(data) {
+    for(const img of data.medias) {
+      const imgUrl = img.url;
+      defaultImg.push(imgUrl);
+      defaultImgId.push(img.id);
+    }
+  }
+
+  // 태그 불러오기
+  if(data) {
+    const dataTag = data.hashtags;
+    const randomColor = ['#FCADFF', '#FFE0E0', '#A7FFF5', '#DDFFD6', '#B1E7FF', '#FBFF93', '#C9CDFF', '#D3D3D3', '#E6C9FF'];
+
+    for (const tag of dataTag) {
+      const shuffleColor = randomColor.sort(()=> Math.random() - 0.5);
+      defaultTag.push({name: tag, color: shuffleColor[Math.floor(Math.random())]})
+    }
+  }
 
   const [tag, setTag] = useState('');
-  const [exercises, setExercises] = useState([]);
-  const [showImgList, setShowImgList] = useState([]); // 이미지 미리보기
+  const [exercises, setExercises] = useState(defaultTag);
+  const [showImgList, setShowImgList] = useState(defaultImg); // 이미지 미리보기
   const [imgList, setImgList] = useState([]); // 서버에 보내는 이미지
+  const [imgId, setImgId] = useState(defaultImgId) 
   const [location, setLocation] = useState({});
   const [valid, setValid] = useState({
     imgValid : true,
@@ -39,12 +66,14 @@ const PostForm = (props) => {
 
     setImgList(imageFile);
     setShowImgList(imageUrlList);
+    setImgId('images')
   }
 
   // x버튼 클릭 시 이미지 삭제
   const deleteImageHandler = (id) => {
     setShowImgList(showImgList.filter((_, index) => index !== id));
     setImgList(imgList.filter((_, index) => index !== id));
+    imgId.splice(id,1)
   }
 
   // form : add tags
@@ -103,7 +132,7 @@ const PostForm = (props) => {
 
     const info = {...valid};
 
-    if (imgList.length === 0) {
+    if (imgId.length === 0) {
       info.imgValid = false;
     } else {
       info.imgValid = true;
@@ -121,7 +150,7 @@ const PostForm = (props) => {
       info.hashtagsValid = true;
     }
 
-    if(imgList.length === 0 || textRef.current.value.trim().length === 0 || exercises.length === 0) {
+    if(imgId.length === 0 || textRef.current.value.trim().length === 0 || exercises.length === 0) {
       setValid(info);
       return
     };
@@ -135,25 +164,56 @@ const PostForm = (props) => {
       workouts.push(workout);
     }
 
-    const formData = new FormData();
+    const method = props.method;
+    let formData = '';
+    let url = '';
+    let contentType = '';
 
-    for (let i=0; i<imgList.length; i++) {
-      formData.append('images', imgList[i])
-    }
+    console.log(method)
 
-    const data = {
-      'content' : textRef.current.value,
-      'location' : {'latitude': location.position.lat, 'longitude': location.position.lng, 'addressName': location.address},
-      'hashtags' : workouts
-    }
+    // method === post
 
-    formData.append('data', new Blob([JSON.stringify(data)], {
-      type: "application/json"
+    if (method === 'post') {
+      url = 'http://prod.healthiee.net/v1/posts';
+      contentType  = 'multipart/form-data';
+
+      formData = new FormData();
+
+      for (let i=0; i<imgList.length; i++) {
+        formData.append('images', imgList[i])
+      }
+
+      const data = {
+        'content' : textRef.current.value,
+        'location' : {'latitude': location.position.lat, 'longitude': location.position.lng, 'addressName': location.address},
+        'hashtags' : workouts
+      }
+
+      formData.append('data', new Blob([JSON.stringify(data)], {
+        type: "application/json"
       }))
+    }
 
-    axios.post('http://prod.healthiee.net/v1/posts', formData, {
+    // method === patch
+
+    if(method === 'patch') {
+      url = `http://prod.healthiee.net/v1/posts/${data.postId}`;
+      contentType  = "application/json";
+
+      formData = {
+        'content' : textRef.current.value,
+        'location' : {'latitude': location.position.lat, 'longitude': location.position.lng, 'addressName': location.address},
+        'hashtags' : workouts,
+        'mediaIds' : imgId,
+      }
+    }
+
+    axios({
+      method: method,
+      url: url,
+      data: formData,
       headers: {
-        'Content-Type' : 'multipart/form-data',
+        'Content-Type' : contentType,
         Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
       }
     }).then(response => {
@@ -199,7 +259,7 @@ const PostForm = (props) => {
         <div className={styles.content_container}>
           <h1>게시글 작성</h1>
           {!valid.contentValid && <p style={{color: 'red'}}>게시글을 작성해주세요.</p>}
-          <textarea ref={textRef} name="bios" id="" cols="30" rows="10"></textarea>
+          <textarea ref={textRef} name="bios" id="" cols="30" rows="10" defaultValue={data ? data.content : ''}></textarea>
         </div>
 
         <div className={styles.tag_container}>
@@ -222,7 +282,7 @@ const PostForm = (props) => {
 
         <div className={styles.location_container}>
           <h1>위치 등록</h1>
-          <Kakko onLocation={locationHandler}/>       
+          <Kakko method={props.method} data={data} onLocation={locationHandler}/>       
         </div>
 
         <div className={styles.btn}>
