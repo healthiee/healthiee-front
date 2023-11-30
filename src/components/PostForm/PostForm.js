@@ -1,19 +1,26 @@
 import styles from './PostForm.module.css';
 import {ReactComponent as ArrowBack} from '../../assets/icons/ArrowBack_icon.svg';
 import { useState, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLoaderData } from 'react-router-dom';
 import {ReactComponent as Search} from '../../assets/images/search.svg';
 import {ReactComponent as Close} from '../../assets/images/close.svg';
 import {ReactComponent as AddBox} from '../../assets/images/addBox.svg';
 import Kakko from './Kakao';
 import axios from 'axios';
 
+const categories = ['카테고리 없음', '오운완', '멤버 모집', '장비 소개', '중고 거래', '동네 맛집', '소식', '일상', '플레이스'];
+
 const PostForm = (props) => {
-  
+
+  const categories1 = useLoaderData();
   const data = props.data;
   const defaultImg = [];
   const defaultTag = [];
   const defaultImgId = [];
+  const defaultCategory = data ? data.categoryId ? data.categoryId : '카테고리 없음' : '카테고리 없음';
+
+  // 카테고리 불러오기
+
 
   // 이미지 불러오기
 
@@ -23,10 +30,8 @@ const PostForm = (props) => {
       defaultImg.push(imgUrl);
       defaultImgId.push(img.id);
     }
-  }
 
-  // 태그 불러오기
-  if(data) {
+    // 태그 불러오기
     const dataTag = data.hashtags;
     const randomColor = ['#FCADFF', '#FFE0E0', '#A7FFF5', '#DDFFD6', '#B1E7FF', '#FBFF93', '#C9CDFF', '#D3D3D3', '#E6C9FF'];
 
@@ -48,7 +53,15 @@ const PostForm = (props) => {
     hashtagsValid : true
   });
   const textRef = useRef();
+  const [radioCheck, setRadioCheck] = useState(defaultCategory);
   const navigate = useNavigate();
+
+  // radio box
+
+  const radioCheckHandler = (event) => {
+    console.log(event.target)
+    setRadioCheck(event.target.id)
+  }
 
   // form : upload images
 
@@ -186,7 +199,8 @@ const PostForm = (props) => {
       const data = {
         'content' : textRef.current.value,
         'location' : {'latitude': location.position.lat, 'longitude': location.position.lng, 'addressName': location.address},
-        'hashtags' : workouts
+        'hashtags' : workouts,
+        'categoryId' : radioCheck,
       }
 
       formData.append('data', new Blob([JSON.stringify(data)], {
@@ -205,6 +219,7 @@ const PostForm = (props) => {
         'location' : {'latitude': location.position.lat, 'longitude': location.position.lng, 'addressName': location.address},
         'hashtags' : workouts,
         'mediaIds' : imgId,
+        'categoryId' : radioCheck,
       }
     }
 
@@ -234,6 +249,17 @@ const PostForm = (props) => {
       </div>
 
       <form className={styles.form_container} onSubmit={submitHandler}>
+
+        <div className={styles.category_container}>
+          <h1>카테고리</h1>
+          <div className={styles.category_box}>
+            {categories.map(category => <div className={radioCheck === category ? `${styles.category} ${styles.active}` : styles.category} key={category}>
+              <input hidden onChange={radioCheckHandler} type="radio" name='category' id={category} />
+              <label htmlFor={category}>{category}</label>
+            </div>)}
+          </div>
+        </div>
+
         <div className={styles.photo_container}>
           <div className={styles.photo_title}>
             <h1>사진등록</h1>
@@ -299,3 +325,18 @@ const PostForm = (props) => {
 };
 
 export default PostForm;
+
+export async function loader () {
+
+  const response = await axios.get('http://prod.healthiee.net/v1/codes', {
+    headers: {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
+    }
+  })
+
+  if(response.status !== 200) {
+    return <p>response error</p>
+  } else {
+    return response.data.data;
+  }
+}

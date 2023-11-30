@@ -9,6 +9,7 @@ import MainRoot from './pages/MainRoot';
 
 //loader
 import {loader as HomeLoader} from '../src/components/HomePage/Home';
+import {loader as CodeLoader} from '../src/components/PostForm/PostForm';
 
 // router
 import CreateAccount from './components/CreateAccount/CreateAccount';
@@ -42,12 +43,12 @@ const router = createBrowserRouter([
       {path: 'event', element: <Event/>},
     ]},
   ]},
-  {path: 'createPost', element: <CreatePost/>},
+  {path: '/createPost', element: <CreatePost/>, loader:CodeLoader},
   {path: '/post/:id',
   loader: PostLoader,
   id: 'post-detail',
   children: [
-    {path: 'edit', element: <EditPage/>},
+    {path: 'edit', element: <EditPage/>, loader:CodeLoader},
     {path: '', element: <Post/>},
   ]},
   {path: '/createAccount', element: <CreateAccount/>},
