@@ -8,19 +8,14 @@ import {ReactComponent as AddBox} from '../../assets/images/addBox.svg';
 import Kakko from './Kakao';
 import axios from 'axios';
 
-const categories = ['카테고리 없음', '오운완', '멤버 모집', '장비 소개', '중고 거래', '동네 맛집', '소식', '일상', '플레이스'];
-
 const PostForm = (props) => {
 
-  const categories1 = useLoaderData();
+  const categories = useLoaderData();
   const data = props.data;
   const defaultImg = [];
   const defaultTag = [];
   const defaultImgId = [];
-  const defaultCategory = data ? data.categoryId ? data.categoryId : '카테고리 없음' : '카테고리 없음';
-
-  // 카테고리 불러오기
-
+  const defaultCategory = data ? data.category.categoryId.toString() ? data.category.categoryId.toString() : 'default' : 'default';
 
   // 이미지 불러오기
 
@@ -56,10 +51,10 @@ const PostForm = (props) => {
   const [radioCheck, setRadioCheck] = useState(defaultCategory);
   const navigate = useNavigate();
 
-  // radio box
+  // form : radio box
 
   const radioCheckHandler = (event) => {
-    console.log(event.target)
+    console.log(event.target.id)
     setRadioCheck(event.target.id)
   }
 
@@ -177,6 +172,15 @@ const PostForm = (props) => {
       workouts.push(workout);
     }
 
+    let categoryId = '';
+
+    if (categoryId !== 'default') {
+      categoryId = Number(radioCheck);
+    }
+
+
+    //method에 따라 formData, url, contentType 유동적 변경
+
     const method = props.method;
     let formData = '';
     let url = '';
@@ -200,7 +204,7 @@ const PostForm = (props) => {
         'content' : textRef.current.value,
         'location' : {'latitude': location.position.lat, 'longitude': location.position.lng, 'addressName': location.address},
         'hashtags' : workouts,
-        'categoryId' : radioCheck,
+        'categoryId' : categoryId,
       }
 
       formData.append('data', new Blob([JSON.stringify(data)], {
@@ -219,7 +223,7 @@ const PostForm = (props) => {
         'location' : {'latitude': location.position.lat, 'longitude': location.position.lng, 'addressName': location.address},
         'hashtags' : workouts,
         'mediaIds' : imgId,
-        'categoryId' : radioCheck,
+        'categoryId' : categoryId,
       }
     }
 
@@ -253,9 +257,13 @@ const PostForm = (props) => {
         <div className={styles.category_container}>
           <h1>카테고리</h1>
           <div className={styles.category_box}>
-            {categories.map(category => <div className={radioCheck === category ? `${styles.category} ${styles.active}` : styles.category} key={category}>
-              <input hidden onChange={radioCheckHandler} type="radio" name='category' id={category} />
-              <label htmlFor={category}>{category}</label>
+            <div className={radioCheck === 'default' ? `${styles.category} ${styles.active}` : styles.category}>
+              <input hidden onChange={radioCheckHandler} type="radio" name='category' id='default'/>
+              <label htmlFor='default'>카테고리 없음</label>
+            </div>
+            {categories.map(category => <div className={radioCheck === category.codeId.toString() ? `${styles.category} ${styles.active}` : styles.category} key={category.name}>
+              <input hidden onChange={radioCheckHandler} type="radio" name='category' id={category.codeId}/>
+              <label htmlFor={category.codeId}>{category.name}</label>
             </div>)}
           </div>
         </div>
@@ -326,6 +334,7 @@ const PostForm = (props) => {
 
 export default PostForm;
 
+//카테고리 불러오기
 export async function loader () {
 
   const response = await axios.get('http://prod.healthiee.net/v1/codes', {
