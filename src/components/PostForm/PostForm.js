@@ -40,7 +40,7 @@ const PostForm = (props) => {
   const [exercises, setExercises] = useState(defaultTag);
   const [showImgList, setShowImgList] = useState(defaultImg); // 이미지 미리보기
   const [imgList, setImgList] = useState([]); // 서버에 보내는 이미지
-  const [imgId, setImgId] = useState(defaultImgId) 
+  const [imgId, setImgId] = useState(defaultImgId) // 서버에서 불러온 이미지 관리 (method = patch)
   const [location, setLocation] = useState({});
   const [valid, setValid] = useState({
     imgValid : true,
@@ -54,7 +54,6 @@ const PostForm = (props) => {
   // form : radio box
 
   const radioCheckHandler = (event) => {
-    console.log(event.target.id)
     setRadioCheck(event.target.id)
   }
 
@@ -79,6 +78,12 @@ const PostForm = (props) => {
 
   // x버튼 클릭 시 이미지 삭제
   const deleteImageHandler = (id) => {
+
+    // 게시물 수정시 이미지를 최소 1개 이상은 남겨놔야함
+    if(imgId.length === 1) {
+      return;
+    }
+
     setShowImgList(showImgList.filter((_, index) => index !== id));
     setImgList(imgList.filter((_, index) => index !== id));
     imgId.splice(id,1)
