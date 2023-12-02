@@ -82,7 +82,7 @@ const Home  = () => {
       </div>
 
       <div className={styles.contents}>
-        {dummy.map(post =><Contents key={post.postId} post={post} onShowCommentPage={showCommentPage}/>)}
+        {dummy && dummy.map(post =><Contents key={post.postId} post={post} onShowCommentPage={showCommentPage}/>)}
       </div>
     </Fragment>
   );
@@ -95,10 +95,10 @@ export default Home;
 export async function loader () {
   console.log('home loader')
   const response = await axios.get('http://prod.healthiee.net/v1/posts',{
-      headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
-      }
-    })
+    headers: {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
+    }
+  })
 
   if(response.status !== 200) {
     return <p>response error</p>

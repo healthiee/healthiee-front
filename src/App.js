@@ -1,8 +1,9 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from './styles/GlobalStyle';
-import theme from './styles/theme'; 
+import theme from './styles/theme';
 
 // Root route
 import MainRoot from './pages/MainRoot';
@@ -23,44 +24,39 @@ import Event from './pages/ProfilePage/Event';
 import SplashScreen from './pages/SplashScreen';
 import StartPage from './pages/StartPage';
 import EmailLogin from './pages/EmailAuth/EmailLogin';
-import EmailAuthLink from './pages/EmailAuth/EmailAuthLink';
 import AuthCompleted from './pages/EmailAuth/AuthCompleted';
-import ReplyCommentModal from './components/HomePage/ReplyCommentModal';
+import AuthLogin from './pages/EmailAuth/AuthLogin';
 import Post, {loader as PostLoader} from './components/HomePage/Post/Post';
 import EditPage from './pages/EditPage';
 
-const router = createBrowserRouter([
-  {path: '/',
-   element: <MainRoot/>, 
-   children: [
-    {index: true , element: <HomePage/>, loader: HomeLoader},
-    {path: 'first', element: <FirstPage/>},
-    {path: 'second', element: <SecondPage/>},
-    {path: 'profile', 
-    element: <ProfilePage/>,
-    children: [
-      {index: true, element: <Description/>},
-      {path: 'event', element: <Event/>},
-    ]},
-  ]},
-  {path: '/createPost', element: <CreatePost/>, loader:CodeLoader},
-  {path: '/post/:id',
-  loader: PostLoader,
-  id: 'post-detail',
-  children: [
-    {path: 'edit', element: <EditPage/>, loader:CodeLoader},
-    {path: '', element: <Post/>},
-  ]},
-  {path: '/createAccount', element: <CreateAccount/>},
-  {path: '/screen', element: <SplashScreen />},
-  {path: '/startpage', element: <StartPage />},
-  {path: '/emaillogin', element: <EmailLogin />},
-  {path: '/emailauthlink', element: <EmailAuthLink/>},
-  {path: '/authcompleted', element: <AuthCompleted />},
-  {path: '/reply', element: <ReplyCommentModal />},
-]);
-
 function App() {
+  
+  const router = createBrowserRouter(createRoutesFromElements(
+    <Route>
+      <Route path="/screen" element={<SplashScreen />} />
+      <Route path="/startpage" element={<StartPage />} />
+      <Route path="/emaillogin" element={<EmailLogin />} />
+      <Route path='/' element={<MainRoot />}>
+        <Route index element={<HomePage />} loader={HomeLoader} />
+        <Route path="first" element={<FirstPage />} />
+        <Route path="second" element={<SecondPage />} />
+        <Route path="profile" element={<ProfilePage />}>
+          <Route index element={<Description />} />
+          <Route path="event" element={<Event />} />
+        </Route>
+      </Route>
+      <Route path="/post/:id" loader={PostLoader} id:'post-detail'>
+        <Route index element={<Post/>}/>
+        <Route path="edit", element={<EditPage/>}, loader={CodeLoader}/>
+      </Route>
+      <Route path="/email-login" element={<AuthLogin/>} />
+      <Route path="/authcompleted" element={<AuthCompleted />} />
+      <Route path="/createAccount" element={<CreateAccount />} />
+      <Route path="/createPost" element={<CreatePost />} loader={CodeLoader}/>
+      <Route path='*' element={<p>There's nothing here: 404!</p>} />
+    </Route>
+  ))
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
