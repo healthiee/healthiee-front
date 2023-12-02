@@ -45,9 +45,9 @@ function App() {
           <Route path="event" element={<Event />} />
         </Route>
       </Route>
-      <Route path="/post/:id" loader={PostLoader} id:'post-detail'>
+      <Route path="/post/:id" loader={PostLoader} id='post-detail'>
         <Route index element={<Post/>}/>
-        <Route path="edit", element={<EditPage/>}, loader={CodeLoader}/>
+        <Route path="edit" element={<EditPage/>} loader={CodeLoader}/>
       </Route>
       <Route path="/email-login" element={<AuthLogin/>} />
       <Route path="/authcompleted" element={<AuthCompleted />} />
