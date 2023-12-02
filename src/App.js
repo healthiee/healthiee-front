@@ -9,7 +9,8 @@ import theme from './styles/theme';
 import MainRoot from './pages/MainRoot';
 
 //loader
-import { loader as HomeLoader } from '../src/components/HomePage/Home';
+import {loader as HomeLoader} from '../src/components/HomePage/Home';
+import {loader as CodeLoader} from '../src/components/PostForm/PostForm';
 
 // router
 import CreateAccount from './components/CreateAccount/CreateAccount';
@@ -24,8 +25,9 @@ import SplashScreen from './pages/SplashScreen';
 import StartPage from './pages/StartPage';
 import EmailLogin from './pages/EmailAuth/EmailLogin';
 import AuthCompleted from './pages/EmailAuth/AuthCompleted';
-import Post, { loader as PostLoader } from './components/HomePage/Post/Post';
 import AuthLogin from './pages/EmailAuth/AuthLogin';
+import Post, {loader as PostLoader} from './components/HomePage/Post/Post';
+import EditPage from './pages/EditPage';
 
 function App() {
   
@@ -43,11 +45,14 @@ function App() {
           <Route path="event" element={<Event />} />
         </Route>
       </Route>
+      <Route path="/post/:id" loader={PostLoader} id:'post-detail'>
+        <Route index element={<Post/>}/>
+        <Route path="edit", element={<EditPage/>}, loader={CodeLoader}/>
+      </Route>
       <Route path="/email-login" element={<AuthLogin/>} />
       <Route path="/authcompleted" element={<AuthCompleted />} />
       <Route path="/createAccount" element={<CreateAccount />} />
-      <Route path="/createPost" element={<CreatePost />} />
-      <Route path="/post/:id" element={<Post />} loader={PostLoader}/>
+      <Route path="/createPost" element={<CreatePost />} loader={CodeLoader}/>
       <Route path='*' element={<p>There's nothing here: 404!</p>} />
     </Route>
   ))

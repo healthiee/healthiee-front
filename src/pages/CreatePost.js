@@ -1,7 +1,7 @@
 import CreatePost from '../components/PostForm/PostForm';
 
-const ThirdPage = () => {
+const CreatePostPage = () => {
   return <CreatePost method='post'/>
 };
 
-export default ThirdPage;
+export default CreatePostPage;

@@ -26,6 +26,38 @@
   border-bottom: 2px solid #D3D3D3;
 }
 
+/* category */
+.category_container {
+  height: 200px;
+}
+
+.category_box {
+  margin-top: 10px;
+  height: 160px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category{
+  width: 97px;
+  height: 40px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #EFEFEF;
+}
+
+.active {
+  background-color: #FFC493;
+}
+
+.category input:checked{
+  color: red;
+}
+
 /* photo */
 .photo_container {
   height: 148px;

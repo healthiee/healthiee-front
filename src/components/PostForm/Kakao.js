@@ -14,7 +14,7 @@ const Kakao = (props) => {
   const [position, setPosition] = useState({
     lat: 33.5563, lng: 126.79581
   }); // 클릭된 주소의 좌표
-  const [address, setAddress] = useState(null); // 클릭된 주소의 좌표를 주소로 변환
+  const [address, setAddress] = useState(props.data? props.data.location.addressName : null); // 클릭된 주소의 좌표를 주소로 변환
   const [search, setSearch] = useState(); // 원하는 주소 검색
 
   // 현재 위치
@@ -25,7 +25,11 @@ const Kakao = (props) => {
 
   const successHandler = (response) => {
 		const { latitude, longitude } = response.coords;
-		setPosition({ lat: latitude, lng: longitude });
+    if (props.method === 'patch') {
+      setPosition({ lat: props.data.location.latitude, lng: props.data.location.longitude});
+    } else {
+      setPosition({ lat: latitude, lng: longitude });
+    }
 	};
 
 	const errorHandler = (error) => {
