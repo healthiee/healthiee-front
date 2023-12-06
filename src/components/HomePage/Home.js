@@ -8,7 +8,7 @@ import Contents from './Contents';
 import NotificationPopup from '../../pages/Notification';
 import Search from './SearchPage/Search';
 import axios from 'axios';
-import Comment from './Comment';
+import Comments from './CommentModal/Comments';
 
 const Home  = () => {
 
@@ -19,7 +19,6 @@ const Home  = () => {
   const swipeCommentRef = useRef(null);
 
   const dummy = useLoaderData();
-  
   // Search Page
 
   const searchHandler = () => {
@@ -65,7 +64,7 @@ const Home  = () => {
         {popupVisible && <NotificationPopup onClose={closeNotification} />}
       </div>
       <div className={styles.commentModalPopup} ref={swipeCommentRef}>
-        {commentVisible && <Comment />}
+        {commentVisible && <Comments />}
       </div>
       <header className={styles.header}>
         <div>
