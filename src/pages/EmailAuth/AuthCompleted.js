@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import mainLogo from '../../assets/images/mainLogo.png'
-import API from '../../utils/API';
+import axios from 'axios';
 
 const Container = styled.div`
   display: flex;
@@ -62,7 +62,7 @@ const AuthCompleted = () => {
       code: code,
     };
 
-    API.get(`v1/auth/verify/${code}`, {AuthCode})
+    axios.get(`http://prod.healthiee.net/v1/auth/verify/${code}`, {AuthCode})
     .then(response => {
       navigate('/createAccount', {
         state: {
