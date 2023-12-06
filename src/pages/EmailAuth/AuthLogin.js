@@ -10,21 +10,19 @@ const AuthLogin = () => {
     const AuthCode = {
       code: code,
     };
-    axios.post('v1/auth/login', AuthCode, {
+  axios.post('http://prod.healthiee.net/v1/auth/login', AuthCode, {
       withCredentials: true
     })
       .then(response => {
         const { token } = response.data.data;
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         console.log('Email verified successfully!', response);
-        console.log(response.data);
-        console.log(response.data.data);
-
         navigate('/')
       })
       .catch(error => {
         console.log("login requset fail : " + error);
       })
+
   }, [])
 
   return (

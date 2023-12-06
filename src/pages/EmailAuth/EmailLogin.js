@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { ReactComponent as ArrowBack_Icon } from '../../assets/icons/ArrowBack_icon.svg';
 import { ReactComponent as Done_Icon } from '../../assets/icons/Done_icon.svg';
 import { ReactComponent as Error_Icon } from '../../assets/icons/Error_icon.svg'
-// import  API  from '../../utils/API';
 import axios from 'axios';
 
 const BackButton = styled.button`
@@ -181,7 +180,7 @@ function EmailLogin() {
         email: email,
       };
 
-      axios.post('v1/auth', requestPayload)
+      axios.post('http://prod.healthiee.net/v1/auth', requestPayload)
       .then(response => {
       if (response.status === 200) {
           setIsButtonClicked(true);
