@@ -20,8 +20,6 @@ const Post = () => {
   const loaderdata = useLoaderData();
   const data = loaderdata[0]
 
-  console.log(data)
-
   //팝업창
   const popupHandler = () => {
     if(!popup) {
