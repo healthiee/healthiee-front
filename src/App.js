@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from './styles/GlobalStyle';
 import theme from './styles/theme';
+// import './interceptors/axios';
 
 // Root route
 import MainRoot from './pages/MainRoot';
@@ -26,6 +27,8 @@ import EmailLogin from './pages/EmailAuth/EmailLogin';
 import AuthCompleted from './pages/EmailAuth/AuthCompleted';
 import Post, { loader as PostLoader } from './components/HomePage/Post/Post';
 import AuthLogin from './pages/EmailAuth/AuthLogin';
+import Comments from './components/HomePage/CommentModal/Comments';
+import ReplyCommentsModal from './components/HomePage/CommentModal/ReplyCommentsModal';
 
 function App() {
   
@@ -48,6 +51,8 @@ function App() {
       <Route path="/createAccount" element={<CreateAccount />} />
       <Route path="/createPost" element={<CreatePost />} />
       <Route path="/post/:id" element={<Post />} loader={PostLoader}/>
+      <Route path="/comments" element={<Comments />} />
+      <Route path="/comments/:commentId" element={<ReplyCommentsModal />} />
       <Route path='*' element={<p>There's nothing here: 404!</p>} />
     </Route>
   ))
