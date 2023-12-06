@@ -16,7 +16,6 @@ const Home  = () => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [commentVisible, setCommentVisible] = useState(false);
   const swipeRef = useRef(null);
-  const swipeCommentRef = useRef(null);
 
   const dummy = useLoaderData();
   // Search Page
@@ -29,15 +28,10 @@ const Home  = () => {
     }
   }
 
-  // Notification Page
-  
+  // Notification Modal
   const showNotification = () => {
     setPopupVisible(true);
   };
-
-  const showCommentPage = () => {
-    setCommentVisible(true);
-  }
 
   const closeNotification = () => {
     swipeRef.current.classList.toggle(styles.showNotificaton);
@@ -45,17 +39,16 @@ const Home  = () => {
       setPopupVisible(false);
     }, 500);
   };
-
+  
   useEffect(() => {
   swipeRef.current.classList.toggle(styles.showNotificaton, popupVisible) 
   }, [popupVisible]);
+
+  // Comment Modal
+  const showCommentPage = () => {
+    setCommentVisible(true);
+  }
   
-  // Comment Page
-
-  useEffect(() => {
-    swipeCommentRef.current.classList.toggle(styles.showComment)
-  }, [commentVisible]);
-
   const searchButtonStyle = backdrop? styles.active : '';
 
   return(
@@ -63,7 +56,7 @@ const Home  = () => {
       <div className={styles.notificationPopup} ref={swipeRef}>
         {popupVisible && <NotificationPopup onClose={closeNotification} />}
       </div>
-      <div className={styles.commentModalPopup} ref={swipeCommentRef}>
+      <div>
         {commentVisible && <Comments />}
       </div>
       <header className={styles.header}>
