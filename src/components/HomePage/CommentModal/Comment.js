@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { ReactComponent as defaultProfile } from '../../../assets/images/defaultProfile2.svg'
 import { ReactComponent as heart } from '../../../assets/images/heart.svg';
+import { ReactComponent as dots } from '../../../assets/images/dots.svg';
 import ReplyComment from '../CommentModal/ReplyComment';
+import CommentPopup from './CommentPopup';
 import axios from 'axios';
 
 const CardContentWrapper = styled.div`
-  padding: 12px 16px 9px 32px;
-  box-shadow:-2px 3px 6px #00000029;
-  `;
+  padding: 12px 16px 0 32px;
+  box-shadow: -2px 3px 6px #00000029;
+`;
 
 const CardContent = styled.div`
   display: flex;
@@ -67,14 +69,7 @@ const CardHeartWrapper = styled.div`
 const CardReply = styled.p`
   font-size: 8px;
   color: ${({ theme }) => theme.colors.gray};
-`
-
-const Test = styled.div`
-  display: flex;
-`
-
-const EditText = styled.p`
-  
+  margin-right: 16px;
 `
 
 const CardHeartNumber = styled.div`
@@ -88,13 +83,26 @@ const CardHeartIcon = styled(heart)`
   fill: ${({ $isActive }) => ($isActive ? '#FF0000' : '#D3D3D3')};
 `
 
+const Popup = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+`
+
+const DotsIcon = styled(dots)`
+  width: 32px;
+  fill: #D3D3D3;
+  margin-right: 16px;
+`
+
 const Comment = ({ comment, onAddReply, onEditComment, onDeleteComment, clearInput, postId }) => {
   const [heart, setHeart] = useState(() => {
-  const savedHeart = localStorage.getItem(`comment_${comment.commentId}_heart`);
+    const savedHeart = localStorage.getItem(`comment_${comment.commentId}_heart`);
     return savedHeart === 'true';
   });
   const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate();
+  const [isPopup, setIsPopup] = useState(false);
 
   // Save heart
   useEffect(() => {
@@ -138,25 +146,18 @@ const Comment = ({ comment, onAddReply, onEditComment, onDeleteComment, clearInp
     onAddReply(comment.commentId);
   }
 
-  // Edit Comment
-  const editComment = () => {
-    setIsEdit(!isEdit);
-    if (!isEdit) {
-      onEditComment(comment.content, comment.commentId);
-    } else {
-      clearInput();
-      setIsEdit(false);
-    }
-  }
-
-  // Delete Comment
-  const deleteComment = () => {
-    onDeleteComment(comment.commentId);
-  }
-
-  // More Replies
   const viewMoreReplies = () => {
     navigate(`/comments/${comment.commentId}`, { state: { postId, comment } })
+  }
+
+  // Edit & Delete Popup
+  const commentPopupHandler = (e) => {
+    e.preventDefault()
+    setIsPopup(!isPopup);
+  }
+
+  const closePopup = () => {
+    setIsPopup(false);
   }
 
   return (
@@ -185,11 +186,21 @@ const Comment = ({ comment, onAddReply, onEditComment, onDeleteComment, clearInp
               })}
             </div>
           )}
-          <Test>
-            <CardReply onClick={comment.childComments.length >= 3 ? viewMoreReplies : addReply}>{comment.childComments.length >= 3 ? '답글 더보기' : '답글 달기'}</CardReply>
-            <EditText onClick={editComment}>{isEdit ? '취소' : '수정'}</EditText>
-            <div onClick={deleteComment}>삭제</div>
-          </Test>
+          <Popup>
+            <CardReply onClick={comment.childComments.length >= 3 ? viewMoreReplies : addReply}>
+              {comment.childComments.length >= 3 ? '답글 더보기' : '답글 달기'}
+            </CardReply>
+            <DotsIcon onClick={commentPopupHandler} />
+            {isPopup &&
+              <CommentPopup
+                commentId={comment.commentId}
+                content={comment.content}
+                onEditComment={onEditComment}
+                onDeleteComment={onDeleteComment}
+                clearInput={clearInput}
+                onClosePopup={closePopup}
+              />}
+          </Popup>
         </CardMainWrapper>
       </CardContent>
     </CardContentWrapper>
