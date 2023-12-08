@@ -8,7 +8,7 @@ import Contents from './Contents';
 import NotificationPopup from '../../pages/Notification';
 import Search from './SearchPage/Search';
 import axios from 'axios';
-import Comment from './Comment';
+import Comments from './CommentModal/Comments';
 
 const Home  = () => {
 
@@ -16,10 +16,8 @@ const Home  = () => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [commentVisible, setCommentVisible] = useState(false);
   const swipeRef = useRef(null);
-  const swipeCommentRef = useRef(null);
 
   const dummy = useLoaderData();
-  
   // Search Page
 
   const searchHandler = () => {
@@ -30,15 +28,10 @@ const Home  = () => {
     }
   }
 
-  // Notification Page
-  
+  // Notification Modal
   const showNotification = () => {
     setPopupVisible(true);
   };
-
-  const showCommentPage = () => {
-    setCommentVisible(true);
-  }
 
   const closeNotification = () => {
     swipeRef.current.classList.toggle(styles.showNotificaton);
@@ -46,17 +39,16 @@ const Home  = () => {
       setPopupVisible(false);
     }, 500);
   };
-
+  
   useEffect(() => {
   swipeRef.current.classList.toggle(styles.showNotificaton, popupVisible) 
   }, [popupVisible]);
+
+  // Comment Modal
+  const showCommentPage = () => {
+    setCommentVisible(true);
+  }
   
-  // Comment Page
-
-  useEffect(() => {
-    swipeCommentRef.current.classList.toggle(styles.showComment)
-  }, [commentVisible]);
-
   const searchButtonStyle = backdrop? styles.active : '';
 
   return(
@@ -64,8 +56,8 @@ const Home  = () => {
       <div className={styles.notificationPopup} ref={swipeRef}>
         {popupVisible && <NotificationPopup onClose={closeNotification} />}
       </div>
-      <div className={styles.commentModalPopup} ref={swipeCommentRef}>
-        {commentVisible && <Comment />}
+      <div>
+        {commentVisible && <Comments />}
       </div>
       <header className={styles.header}>
         <div>
