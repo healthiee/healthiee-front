@@ -165,6 +165,8 @@ const ReplyCommentsModal = () => {
   const savedHeart = localStorage.getItem(`comment_${comment.commentId}_heart`);
     return savedHeart === 'true';
   });
+  const [isEdit, setIsEdit] = useState(false);
+  const [commentToEdit, setCommentToEdit] = useState('');
 
   // Save heart
   useEffect(() => {
@@ -225,6 +227,16 @@ const ReplyCommentsModal = () => {
     setParentCommentId(comment.commentId)
   }
 
+  const editComment = (content, commentId) => {
+    setInput(content);
+    setCommentToEdit(commentId);
+    setIsEdit(true);
+  }
+
+  const clearInput = () => {
+    setInput('');
+  }
+
   const onAddComment = async (e) => {
     e.preventDefault();
     if (parentCommentId) {
@@ -264,8 +276,56 @@ const ReplyCommentsModal = () => {
       } catch (err) {
         console.log(err);
       }
+    } else if (isEdit && commentToEdit) {
+      const updatedEditReplyComments = replyComment.childComments.map((childComment) => {
+        if(childComment.commentId === commentToEdit) {
+          return {
+            ...childComment,
+            content: input,
+          }
+        }
+        return childComment;
+      });
+      try {
+        await axios.patch(`http://prod.healthiee.net/v1/comments/${commentToEdit}`, {
+          content: input
+        }, {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
+          }
+        })
+        console.log(updatedEditReplyComments);
+        setReplyComment(prev => ({
+          ...prev,
+          childComments: updatedEditReplyComments
+        }));
+        setInput('');
+        setCommentToEdit('');
+        setIsEdit(false);
+      } catch (err) {
+        console.log(err);
+      }
     }
-    
+    }
+  //Delete Comment
+  const deleteComment = async (commentId) => {
+    try {
+      await axios.delete(`http://prod.healthiee.net/v1/comments/${commentId}`, {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
+        }
+      });
+      setReplyComment(prev => ({
+        ...prev,
+        childComments: prev.childComments.filter(childComment => childComment.commentId !== commentId)
+      }));
+    } catch (err) {
+      console.log(err);
+    }
+    setIsEdit(false);
+    setCommentToEdit('');
+    setParentCommentId('');
+    setInput('');
   }
 
 
@@ -305,7 +365,11 @@ const ReplyCommentsModal = () => {
           <>
             <ReplyCommentModal 
               key={childcomment.commentId} 
-              childcomment={childcomment} />
+              childcomment={childcomment}
+              onEditComment={editComment}
+              onDeleteComment={deleteComment}
+              clearInput={clearInput}
+              />
           </>
         )
       })}
