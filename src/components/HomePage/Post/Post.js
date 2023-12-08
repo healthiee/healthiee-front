@@ -1,5 +1,5 @@
 import styles from './Post.module.css';
-import { useLoaderData, Link } from 'react-router-dom';
+import { useRouteLoaderData, Link } from 'react-router-dom';
 import {useState} from 'react';
 import axios from 'axios';
 import defaultProfile from '../../../assets/images/defaultProfile.png';
@@ -17,7 +17,7 @@ const Post = () => {
   
   const [heart, setHeart] = useState(false);
   const [popup, setPopup] = useState(false);
-  const loaderdata = useLoaderData();
+  const loaderdata = useRouteLoaderData('post-detail');
   const data = loaderdata[0]
 
   //팝업창
