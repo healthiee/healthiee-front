@@ -1,6 +1,10 @@
+import React, { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
 import { ReactComponent as defaultProfile } from '../../../assets/images/defaultProfile2.svg'
 import { ReactComponent as heart } from '../../../assets/images/heart.svg';
+import { ReactComponent as dots } from '../../../assets/images/dots.svg';
+import CommentPopup from './CommentPopup';
+import axios from 'axios';
 
 const Card = styled.article`
   display: flex;
@@ -19,7 +23,7 @@ const CardContentImg = styled(defaultProfile)`
 `;
 
 const CardContentWrapper = styled.div`
-  padding: 12px 16px 9px 72px;
+  padding: 12px 16px 0 72px;
   box-shadow:-2px 3px 6px #00000029;
 `
 
@@ -76,7 +80,72 @@ const CardHeartNumber = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `
 
-const ReplyCommentModal = ({ childcomment }) => {
+const Popup = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+`
+
+const DotsIcon = styled(dots)`
+  width: 32px;
+  fill: #D3D3D3;
+  margin-right: 16px;
+`
+
+const ReplyCommentModal = ({ childcomment, onEditComment, onDeleteComment, clearInput }) => {
+  const [isPopup, setIsPopup] = useState(false);
+  const [heart, setHeart] = useState(() => {
+    const savedHeart = localStorage.getItem(`comment_${childcomment.commentId}_heart`);
+    return savedHeart === 'true';
+  });
+
+  // Save heart
+  useEffect(() => {
+    const savedHeart = localStorage.getItem(`comment_${childcomment.commentId}_heart`);
+    setHeart(savedHeart === 'true');
+  }, [childcomment.commentId]);
+
+  useEffect(() => {
+    localStorage.setItem(`comment_${childcomment.commentId}_heart`, heart);
+  }, [childcomment.commentId, heart]);
+
+  // Heart
+  const heartClickHandler = () => {
+    if (heart) {
+      setHeart(false);
+      childcomment.likeCount -= 1;
+      heartData('DELETE');
+    } else {
+      setHeart(true);
+      childcomment.likeCount += 1;
+      heartData('POST');
+    }
+  };
+  
+  const heartData = (method) => {
+    axios({
+      method: method,
+      url: `http://prod.healthiee.net/v1/comments/${childcomment.commentId}/like`,
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
+      }
+    }).then(res => {
+      console.log(res);
+      }).catch(err => {
+        console.log(err);
+      })
+  }
+
+  // Edit & Delete Popup
+  const commentPopupHandler = (e) => {
+    e.preventDefault()
+    setIsPopup(!isPopup);
+  }
+
+  const closePopup = () => {
+    setIsPopup(false);
+  }
+
   return (
     <Card>
       <CardContentWrapper>
@@ -91,11 +160,23 @@ const ReplyCommentModal = ({ childcomment }) => {
             </CardUserAndTime>
             <CardContentAndHeart>
               <CardContents>{childcomment.content}</CardContents>
-              <CardHeartWrapper>
-                <CardHeartIcon />
+              <CardHeartWrapper onClick={heartClickHandler}>
+                <CardHeartIcon $isActive={heart} />
                 <CardHeartNumber>{childcomment.likeCount}</CardHeartNumber>
               </CardHeartWrapper>
             </CardContentAndHeart>
+            <Popup>
+              <DotsIcon onClick={commentPopupHandler} />
+              {isPopup &&
+                <CommentPopup
+                  commentId={childcomment.commentId}
+                  content={childcomment.content}
+                  onEditComment={onEditComment}
+                  onDeleteComment={onDeleteComment}
+                  clearInput={clearInput}
+                  onClosePopup={closePopup}
+                />}
+            </Popup>
           </CardMainWrapper>
         </CardContent>
       </CardContentWrapper>
