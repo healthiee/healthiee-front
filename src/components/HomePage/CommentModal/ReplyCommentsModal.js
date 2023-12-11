@@ -7,6 +7,7 @@ import { ReactComponent as heart } from '../../../assets/images/heart.svg';
 import { ReactComponent as sendIcon } from '../../../assets/images/sendIcon.svg';
 import axios from 'axios';
 import ReplyCommentModal from './ReplyCommentModal';
+import { format } from 'date-fns-tz';
 
 const ReplyCommetsModalWrapper = styled.div`
   width: 360px;
@@ -187,7 +188,14 @@ const ReplyCommentsModal = () => {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
         });
-        setReplyComment(response.data.data);
+        const formattedComments = response.data.data.childComments.map(childComments => ({
+          ...childComments,
+          createdDate: format(new Date(childComments.createdDate), "yyyy년 M월 d일 HH:mm"),
+        }));
+        setReplyComment(prev => ({
+          ...prev,
+          childComments: formattedComments,
+        }));
       } catch (err) {
         console.log(err);
       }
@@ -223,8 +231,8 @@ const ReplyCommentsModal = () => {
   }
 
   const addReply = () => {
-    setInput(`@${comment.commentId} `)
-    setParentCommentId(comment.commentId)
+    setInput(`@${comment.commentId} `);
+    setParentCommentId(comment.commentId);
   }
 
   const editComment = (content, commentId) => {
@@ -254,7 +262,7 @@ const ReplyCommentsModal = () => {
         },
         likeCount: 0,
         liked: false,
-        createdDate: new Date().toLocaleString(),
+        createdDate: format(new Date(), "yyyy년 M월 d일 HH:mm"),
         childComments: []
       };
       try {
@@ -268,10 +276,10 @@ const ReplyCommentsModal = () => {
           }
         });
         newReplyComment.commentId = res.data.data.commentId;
-        setReplyComment({
-          ...replyComment,
-          childComments: [...replyComment.childComments, newReplyComment],
-        });
+        setReplyComment(prev => ({
+        ...prev,
+        childComments: [...prev.childComments, newReplyComment],
+      }));
         setInput('');
       } catch (err) {
         console.log(err);
@@ -294,7 +302,6 @@ const ReplyCommentsModal = () => {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
         })
-        console.log(updatedEditReplyComments);
         setReplyComment(prev => ({
           ...prev,
           childComments: updatedEditReplyComments
@@ -307,6 +314,7 @@ const ReplyCommentsModal = () => {
       }
     }
     }
+    
   //Delete Comment
   const deleteComment = async (commentId) => {
     try {
@@ -327,7 +335,6 @@ const ReplyCommentsModal = () => {
     setParentCommentId('');
     setInput('');
   }
-
 
   return (
     <ReplyCommetsModalWrapper>
@@ -362,15 +369,14 @@ const ReplyCommentsModal = () => {
       </Card>
       {replyComment.childComments && replyComment.childComments.map((childcomment, i) => {
         return (
-          <>
+          <React.Fragment key={childcomment.commentId}>
             <ReplyCommentModal 
-              key={childcomment.commentId} 
               childcomment={childcomment}
               onEditComment={editComment}
               onDeleteComment={deleteComment}
               clearInput={clearInput}
-              />
-          </>
+            />
+          </React.Fragment>
         )
       })}
       <CommentFormWrapper>
