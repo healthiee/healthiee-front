@@ -187,8 +187,12 @@ const Comment = ({ comment, onAddReply, onEditComment, onDeleteComment, clearInp
             </div>
           )}
           <Popup>
-            <CardReply onClick={comment.childComments.length >= 3 ? viewMoreReplies : addReply}>
-              {comment.childComments.length >= 3 ? '답글 더보기' : '답글 달기'}
+            <CardReply onClick={comment.childCommentCount >= 3 ? viewMoreReplies : addReply}>
+              {comment.childCommentCount > 3 
+              ? `답글 ${comment.childCommentCount - 3}개 더보기`
+              : comment.childCommentCount === 3
+              ? `답글 더보기`
+              : '답글 달기'}
             </CardReply>
             <DotsIcon onClick={commentPopupHandler} />
             {isPopup &&
