@@ -5,7 +5,7 @@ import { ReactComponent as sendIcon } from '../../../assets/images/sendIcon.svg'
 import { ReactComponent as closeCircle } from '../../../assets/images/closeCircle.svg';
 import axios from 'axios';
 import Comment from './Comment';
-import CommentsPopup from './CommentPopup';
+import { format } from 'date-fns-tz';
 
 const CommentModalWrapper = styled.div`
   background-color: #FFFFFF;
@@ -147,14 +147,17 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
         });
-        setComments(response.data.data.comments);
+        const formattedComments = response.data.data.comments.map(comment => ({
+          ...comment,
+          createdDate: format(new Date(comment.createdDate), "yyyy년 M월 d일 HH:mm"),
+        }));
+        setComments(formattedComments);
       } catch (err) {
         console.log(err);
       }
     };
     fetchComments();
-
-  }, []);
+  }, [postId]);
 
   const onAddComment = async (e) => {
     e.preventDefault();
@@ -173,7 +176,7 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
         },
         likeCount: 0,
         liked: false,
-        createdDate: new Date().toLocaleString(),
+        createdDate: format(new Date(), "yyyy년 M월 d일 HH:mm"),
         childComments: []
       };
       const updatedReplyComments = comments.map((comment) => {
@@ -245,7 +248,7 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
         },
         likeCount: 0,
         liked: false,
-        createdDate: new Date().toLocaleString(),
+        createdDate: format(new Date(), "yyyy년 M월 d일 HH:mm"),
         childCommentCount: 2,
         childComments: []
       };
@@ -286,14 +289,37 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
   //Delete Comment
   const deleteComment = async (commentId) => {
     try {
+      const response = await axios.get(`http://prod.healthiee.net/v1/comments/${commentId}`, {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
+        }
+      });
+      const childComments = response.data.data.childComments;
+
+      // Delete main comment
       await axios.delete(`http://prod.healthiee.net/v1/comments/${commentId}`, {
         headers: {
           Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
         }
       });
 
-      const updateDeleteComments = comments.filter((comment) => comment.commentId !== commentId);
-      setComments(updateDeleteComments);
+      // Delete child comments
+      const deleteChildComments = async (childComments) => {
+        for (const childComment of childComments) {
+          await axios.delete(`http://prod.healthiee.net/v1/comments/${childComment.commentId}`, {
+            headers: {
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
+            }
+          });
+        }
+      };
+
+      if (childComments.length > 0) {
+        await deleteChildComments(childComments);
+      }
+
+      const updatedComments = comments.filter((comment) => comment.commentId !== commentId);
+      setComments(updatedComments);
     } catch (err) {
       console.log(err);
     }
@@ -302,7 +328,6 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
     setParentCommentId('');
     setInput('');
   }
-
 
   return (
     <CommentModalWrapper>
@@ -326,9 +351,8 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
         <Card>
           {comments && comments.map((comment, i) => {
             return (
-              <>
+              <React.Fragment key={comment.commentId}>
                 <Comment
-                  key={comment.commentId}
                   comment={comment}
                   onAddReply={addReply}
                   onEditComment={editComment}
@@ -336,7 +360,7 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
                   clearInput={clearInput}
                   postId={postId}
                 />
-              </>
+              </React.Fragment>
             )
           })}
         </Card>
