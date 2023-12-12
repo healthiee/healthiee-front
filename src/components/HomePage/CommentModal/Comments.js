@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { ReactComponent as sendIcon } from '../../../assets/images/sendIcon.svg';
 import { ReactComponent as closeCircle } from '../../../assets/images/closeCircle.svg';
@@ -7,10 +7,8 @@ import axios from 'axios';
 import Comment from './Comment';
 import { format } from 'date-fns-tz';
 
-const CommentModalWrapper = styled.div`
-  background-color: #FFFFFF;
-  padding-top: 10px;
-`
+// const  = styled.div`
+// `;
 
 const CommentModal = styled.div`
   width: 360px;
@@ -26,7 +24,10 @@ const CommentModal = styled.div`
 
 // Header
 const HeaderWrapper = styled.div`
-  height: 75px;
+  position: fixed;
+  top: 0;
+  padding-top: 10px;
+  height: 85px;
   width: 360px;
   background-color: #FFFFFF;
   z-index: 1;
@@ -41,7 +42,6 @@ const Header = styled.div`
   border: 5px solid #D3D3D3;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
-  z-index: 2;
 `;
 
 const DotsAndTitle = styled.div`
@@ -83,6 +83,7 @@ const CloseIcon = styled(closeCircle)`
 const Card = styled.article`
   display: flex;
   flex-direction: column;
+  margin-top: 85px;
 `;
 
 // Comment Form
@@ -128,7 +129,7 @@ const CommentInput = styled.input`
 }
 `
 
-const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
+const Comments = ({ onClose, onShowHome }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const postId = searchParams.get('postId');
   const [comments, setComments] = useState([]);
@@ -138,6 +139,7 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
   const [parentCommentId, setParentCommentId] = useState('');
   const [commentToEdit, setCommentToEdit] = useState('');
   const [isEdit, setIsEdit] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -329,8 +331,12 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
     setInput('');
   }
 
+  // Close Comment Modal
+  const hideComment = () => {
+    navigate('/'); // 부모 컴포넌트로 이벤트를 전달하여 classList를 제거
+  };
+
   return (
-    <CommentModalWrapper>
       <CommentModal>
         <HeaderWrapper>
           <Header>
@@ -342,9 +348,7 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
               </Dots>
               <Title>댓글</Title>
             </DotsAndTitle>
-            <Link to='..'>
-              <CloseIcon />
-            </Link>
+            <CloseIcon onClick={hideComment}/>
           </Header>
         </HeaderWrapper>
 
@@ -382,14 +386,11 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
           </CommentForm>
           <CommentBtnWrapper
             onClick={onAddComment}
-            disabled={isValid ? false : true}
-          >
+            disabled={isValid ? false : true}>
             <CommentBtnIcon $commentLength={input.length} />
           </CommentBtnWrapper>
         </CommentFormWrapper>
-
       </CommentModal>
-    </CommentModalWrapper>
   );
 };
 export default Comments;
