@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams, Link, useNavigate } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { ReactComponent as sendIcon } from '../../../assets/images/sendIcon.svg';
 import { ReactComponent as closeCircle } from '../../../assets/images/closeCircle.svg';
@@ -136,7 +136,6 @@ const Comments = () => {
   const [parentCommentId, setParentCommentId] = useState('');
   const [commentToEdit, setCommentToEdit] = useState('');
   const [isEdit, setIsEdit] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -146,11 +145,26 @@ const Comments = () => {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
         });
-        const formattedComments = response.data.data.comments.map(comment => ({
-          ...comment,
-          createdDate: format(new Date(comment.createdDate), "yyyy년 M월 d일 HH:mm"),
-        }));
-        setComments(formattedComments);
+
+        const date = response.data.data.comments.map(comment => {
+          const createdDateUTC = new Date(comment.createdDate);
+          createdDateUTC.setHours(createdDateUTC.getHours() + 9);
+          const year = createdDateUTC.getFullYear();
+          const month = createdDateUTC.getMonth() + 1;
+          const day = createdDateUTC.getDate();
+          let hours = createdDateUTC.getHours();
+          let minutes = createdDateUTC.getMinutes();
+        
+          hours = hours < 10 ? `0${hours}` : hours;
+          minutes = minutes < 10 ? `0${minutes}` : minutes;
+          
+          const formattedDate = `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
+          return {
+            ...comment,
+            createdDate: formattedDate,
+          };
+        });
+        setComments(date);
       } catch (err) {
         console.log(err);
       }

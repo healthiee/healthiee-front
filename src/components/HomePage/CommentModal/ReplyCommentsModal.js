@@ -194,20 +194,35 @@ const ReplyCommentsModal = () => {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
         });
-        const formattedComments = response.data.data.childComments.map(childComments => ({
-          ...childComments,
-          createdDate: format(new Date(childComments.createdDate), "yyyy년 M월 d일 HH:mm"),
-        }));
+
+        const date = response.data.data.childComments.map(childComments => {
+          const createdDateUTC = new Date(childComments.createdDate);
+          createdDateUTC.setHours(createdDateUTC.getHours() + 9);
+          const year = createdDateUTC.getFullYear();
+          const month = createdDateUTC.getMonth() + 1;
+          const day = createdDateUTC.getDate();
+          let hours = createdDateUTC.getHours();
+          let minutes = createdDateUTC.getMinutes();
+        
+          hours = hours < 10 ? `0${hours}` : hours;
+          minutes = minutes < 10 ? `0${minutes}` : minutes;
+          
+          const formattedDate = `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
+          return {
+            ...childComments,
+            createdDate: formattedDate,
+          };
+        });
         setReplyComment(prev => ({
           ...prev,
-          childComments: formattedComments,
+          childComments: date,
         }));
       } catch (err) {
         console.log(err);
       }
     };
     fetchComments();
-  }, []);
+  }, [comment.commentId]);
 
   // Heart
   const heartClickHandler = () => {
