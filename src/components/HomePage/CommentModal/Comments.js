@@ -7,9 +7,6 @@ import axios from 'axios';
 import Comment from './Comment';
 import { format } from 'date-fns-tz';
 
-// const  = styled.div`
-// `;
-
 const CommentModal = styled.div`
   width: 360px;
   height: 640px;
@@ -129,7 +126,7 @@ const CommentInput = styled.input`
 }
 `
 
-const Comments = ({ onClose, onShowHome }) => {
+const Comments = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const postId = searchParams.get('postId');
   const [comments, setComments] = useState([]);
@@ -331,11 +328,6 @@ const Comments = ({ onClose, onShowHome }) => {
     setInput('');
   }
 
-  // Close Comment Modal
-  const hideComment = () => {
-    navigate('/'); // 부모 컴포넌트로 이벤트를 전달하여 classList를 제거
-  };
-
   return (
       <CommentModal>
         <HeaderWrapper>
@@ -348,7 +340,9 @@ const Comments = ({ onClose, onShowHome }) => {
               </Dots>
               <Title>댓글</Title>
             </DotsAndTitle>
-            <CloseIcon onClick={hideComment}/>
+            <Link to='/'>
+              <CloseIcon/>
+            </Link>
           </Header>
         </HeaderWrapper>
 
