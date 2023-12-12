@@ -22,9 +22,13 @@ const ReplyCommetsModalWrapper = styled.div`
 `
 
 const HeaderWrapper = styled.div` 
-  height: 48px;
-  margin: 12px 0 0 28px;
+  position: fixed;
+  top: 0;
   z-index: 1;
+  padding: 12px 0 0 28px;
+  width: 360px;
+  height: 48px;
+  background-color: #FFFFFF;
 `
 
 const ArrowBack = styled(ArrowBack_Icon)`
@@ -36,6 +40,8 @@ const ArrowBack = styled(ArrowBack_Icon)`
 const Card = styled.article`
   display: flex;
   flex-direction: column;
+  margin-top: 48px;
+
 `
 
 const CardImgWrapper = styled.div`
