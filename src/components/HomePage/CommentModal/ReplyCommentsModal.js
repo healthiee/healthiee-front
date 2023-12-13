@@ -7,6 +7,7 @@ import { ReactComponent as heart } from '../../../assets/images/heart.svg';
 import { ReactComponent as sendIcon } from '../../../assets/images/sendIcon.svg';
 import axios from 'axios';
 import ReplyCommentModal from './ReplyCommentModal';
+import { format } from 'date-fns-tz';
 
 const ReplyCommetsModalWrapper = styled.div`
   width: 360px;
@@ -21,9 +22,13 @@ const ReplyCommetsModalWrapper = styled.div`
 `
 
 const HeaderWrapper = styled.div` 
-  height: 48px;
-  margin: 12px 0 0 28px;
+  position: fixed;
+  top: 0;
   z-index: 1;
+  padding: 12px 0 0 28px;
+  width: 360px;
+  height: 48px;
+  background-color: #FFFFFF;
 `
 
 const ArrowBack = styled(ArrowBack_Icon)`
@@ -35,6 +40,8 @@ const ArrowBack = styled(ArrowBack_Icon)`
 const Card = styled.article`
   display: flex;
   flex-direction: column;
+  margin-top: 48px;
+
 `
 
 const CardImgWrapper = styled.div`
@@ -187,13 +194,35 @@ const ReplyCommentsModal = () => {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
         });
-        setReplyComment(response.data.data);
+
+        const date = response.data.data.childComments.map(childComments => {
+          const createdDateUTC = new Date(childComments.createdDate);
+          createdDateUTC.setHours(createdDateUTC.getHours() + 9);
+          const year = createdDateUTC.getFullYear();
+          const month = createdDateUTC.getMonth() + 1;
+          const day = createdDateUTC.getDate();
+          let hours = createdDateUTC.getHours();
+          let minutes = createdDateUTC.getMinutes();
+        
+          hours = hours < 10 ? `0${hours}` : hours;
+          minutes = minutes < 10 ? `0${minutes}` : minutes;
+          
+          const formattedDate = `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
+          return {
+            ...childComments,
+            createdDate: formattedDate,
+          };
+        });
+        setReplyComment(prev => ({
+          ...prev,
+          childComments: date,
+        }));
       } catch (err) {
         console.log(err);
       }
     };
     fetchComments();
-  }, []);
+  }, [comment.commentId]);
 
   // Heart
   const heartClickHandler = () => {
@@ -223,8 +252,8 @@ const ReplyCommentsModal = () => {
   }
 
   const addReply = () => {
-    setInput(`@${comment.commentId} `)
-    setParentCommentId(comment.commentId)
+    setInput(`@${comment.commentId} `);
+    setParentCommentId(comment.commentId);
   }
 
   const editComment = (content, commentId) => {
@@ -254,7 +283,7 @@ const ReplyCommentsModal = () => {
         },
         likeCount: 0,
         liked: false,
-        createdDate: new Date().toLocaleString(),
+        createdDate: format(new Date(), "yyyy년 M월 d일 HH:mm"),
         childComments: []
       };
       try {
@@ -268,10 +297,10 @@ const ReplyCommentsModal = () => {
           }
         });
         newReplyComment.commentId = res.data.data.commentId;
-        setReplyComment({
-          ...replyComment,
-          childComments: [...replyComment.childComments, newReplyComment],
-        });
+        setReplyComment(prev => ({
+        ...prev,
+        childComments: [...prev.childComments, newReplyComment],
+      }));
         setInput('');
       } catch (err) {
         console.log(err);
@@ -294,7 +323,6 @@ const ReplyCommentsModal = () => {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
         })
-        console.log(updatedEditReplyComments);
         setReplyComment(prev => ({
           ...prev,
           childComments: updatedEditReplyComments
@@ -307,6 +335,7 @@ const ReplyCommentsModal = () => {
       }
     }
     }
+    
   //Delete Comment
   const deleteComment = async (commentId) => {
     try {
@@ -327,7 +356,6 @@ const ReplyCommentsModal = () => {
     setParentCommentId('');
     setInput('');
   }
-
 
   return (
     <ReplyCommetsModalWrapper>
@@ -362,15 +390,14 @@ const ReplyCommentsModal = () => {
       </Card>
       {replyComment.childComments && replyComment.childComments.map((childcomment, i) => {
         return (
-          <>
+          <React.Fragment key={childcomment.commentId}>
             <ReplyCommentModal 
-              key={childcomment.commentId} 
               childcomment={childcomment}
               onEditComment={editComment}
               onDeleteComment={deleteComment}
               clearInput={clearInput}
-              />
-          </>
+            />
+          </React.Fragment>
         )
       })}
       <CommentFormWrapper>

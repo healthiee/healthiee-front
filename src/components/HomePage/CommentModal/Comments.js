@@ -5,12 +5,7 @@ import { ReactComponent as sendIcon } from '../../../assets/images/sendIcon.svg'
 import { ReactComponent as closeCircle } from '../../../assets/images/closeCircle.svg';
 import axios from 'axios';
 import Comment from './Comment';
-import CommentsPopup from './CommentPopup';
-
-const CommentModalWrapper = styled.div`
-  background-color: #FFFFFF;
-  padding-top: 10px;
-`
+import { format } from 'date-fns-tz';
 
 const CommentModal = styled.div`
   width: 360px;
@@ -26,7 +21,10 @@ const CommentModal = styled.div`
 
 // Header
 const HeaderWrapper = styled.div`
-  height: 75px;
+  position: fixed;
+  top: 0;
+  padding-top: 10px;
+  height: 85px;
   width: 360px;
   background-color: #FFFFFF;
   z-index: 1;
@@ -41,7 +39,6 @@ const Header = styled.div`
   border: 5px solid #D3D3D3;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
-  z-index: 2;
 `;
 
 const DotsAndTitle = styled.div`
@@ -83,6 +80,7 @@ const CloseIcon = styled(closeCircle)`
 const Card = styled.article`
   display: flex;
   flex-direction: column;
+  margin-top: 85px;
 `;
 
 // Comment Form
@@ -128,7 +126,7 @@ const CommentInput = styled.input`
 }
 `
 
-const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
+const Comments = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const postId = searchParams.get('postId');
   const [comments, setComments] = useState([]);
@@ -147,14 +145,32 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
         });
-        setComments(response.data.data.comments);
+
+        const date = response.data.data.comments.map(comment => {
+          const createdDateUTC = new Date(comment.createdDate);
+          createdDateUTC.setHours(createdDateUTC.getHours() + 9);
+          const year = createdDateUTC.getFullYear();
+          const month = createdDateUTC.getMonth() + 1;
+          const day = createdDateUTC.getDate();
+          let hours = createdDateUTC.getHours();
+          let minutes = createdDateUTC.getMinutes();
+        
+          hours = hours < 10 ? `0${hours}` : hours;
+          minutes = minutes < 10 ? `0${minutes}` : minutes;
+          
+          const formattedDate = `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
+          return {
+            ...comment,
+            createdDate: formattedDate,
+          };
+        });
+        setComments(date);
       } catch (err) {
         console.log(err);
       }
     };
     fetchComments();
-
-  }, []);
+  }, [postId]);
 
   const onAddComment = async (e) => {
     e.preventDefault();
@@ -173,7 +189,7 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
         },
         likeCount: 0,
         liked: false,
-        createdDate: new Date().toLocaleString(),
+        createdDate: format(new Date(), "yyyy년 M월 d일 HH:mm"),
         childComments: []
       };
       const updatedReplyComments = comments.map((comment) => {
@@ -245,7 +261,7 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
         },
         likeCount: 0,
         liked: false,
-        createdDate: new Date().toLocaleString(),
+        createdDate: format(new Date(), "yyyy년 M월 d일 HH:mm"),
         childCommentCount: 2,
         childComments: []
       };
@@ -286,14 +302,37 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
   //Delete Comment
   const deleteComment = async (commentId) => {
     try {
+      const response = await axios.get(`http://prod.healthiee.net/v1/comments/${commentId}`, {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
+        }
+      });
+      const childComments = response.data.data.childComments;
+
+      // Delete main comment
       await axios.delete(`http://prod.healthiee.net/v1/comments/${commentId}`, {
         headers: {
           Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
         }
       });
 
-      const updateDeleteComments = comments.filter((comment) => comment.commentId !== commentId);
-      setComments(updateDeleteComments);
+      // Delete child comments
+      const deleteChildComments = async (childComments) => {
+        for (const childComment of childComments) {
+          await axios.delete(`http://prod.healthiee.net/v1/comments/${childComment.commentId}`, {
+            headers: {
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
+            }
+          });
+        }
+      };
+
+      if (childComments.length > 0) {
+        await deleteChildComments(childComments);
+      }
+
+      const updatedComments = comments.filter((comment) => comment.commentId !== commentId);
+      setComments(updatedComments);
     } catch (err) {
       console.log(err);
     }
@@ -303,9 +342,7 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
     setInput('');
   }
 
-
   return (
-    <CommentModalWrapper>
       <CommentModal>
         <HeaderWrapper>
           <Header>
@@ -317,8 +354,8 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
               </Dots>
               <Title>댓글</Title>
             </DotsAndTitle>
-            <Link to='..'>
-              <CloseIcon />
+            <Link to='/'>
+              <CloseIcon/>
             </Link>
           </Header>
         </HeaderWrapper>
@@ -326,9 +363,8 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
         <Card>
           {comments && comments.map((comment, i) => {
             return (
-              <>
+              <React.Fragment key={comment.commentId}>
                 <Comment
-                  key={comment.commentId}
                   comment={comment}
                   onAddReply={addReply}
                   onEditComment={editComment}
@@ -336,7 +372,7 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
                   clearInput={clearInput}
                   postId={postId}
                 />
-              </>
+              </React.Fragment>
             )
           })}
         </Card>
@@ -358,14 +394,11 @@ const Comments = (props, { onCloseCommentPage, onShowHomePage }) => {
           </CommentForm>
           <CommentBtnWrapper
             onClick={onAddComment}
-            disabled={isValid ? false : true}
-          >
+            disabled={isValid ? false : true}>
             <CommentBtnIcon $commentLength={input.length} />
           </CommentBtnWrapper>
         </CommentFormWrapper>
-
       </CommentModal>
-    </CommentModalWrapper>
   );
 };
 export default Comments;

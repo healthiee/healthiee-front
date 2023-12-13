@@ -43,7 +43,7 @@ const Contents = (props) => {
   const dateFormat = `${date.slice(0,4)}년 ${date.slice(5,7)}월 ${date.slice(8,10)}일`
 
   const showCommentPage = () => {
-    props.onShowCommentPage();
+    props.onShowComment();
   }
 
   // tag color 

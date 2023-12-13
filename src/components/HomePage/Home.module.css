@@ -13,6 +13,7 @@
   height: 32px;
 }
 
+/* Notification Modal */
 .notificationPopup {
   position: fixed;
   left: 100%;
@@ -20,7 +21,7 @@
   z-index: 999;
 }
 
-.notificationPopup.showNotificaton {
+.notificationPopup.showNotification {
   left: 0;
 }
 

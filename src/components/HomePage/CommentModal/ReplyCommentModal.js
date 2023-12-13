@@ -92,12 +92,27 @@ const DotsIcon = styled(dots)`
   margin-right: 16px;
 `
 
+const UserId = styled.span`
+  color: ${({ theme }) => theme.colors.orange};
+`
+
+const UserMessage = styled.span`
+
+`
+
 const ReplyCommentModal = ({ childcomment, onEditComment, onDeleteComment, clearInput }) => {
+  
+  // Heart
   const [isPopup, setIsPopup] = useState(false);
   const [heart, setHeart] = useState(() => {
     const savedHeart = localStorage.getItem(`comment_${childcomment.commentId}_heart`);
     return savedHeart === 'true';
   });
+
+  // UserIdColor Change
+  const contentParts = childcomment.content.split(' ');
+  const userId = contentParts[0];
+  const message = contentParts.slice(1).join(' ');
 
   // Save heart
   useEffect(() => {
@@ -159,7 +174,10 @@ const ReplyCommentModal = ({ childcomment, onEditComment, onDeleteComment, clear
               <CardTime>{childcomment.createdDate}</CardTime>
             </CardUserAndTime>
             <CardContentAndHeart>
-              <CardContents>{childcomment.content}</CardContents>
+              <CardContents>
+                <UserId>{userId}</UserId>{' '}
+                <UserMessage>{message}</UserMessage>
+              </CardContents>
               <CardHeartWrapper onClick={heartClickHandler}>
                 <CardHeartIcon $isActive={heart} />
                 <CardHeartNumber>{childcomment.likeCount}</CardHeartNumber>

@@ -49,7 +49,19 @@ const CardContents = styled.div`
   line-height: 1.7;
 `
 
+const UserId = styled.span`
+  color: ${({ theme }) => theme.colors.orange};
+`
+
+const UserMessage = styled.span`
+
+`
+
 const ReplyComment = ({ comment }) => {
+
+  const contentParts = comment.content.split(' ');
+  const userId = contentParts[0];
+  const message = contentParts.slice(1).join(' ');
 
   return (
       <CardContent>
@@ -61,7 +73,10 @@ const ReplyComment = ({ comment }) => {
           <CardUserAndTime>
             <CardUser>{comment.commentId}</CardUser>
           </CardUserAndTime>
-            <CardContents>{comment.content}</CardContents>
+            <CardContents>
+              <UserId>{userId}</UserId>{' '}
+              <UserMessage>{message}</UserMessage>
+            </CardContents>
         </CardMainWrapper>
       </CardContent>
   );
