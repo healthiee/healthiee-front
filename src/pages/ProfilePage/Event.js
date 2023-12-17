@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Atom } from '../../assets/images/DevelopmentIllustrations/atom.svg'
 import { ReactComponent as Help } from '../../assets/images/help.svg';
-import { format, startOfMonth, endOfMonth, addDays, startOfWeek, endOfWeek, isSameDay } from 'date-fns';
+import { format, startOfMonth, endOfMonth, addDays, startOfWeek, endOfWeek, isSameDay, isSameMonth, getDaysInMonth } from 'date-fns';
 import HelpIconModal from './HelpIconModal';
 
 // TodayWorkout
@@ -110,13 +110,13 @@ const Week = styled.p`
   color: ${({ theme }) => theme.colors.gray};
 `
 const DayWrapper = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
-width: 34px;
-height: 35px;
-background-color: rgba(255, 255, 255, 0.5);
-border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 34px;
+  height: 35px;
+  border-radius: 50%;
+  border: ${props => (props.$isChecked && props.$isCurrentMonth ? '1px solid #0058FF' : 'rgba(255, 255, 255, 0.5)')};
 `
 const Day = styled.p`
   font-size: 9px;
@@ -129,15 +129,18 @@ const DayBox = styled.div`
 `
 
 // Achievement 
-const Achievement = styled.div`
-`
 const AchieveBar = styled.div`
   width: 301px;
   height: 25px;
-  background-color: #B7FF62;
+  background-color: rgba(183, 255, 98, 0.4);
   border-radius: 13px;
-  opacity: 0.4;
   margin: 9px 0 4px;
+`
+const FillerStyles = styled.div`
+  width: ${({ $fillPercentage }) => `${$fillPercentage}%`};
+  height: 100%;
+  border-radius: 13px;
+  background-color: rgba(183, 255, 98, 1);
 `
 const DescriptionXsm = styled.p`
   display: flex;
@@ -152,14 +155,30 @@ const Event = () => {
   const monthEnd = endOfMonth(currentDate);
   const startDate = startOfWeek(monthStart);
   const endDate = endOfWeek(monthEnd);
+  const daysOfMonth = getDaysInMonth(currentDate);
+  const [checkedDays, setCheckedDays] = useState([]);
 
   const day = [];
   let days = [];
   let startDay = startDate;
   let formattedDate = "";
 
-  // Modal
+  const [isChecked, setIsChecked] = useState(false);
   const [modal, setModalOpen] = useState(false);
+
+  const handleChange = (e) => {
+    if(e.target.checked) {
+      setIsChecked(e.target.checked);
+      const newCheckedDay = [...checkedDays, currentDate];
+      setCheckedDays(newCheckedDay);
+    } else {
+      setIsChecked(e.target.unchecked);
+      const newCheckedDay = checkedDays.filter(date => !isSameDay(date, currentDate))
+      setCheckedDays(newCheckedDay);
+    }
+  };
+  const successfulDays = checkedDays.length;  
+  const successRate = ((successfulDays/daysOfMonth)*100).toFixed();
 
   const week = daysOfWeek.map((day, i) => {
     return (
@@ -171,11 +190,26 @@ const Event = () => {
     for (let i = 0; i < 7; i++) {
       formattedDate = format(startDay, "d");
       const isToday = isSameDay(startDay, currentDate);
+      const isCurrentMonth = isSameMonth(startDay, currentDate);
       startDay = addDays(startDay, 1);
-
       days.push(
-        <DayWrapper key={formattedDate} style={{ backgroundColor: isToday ? 'rgba(0, 88, 255, 0.5)' : 'rgba(255, 255, 255, 0.5)' }}>
-          <Day>
+        <DayWrapper
+          key={formattedDate}
+          style={{
+            backgroundColor: isToday
+            ? 'rgba(0, 88, 255, 0.5)' 
+            : 'rgba(255, 255, 255, 0.5)'
+          }}
+          $isChecked={isToday && isChecked}
+          $isCurrentMonth={isCurrentMonth}
+        >
+          <Day
+            style={{
+              color: isCurrentMonth 
+              ? '#717171' 
+              : 'transparent',
+            }}
+          >
             {formattedDate}
           </Day>
         </DayWrapper>
@@ -185,18 +219,20 @@ const Event = () => {
     days = [];
   };
 
-  const showModal = () => { 
+  const showModal = () => {
     setModalOpen(true);
   }
 
 
   return (
     <EventWrapper>
-      
       <TodayWorkout>
         <Top>
           <DescriptionMd>오늘 운동하셨나요?</DescriptionMd>
-          <CheckBox type="checkbox" />
+          <CheckBox
+            type="checkbox"
+            onChange={handleChange}
+          />
         </Top>
         <Line />
         <Bottom>
@@ -204,24 +240,22 @@ const Event = () => {
             <AtomImg />
             <DescriptionMd>지금 나는 원자에요</DescriptionMd>
           </ImgAndIcon>
-          <HelpIcon onClick={showModal}/>
+          <HelpIcon onClick={showModal} />
           {modal && <HelpIconModal setModalOpen={setModalOpen} />}
         </Bottom>
       </TodayWorkout>
-
       <Calendar large={day.length > 5}>
         <Month>
           <DescriptionLg>{format(currentDate, 'M')}월</DescriptionLg>
         </Month>
-          <WeekLayOut>{week}</WeekLayOut>
-          <DayLayOut>{day}</DayLayOut>
+        <WeekLayOut>{week}</WeekLayOut>
+        <DayLayOut>{day}</DayLayOut>
       </Calendar>
-
-      <Achievement>
-        <DescriptionMd>• 이번달 달성율</DescriptionMd>
-        <AchieveBar></AchieveBar>
-        <DescriptionXsm>75%(20일 중 15일 성공)</DescriptionXsm>
-      </Achievement>
+      <DescriptionMd>• 이번달 달성율</DescriptionMd>
+      <AchieveBar>
+        <FillerStyles $fillPercentage={((successfulDays / daysOfMonth)*100).toFixed()}/>
+      </AchieveBar>
+      <DescriptionXsm>{successRate}%({daysOfMonth}일 중 {successfulDays}일 성공)</DescriptionXsm>
     </EventWrapper>
   )
 };
