@@ -1,12 +1,114 @@
-.container {
+.backdrop {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  height: 592px;
   width: 360px;
-  height: 540px;
+  z-index: 2;
+}
+
+.backdrop::after {
+  height: 592px;
+  width: 360px;
+  content: '';
   background-color: white;
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 1.5;
+  opacity: 0.5;
 }
 
-.container h1 {
+.container {
+  width: 207px;
+  height: 159px;
+  position: absolute;
+  top: 56px;
+  left: 153px;
+  background-color: white;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  border-radius: 30px;
+  box-shadow: 0px 3px 6px #00000029;
+}
+
+.container > * {
+  height: 53px;
+}
+
+.close {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  padding-right: 12px;
+}
+
+.box {
+  border-top: 2px solid #D3D3D3;
+  display: flex;
+  /* justify-content: space-around; */
+  align-items: center;
+  padding-left: 32px;
+}
+
+.box div {
+  margin-right: 19px;
+}
+
+.box p {
+  font-size: 16px;
+}
+
+/* 두번째 pop창 */
+
+.caution {
+  width: 280px;
+  height: 168px;
+  position: absolute;
+  top: 215px;
+  left: 40px;
+  background-color: white;
+  z-index: 4;
+  border-radius: 30px;
+  box-shadow: 0px 3px 6px #00000029;
+  border: 3px solid #FFC493;  
+}
+
+.message {
+  width: 280px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.message h1 {
+  font-size: 20px;
+  margin: 28px 0 8px;
+  font-weight: 400;
+}
+
+.message h2 {
+  font-size: 12px;
+  margin: 0 21px 0;
   text-align: center;
+  line-height: 1.7;
+}
+
+.btns {
+  width: 280px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.btns button {
+  width: 100px;
+  height: 36px;
+  background-color: #FFC493;
+  border-radius: 18px;
+  font-size: 12px;
 }
