@@ -55,7 +55,6 @@ function App() {
       <Route path="/email-login" element={<AuthLogin/>} />
       <Route path="/authcompleted" element={<AuthCompleted />} />
       <Route path="/createAccount" element={<CreateAccount />} />
-      <Route path="/createPost" element={<CreatePost />} />
       <Route path="/post/:id" element={<Post />} loader={PostLoader}/>
       <Route path="/comments" element={<Comments />} />
       <Route path="/comments/:commentId" element={<ReplyCommentsModal />} />
