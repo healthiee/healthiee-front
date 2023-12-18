@@ -15,7 +15,7 @@ const PostForm = (props) => {
   const defaultImg = [];
   const defaultTag = [];
   const defaultImgId = [];
-  const defaultCategory = data ? data.category.categoryId.toString() ? data.category.categoryId.toString() : 'default' : 'default';
+  const defaultCategory = data ? data.category ? data.category.categoryId.toString() : 'default' : 'default';
 
   // 이미지 불러오기
 
