@@ -1,7 +1,7 @@
 import styles from './PostForm.module.css';
 import {ReactComponent as ArrowBack} from '../../assets/icons/ArrowBack_icon.svg';
 import { useState, useRef } from 'react';
-import { Link, useNavigate, useLoaderData } from 'react-router-dom';
+import { Link, useNavigate, useLoaderData, useRouteLoaderData } from 'react-router-dom';
 import {ReactComponent as Search} from '../../assets/images/search.svg';
 import {ReactComponent as Close} from '../../assets/images/close.svg';
 import {ReactComponent as AddBox} from '../../assets/images/addBox.svg';
@@ -10,6 +10,7 @@ import axios from 'axios';
 
 const PostForm = (props) => {
 
+  const token =  useRouteLoaderData('token');
   const categories = useLoaderData();
   const data = props.data;
   const defaultImg = [];
@@ -238,7 +239,7 @@ const PostForm = (props) => {
       data: formData,
       headers: {
         'Content-Type' : contentType,
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
+        Authorization: `Bearer ${token}`,
       }
     }).then(response => {
       console.log(response.data);
