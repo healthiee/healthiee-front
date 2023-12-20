@@ -16,8 +16,8 @@ import defaultProfile from '../../assets/images/defaultProfile.png';
 const SignupPage = ()=> {
   const location = useLocation();
   const { code } = location.state;
-  const [imgFile, setImgFile] = useState('');
-  const imgRef = useRef();
+  const [showImg, setShowImg] = useState(''); // 이미지 미리보기
+  const [ImgFile, setImgFile] = useState(''); // 서버에 보내는 이미지
   const [tag, setTag] = useState('');
   const [exercises, setExercises] = useState([]);
   const presentationRef = useRef();
@@ -64,18 +64,13 @@ const SignupPage = ()=> {
 
   // form : profile img
 
-  const saveImgFile = () => {
+  const saveImgFile = (event) => {
+    const image = event.target.files[0]
+    const imageUrl = URL.createObjectURL(image);
+    const imageFile = image;
 
-    try {
-      const file = imgRef.current.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-      setImgFile(reader.result);
-    };
-    } catch {
-      return
-    }
+    setShowImg(imageUrl);
+    setImgFile(imageFile);
   };
 
   // form : add tags
@@ -149,24 +144,26 @@ const SignupPage = ()=> {
       'workouts' : workouts
     }
 
-    console.log(data);
-    
-    const formdata = new FormData();
-    formdata.append('data',  new Blob([JSON.stringify(data)], {
-      type: "application/json"
-  }))
+    console.log(data)
 
-    axios.post('http://prod.healthiee.net/v1/auth/register', formdata, {
+    const formData = new FormData();
+
+    formData.append('image', ImgFile);
+    formData.append('data', new Blob([JSON.stringify(data)], {
+      type: "application/json"
+    }))
+
+    axios.post('http://prod.healthiee.net/v1/auth/register', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     }).then(response => {
-      console.log(response.data)
+      console.log(response.data);
+      localStorage.setItem('token', response.data.data.token); // 로컬저장소에 토큰 저장
     }).catch(error => {
       console.log('에러발생', error);
     })
 
-    //error 발생시 return
     navigate('/');
   }
 
@@ -212,8 +209,8 @@ const SignupPage = ()=> {
         <h2>프로필 사진</h2>
 
         <div className={styles.profile_container}>
-          <input name="image" className={styles.profile_input} type="file" accept="image/*" id="profileimg" onChange={saveImgFile} ref={imgRef}/>
-          {imgFile ? <img src={imgFile} alt="profile img"/> : <img src={defaultProfile} alt="profile img" className={styles.defaultimg}/>}
+          <input name="image" className={styles.profile_input} type="file"  id="profileimg" onChange={saveImgFile} />
+          {showImg ? <img src={showImg} alt="profile img"/> : <img src={defaultProfile} alt="profile img" className={styles.defaultimg}/>}
           <div className={styles.label_container}>
             <label htmlFor="profileimg" className={styles.profile_label}>사진 등록하기</label>
           </div>
