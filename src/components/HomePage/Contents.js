@@ -5,7 +5,7 @@ import { useState } from 'react';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import defaultImg from '../../assets/images/defaultImg.png';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useRouteLoaderData } from 'react-router-dom';
 
 // tag color
 
@@ -13,6 +13,8 @@ const randomColor = ['#FCADFF', '#FFE0E0', '#A7FFF5', '#DDFFD6', '#B1E7FF', '#FB
 const shuffleColor = randomColor.sort(()=> Math.random() - 0.5);
 
 const Contents = (props) => {
+
+  const token = useRouteLoaderData('token');
 
   //좋아요
   const [heart, setHeart] = useState(false);
@@ -65,7 +67,7 @@ const Contents = (props) => {
       method: method,
       url: `http://prod.healthiee.net/v1/posts/${postId}/like`,
       headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
+        Authorization: `Bearer ${token}`,
       }
     }).then(response => {
       console.log(response);
@@ -109,7 +111,7 @@ const Contents = (props) => {
           <h2 onClick={showCommentPage}>댓글 {props.post.commentCount}개</h2>
         </Link>
       </div>
-      <p className={more ? `${styles.more}` : ''}>{more ? props.post.content.slice(0,60) : props.post.content} {more ? <button onClick={moreHandler}>...더보기</button> : ''}</p>
+      <p className={more ? `${styles.more}` : ''}>{more ? props.post.content.slice(0,60) : props.post.content} {more && props.post.content.length > 40 ? <button onClick={moreHandler}>...더보기</button> : ''}</p>
     </div>
 
   </article>)
