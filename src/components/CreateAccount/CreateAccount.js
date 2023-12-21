@@ -159,7 +159,6 @@ const SignupPage = ()=> {
       }
     }).then(response => {
       console.log(response.data);
-      localStorage.setItem('token', response.data.data.token); // 로컬저장소에 토큰 저장
     }).catch(error => {
       console.log('에러발생', error);
     })

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import defaultImg from '../../assets/images/defaultImg.png';
 import axios from 'axios';
-import { Link, useRouteLoaderData } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // tag color
 
@@ -16,7 +16,6 @@ let k = 0;
 
 const Contents = (props) => {
 
-  const token = useRouteLoaderData('token');
   const [imgUrl, setImgUrl] = useState(props.post.medias.length > 0 ? props.post.medias[0].url : defaultImg);
 
   // Image button (이전, 다음)
@@ -86,7 +85,7 @@ const Contents = (props) => {
       method: method,
       url: `http://prod.healthiee.net/v1/posts/${postId}/like`,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
       }
     }).then(response => {
       console.log(response);

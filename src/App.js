@@ -12,7 +12,6 @@ import MainRoot from './pages/MainRoot';
 //loader
 import {loader as HomeLoader} from '../src/components/HomePage/Home';
 import {loader as CodeLoader} from '../src/components/PostForm/PostForm';
-import {getToken as TokenLoader} from './utils/token';
 
 // router
 import CreateAccount from './components/CreateAccount/CreateAccount';
@@ -40,25 +39,23 @@ function App() {
       <Route path="/screen" element={<SplashScreen />} />
       <Route path="/startpage" element={<StartPage />} />
       <Route path="/emaillogin" element={<EmailLogin />} />
-      <Route id='token' loader={TokenLoader}>
-        <Route path='/' element={<MainRoot />}>
-          <Route index element={<HomePage />} loader={HomeLoader} />
-          <Route path="first" element={<FirstPage />} />
-          <Route path="second" element={<SecondPage />} />
-          <Route path="profile" element={<ProfilePage />}>
-            <Route index element={<Description />} />
-            <Route path="event" element={<Event />} />
-          </Route>
+      <Route path='/' element={<MainRoot />}>
+        <Route index element={<HomePage />} loader={HomeLoader} />
+        <Route path="first" element={<FirstPage />} />
+        <Route path="second" element={<SecondPage />} />
+        <Route path="profile" element={<ProfilePage />}>
+          <Route index element={<Description />} />
+          <Route path="event" element={<Event />} />
         </Route>
-        <Route path="/post/:id" loader={PostLoader} id='post-detail'>
-          <Route index element={<Post/>}/>
-          <Route path="edit" element={<EditPage/>} loader={CodeLoader}/>
-        </Route>
-        <Route path="/post/:id" element={<Post />} loader={PostLoader}/>
-        <Route path="/comments" element={<Comments />} />
-        <Route path="/comments/:commentId" element={<ReplyCommentsModal />} />
-        <Route path="/createPost" element={<CreatePost />} loader={CodeLoader}/>
       </Route>
+      <Route path="/post/:id" loader={PostLoader} id='post-detail'>
+        <Route index element={<Post/>}/>
+        <Route path="edit" element={<EditPage/>} loader={CodeLoader}/>
+      </Route>
+      <Route path="/post/:id" element={<Post />} loader={PostLoader}/>
+      <Route path="/comments" element={<Comments />} />
+      <Route path="/comments/:commentId" element={<ReplyCommentsModal />} />
+      <Route path="/createPost" element={<CreatePost />} loader={CodeLoader}/>
       <Route path="/email-login" element={<AuthLogin/>} />
       <Route path="/authcompleted" element={<AuthCompleted />} />
       <Route path="/createAccount" element={<CreateAccount />} />
