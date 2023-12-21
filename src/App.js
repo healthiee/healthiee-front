@@ -17,7 +17,7 @@ import {loader as CodeLoader} from '../src/components/PostForm/PostForm';
 import CreateAccount from './components/CreateAccount/CreateAccount';
 import HomePage from './pages/HomePage';
 import FirstPage from './pages/First';
-import SecondPage from './pages/Second';
+import RecommendTab from './pages/RecommendTab';
 import CreatePost from './pages/CreatePost';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import Description from './pages/ProfilePage/Description';
@@ -42,7 +42,7 @@ function App() {
       <Route path='/' element={<MainRoot />}>
         <Route index element={<HomePage />} loader={HomeLoader} />
         <Route path="first" element={<FirstPage />} />
-        <Route path="second" element={<SecondPage />} />
+        <Route path="recommend" element={<RecommendTab />} />
         <Route path="profile" element={<ProfilePage />}>
           <Route index element={<Description />} />
           <Route path="event" element={<Event />} />
