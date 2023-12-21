@@ -250,6 +250,7 @@ const PostForm = (props) => {
 
   // method === patch 일 경우 사진 추가 아이콘 숨김
   const method = props.method === 'patch';
+  const btnMessage = props.method === 'post' ? '게시글 등록' : '수정 완료'
 
   return(
     <div className={styles.container}>
@@ -328,7 +329,7 @@ const PostForm = (props) => {
         </div>
 
         <div className={styles.btn}>
-          <button type='submit'>게시글 등록</button>
+          <button type='submit'>{btnMessage}</button>
         </div>
       </form>
 
