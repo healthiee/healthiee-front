@@ -1,0 +1,46 @@
+.container {
+  width: 312px;
+  height: 220px;
+  margin: 40px auto;
+  margin-bottom: 70px;
+}
+
+.box {
+  width: 300px;
+  height: 44px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.line {
+  position: absolute;
+  width: 300px;
+  top: 21px;
+  border: 1px solid #D3D3D3;
+}
+
+.title {
+  position: absolute;
+  left: 40px;
+  width: 220px;
+  height: 44px;
+  background-color: #F0B2FF;
+  box-shadow: 0px 5px 6px #00000029;
+  border: 2px solid #DF67FF;
+  border-radius: 22px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bolder;
+}
+
+.post_box {
+  width: 312px;
+  height: 177px;
+  display: flex;
+  align-items: center;
+  overflow-x: scroll;
+  flex-wrap: nowrap;
+  scroll-snap-type: x mandatory;
+}

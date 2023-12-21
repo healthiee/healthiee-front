@@ -1,0 +1,26 @@
+.header {
+  display: flex;
+  width: 360px;
+  height: 48px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 0 20px;
+}
+
+.header img {
+  width: 160px;
+  height: 32px;
+}
+
+/* Notification Modal */
+.notificationPopup {
+  position: fixed;
+  left: 100%;
+  transition: left 0.5s;
+  z-index: 999;
+}
+
+.notificationPopup.showNotification {
+  left: 0;
+}

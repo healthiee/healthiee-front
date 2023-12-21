@@ -56,14 +56,16 @@ const Home  = () => {
       <div className={styles.notificationPopup} ref={swipeRef}>
         {popupVisible && <NotificationPopup onClose={closeNotification} />}
       </div>
+
       <div>
         {commentVisible && <Comments />}
       </div>
+      
       <header className={styles.header}>
         <div>
           <img src={logo} alt="logo" />
         </div>
-        <div className={styles.notifiaction}>
+        <div>
           <Notification onClick={showNotification} />
         </div>
       </header>
