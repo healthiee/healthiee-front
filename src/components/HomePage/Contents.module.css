@@ -55,7 +55,7 @@
 }
 
 .profile_tag {
-  height: 20px;
+  height: 28px;
   border-radius: 16px;
   padding: 0 10px;
   display: flex;
@@ -97,6 +97,21 @@
   position: relative;
 }
 
+.img_count {
+  position: absolute;
+  width: 42px;
+  height: 20px;
+  top: 8px;
+  right: 8px;
+  background-color: white;
+  opacity: 0.8;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
 .back {
   position: absolute;
   border: 1px solid white;
@@ -112,7 +127,7 @@
   background-color: white;
   border-radius: 15px;
   top: 148px;
-  right: 10px;
+  right: 5px;
 }
 
 /* comment */

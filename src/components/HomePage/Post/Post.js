@@ -1,5 +1,5 @@
 import styles from './Post.module.css';
-import { useRouteLoaderData, Link } from 'react-router-dom';
+import { useRouteLoaderData, Link, useParams } from 'react-router-dom';
 import {useState} from 'react';
 import axios from 'axios';
 import defaultProfile from '../../../assets/images/defaultProfile.png';
@@ -15,10 +15,12 @@ const shuffleColor = randomColor.sort(()=> Math.random() - 0.5);
 
 const Post = () => {
   
-  const [heart, setHeart] = useState(false);
   const [popup, setPopup] = useState(false);
   const loaderdata = useRouteLoaderData('post-detail');
   const data = loaderdata[0]
+  const [heart, setHeart] = useState(data.liked? true : false);
+
+  const params = useParams();
 
   //팝업창
   const popupHandler = () => {
@@ -54,7 +56,7 @@ const Post = () => {
   }
 
   //params로 대체
-  const postId = '87f3748d-1e0d-410a-8a53-3811208bfa24';
+  const postId = params.id;
 
   // 좋아요 server 전송
   const heartData = (method) => {

@@ -6,6 +6,8 @@ import defaultProfile from '../../assets/images/defaultProfile.png';
 import defaultImg from '../../assets/images/defaultImg.png';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import {ReactComponent as NextBtn} from '../../assets/images/nextBtn.svg';
+import {ReactComponent as BackBtn} from '../../assets/images/backBtn.svg';
 
 // tag color
 
@@ -13,8 +15,11 @@ const randomColor = ['#FCADFF', '#FFE0E0', '#A7FFF5', '#DDFFD6', '#B1E7FF', '#FB
 const shuffleColor = randomColor.sort(()=> Math.random() - 0.5);
 
 let k = 0;
+let count = 1;
 
 const Contents = (props) => {
+
+  //게시물 이미지 업로드
 
   const [imgUrl, setImgUrl] = useState(props.post.medias.length > 0 ? props.post.medias[0].url : defaultImg);
 
@@ -23,6 +28,7 @@ const Contents = (props) => {
   const nextBtnHandler = () => {
     if( k < props.post.medias.length - 1) {
       k++
+      count++
       setImgUrl(props.post.medias[k].url);
     }
   };
@@ -30,12 +36,13 @@ const Contents = (props) => {
   const backBtnHandler = () => {
     if( k > 0 ) {
       k--
+      count--
       setImgUrl(props.post.medias[k].url);
     }
   };
 
   //좋아요
-  const [heart, setHeart] = useState(false);
+  const [heart, setHeart] = useState(props.post.liked ? true : false); //좋아요를 했는지 여부에 대한 판단
   //... 더보기
   const [more, setMore] = useState(true);
 
@@ -118,11 +125,12 @@ const Contents = (props) => {
     </div>
 
     <div className={styles.content_img}>
-      <div onClick={backBtnHandler} className={styles.back}>이전</div>
+      <div className={styles.img_count}>{`${count} / ${props.post.medias.length}`}</div>
+      <div onClick={backBtnHandler} className={styles.back}><BackBtn/></div>
       <Link key={props.post.postId} to={`/post/${props.post.postId}`}>
         <img src={imgUrl} alt="content_img" />
       </Link>
-      <div onClick={nextBtnHandler} className={styles.next}>다음</div>
+      <div onClick={nextBtnHandler} className={styles.next}><NextBtn/></div>
     </div>
 
     <div className={styles.comment}>
