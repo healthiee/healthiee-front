@@ -1,9 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as Atom } from '../../assets/images/DevelopmentIllustrations/atom.svg'
+import atom from '../../assets/images/DevelopmentIllusts/atom.png';
+import molecule from '../../assets/images/DevelopmentIllusts/molecule.png';
+import sapling from '../../assets/images/DevelopmentIllusts/sapling.png';
+import seed from '../../assets/images/DevelopmentIllusts/seed.png';
+import sprout from '../../assets/images/DevelopmentIllusts/sprout.png';
+import tree from '../../assets/images/DevelopmentIllusts/tree.png';
 import { ReactComponent as Help } from '../../assets/images/help.svg';
 import { format, startOfMonth, endOfMonth, addDays, startOfWeek, endOfWeek, isSameDay, isSameMonth, getDaysInMonth } from 'date-fns';
 import HelpIconModal from './HelpIconModal';
+import axios from 'axios';
 
 // TodayWorkout
 const EventWrapper = styled.div`
@@ -54,11 +60,15 @@ const ImgAndIcon = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-right: 48px;
 `
-const AtomImg = styled(Atom)`
+const AtomImg = styled.div`
   width: 88px;
   height: 88px;
-  margin-right: 64px;
+  background: url(${atom});
+  margin-bottom: 10px;
+  border-radius: 20px;
+  box-shadow: 0px 3px 6px #00000029;
 `
 const HelpIcon = styled(Help)`
   width: 20px;
@@ -116,7 +126,6 @@ const DayWrapper = styled.div`
   width: 34px;
   height: 35px;
   border-radius: 50%;
-  border: ${props => (props.$isChecked && props.$isCurrentMonth ? '1px solid #0058FF' : 'rgba(255, 255, 255, 0.5)')};
 `
 const Day = styled.p`
   font-size: 9px;
@@ -156,7 +165,14 @@ const Event = () => {
   const startDate = startOfWeek(monthStart);
   const endDate = endOfWeek(monthEnd);
   const daysOfMonth = getDaysInMonth(currentDate);
-  const [checkedDays, setCheckedDays] = useState([]);
+  const [workouts, setWorkouts] = useState([]);
+  const [workoutId, setWorkoutId] = useState('');
+
+  const isWorkoutExist = (date) => {
+    return workouts.some(workout => 
+      isSameDay(new Date(workout.workoutDate), date)
+    );
+  };
 
   const day = [];
   let days = [];
@@ -165,21 +181,56 @@ const Event = () => {
 
   const [isChecked, setIsChecked] = useState(false);
   const [modal, setModalOpen] = useState(false);
+  
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      try {
+        const res = await axios.get('http://prod.healthiee.net/v1/workouts', {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
+          }
+        })
+        setWorkouts(res.data.data.workouts);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchWorkouts();
+  }, [])
 
-  const handleChange = (e) => {
-    if(e.target.checked) {
-      setIsChecked(e.target.checked);
-      const newCheckedDay = [...checkedDays, currentDate];
-      setCheckedDays(newCheckedDay);
+
+  const handleChange = async (e) => {
+    if (e.target.checked) {
+      setIsChecked(true);
+      try {
+        const res = await axios.post('http://prod.healthiee.net/v1/workouts', {}, {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
+          }
+        })
+        const newWorkout = {
+          workoutId: res.data.data.workoutId, 
+        }
+        setWorkouts([...workouts, newWorkout])
+      } catch (err) {
+        console.log(err)
+      }
     } else {
-      setIsChecked(e.target.unchecked);
-      const newCheckedDay = checkedDays.filter(date => !isSameDay(date, currentDate))
-      setCheckedDays(newCheckedDay);
+      setIsChecked(false);
+      try {
+        await axios.delete(`http://prod.healthiee.net/v1/workouts/${workoutId}`, {}, {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
+          }
+        })
+       
+      } catch (err) {
+        console.log(err)
+      }
     }
   };
-  const successfulDays = checkedDays.length;  
-  const successRate = ((successfulDays/daysOfMonth)*100).toFixed();
-
+  const successfulDays = workouts.length;
+  const successRate = ((successfulDays / daysOfMonth) * 100).toFixed();
   const week = daysOfWeek.map((day, i) => {
     return (
       <Week key={i}>{day}</Week>
@@ -191,23 +242,28 @@ const Event = () => {
       formattedDate = format(startDay, "d");
       const isToday = isSameDay(startDay, currentDate);
       const isCurrentMonth = isSameMonth(startDay, currentDate);
+      const isWorkoutDay = isWorkoutExist(startDay);
+        
       startDay = addDays(startDay, 1);
       days.push(
         <DayWrapper
           key={formattedDate}
           style={{
             backgroundColor: isToday
-            ? 'rgba(0, 88, 255, 0.5)' 
-            : 'rgba(255, 255, 255, 0.5)'
+              ? 'rgba(0, 88, 255, 0.5)'
+              : 'rgba(255, 255, 255, 0.5)',
+            border: isToday && isChecked
+            ? '1px solid #0058FF'
+            : !isToday && isWorkoutDay
+              ?'1px solid rgba(0, 88, 255, 0.5)'
+              :'rgba(255, 255, 255, 0.5)'
           }}
-          $isChecked={isToday && isChecked}
-          $isCurrentMonth={isCurrentMonth}
         >
           <Day
             style={{
-              color: isCurrentMonth 
-              ? '#717171' 
-              : 'transparent',
+              color: isCurrentMonth
+                ? '#717171'
+                : 'transparent',
             }}
           >
             {formattedDate}
@@ -222,7 +278,6 @@ const Event = () => {
   const showModal = () => {
     setModalOpen(true);
   }
-
 
   return (
     <EventWrapper>
@@ -253,7 +308,7 @@ const Event = () => {
       </Calendar>
       <DescriptionMd>• 이번달 달성율</DescriptionMd>
       <AchieveBar>
-        <FillerStyles $fillPercentage={((successfulDays / daysOfMonth)*100).toFixed()}/>
+        <FillerStyles $fillPercentage={((successfulDays / daysOfMonth) * 100).toFixed()} />
       </AchieveBar>
       <DescriptionXsm>{successRate}%({daysOfMonth}일 중 {successfulDays}일 성공)</DescriptionXsm>
     </EventWrapper>
