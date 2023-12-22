@@ -96,19 +96,10 @@ const DotsIcon = styled(dots)`
 `
 
 const Comment = ({ comment, onAddReply, onEditComment, onDeleteComment, clearInput, postId }) => {
-  const [heart, setHeart] = useState(() => {
-    const savedHeart = localStorage.getItem(`comment_${comment.commentId}_heart`);
-    return savedHeart === 'true';
-  });
+  const [heart, setHeart] = useState(localStorage.getItem(`comment_${comment.commentId}_heart`) === 'true');
   const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate();
   const [isPopup, setIsPopup] = useState(false);
-
-  // Save heart
-  useEffect(() => {
-    const savedHeart = localStorage.getItem(`comment_${comment.commentId}_heart`);
-    setHeart(savedHeart === 'true');
-  }, [comment.commentId]);
 
   useEffect(() => {
     localStorage.setItem(`comment_${comment.commentId}_heart`, heart);
