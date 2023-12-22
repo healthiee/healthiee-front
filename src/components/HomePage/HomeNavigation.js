@@ -16,7 +16,7 @@ const HomeNavigation = () => {
         <NavLink to='first' className={activeStyle}><Search/></NavLink>
       </div>
       <div className={styles.nav_icon}>
-        <NavLink to='second' className={activeStyle}><Location/></NavLink>
+        <NavLink to='recommend' className={activeStyle}><Location/></NavLink>
       </div>
       <div className={styles.nav_icon}>
         <NavLink to='/' className={activeStyle} end><Home/></NavLink>

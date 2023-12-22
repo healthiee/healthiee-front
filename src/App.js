@@ -17,7 +17,7 @@ import {loader as CodeLoader} from '../src/components/PostForm/PostForm';
 import CreateAccount from './components/CreateAccount/CreateAccount';
 import HomePage from './pages/HomePage';
 import FirstPage from './pages/First';
-import SecondPage from './pages/Second';
+import RecommendTab from './pages/RecommendTab';
 import CreatePost from './pages/CreatePost';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import Description from './pages/ProfilePage/Description';
@@ -42,7 +42,7 @@ function App() {
       <Route path='/' element={<MainRoot />}>
         <Route index element={<HomePage />} loader={HomeLoader} />
         <Route path="first" element={<FirstPage />} />
-        <Route path="second" element={<SecondPage />} />
+        <Route path="recommend" element={<RecommendTab />} />
         <Route path="profile" element={<ProfilePage />}>
           <Route index element={<Description />} />
           <Route path="event" element={<Event />} />
@@ -52,13 +52,13 @@ function App() {
         <Route index element={<Post/>}/>
         <Route path="edit" element={<EditPage/>} loader={CodeLoader}/>
       </Route>
-      <Route path="/email-login" element={<AuthLogin/>} />
-      <Route path="/authcompleted" element={<AuthCompleted />} />
-      <Route path="/createAccount" element={<CreateAccount />} />
       <Route path="/post/:id" element={<Post />} loader={PostLoader}/>
       <Route path="/comments" element={<Comments />} />
       <Route path="/comments/:commentId" element={<ReplyCommentsModal />} />
       <Route path="/createPost" element={<CreatePost />} loader={CodeLoader}/>
+      <Route path="/email-login" element={<AuthLogin/>} />
+      <Route path="/authcompleted" element={<AuthCompleted />} />
+      <Route path="/createAccount" element={<CreateAccount />} />
       <Route path='*' element={<p>There's nothing here: 404!</p>} />
     </Route>
   ))

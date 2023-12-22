@@ -56,14 +56,16 @@ const Home  = () => {
       <div className={styles.notificationPopup} ref={swipeRef}>
         {popupVisible && <NotificationPopup onClose={closeNotification} />}
       </div>
+
       <div>
         {commentVisible && <Comments />}
       </div>
+      
       <header className={styles.header}>
         <div>
           <img src={logo} alt="logo" />
         </div>
-        <div className={styles.notifiaction}>
+        <div>
           <Notification onClick={showNotification} />
         </div>
       </header>
@@ -85,6 +87,7 @@ export default Home;
 //server에서 정보 받아오기
 
 export async function loader () {
+
   const response = await axios.get('http://prod.healthiee.net/v1/posts',{
     headers: {
       Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,

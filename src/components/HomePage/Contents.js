@@ -6,16 +6,43 @@ import defaultProfile from '../../assets/images/defaultProfile.png';
 import defaultImg from '../../assets/images/defaultImg.png';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import {ReactComponent as NextBtn} from '../../assets/images/nextBtn.svg';
+import {ReactComponent as BackBtn} from '../../assets/images/backBtn.svg';
 
 // tag color
 
 const randomColor = ['#FCADFF', '#FFE0E0', '#A7FFF5', '#DDFFD6', '#B1E7FF', '#FBFF93', '#C9CDFF', '#D3D3D3', '#E6C9FF'];
 const shuffleColor = randomColor.sort(()=> Math.random() - 0.5);
 
+let k = 0;
+let count = 1;
+
 const Contents = (props) => {
 
+  //게시물 이미지 업로드
+
+  const [imgUrl, setImgUrl] = useState(props.post.medias.length > 0 ? props.post.medias[0].url : defaultImg);
+
+  // Image button (이전, 다음)
+
+  const nextBtnHandler = () => {
+    if( k < props.post.medias.length - 1) {
+      k++
+      count++
+      setImgUrl(props.post.medias[k].url);
+    }
+  };
+
+  const backBtnHandler = () => {
+    if( k > 0 ) {
+      k--
+      count--
+      setImgUrl(props.post.medias[k].url);
+    }
+  };
+
   //좋아요
-  const [heart, setHeart] = useState(false);
+  const [heart, setHeart] = useState(props.post.liked ? true : false); //좋아요를 했는지 여부에 대한 판단
   //... 더보기
   const [more, setMore] = useState(true);
 
@@ -79,7 +106,7 @@ const Contents = (props) => {
     <div className={styles.content_info}>
       <div className={styles.profile}>
         <div className={styles.profile_img}>
-        <img src={defaultProfile} alt="profile_img" />
+        <img src={props.post.member.profileUrl ? props.post.member.profileUrl : defaultProfile} alt="profile_img" />
         </div>
         <div className={styles.profile_box}>
           <h1>{props.post.member.nickname}</h1>
@@ -97,11 +124,15 @@ const Contents = (props) => {
       </div>
     </div>
 
-    <Link key={props.post.postId} to={`/post/${props.post.postId}`}>
-      <div className={styles.content_img}>
-        <img src={defaultImg} alt="content_img" />
-      </div>
-    </Link>
+    <div className={styles.content_img}>
+      <div className={styles.img_count}>{`${count} / ${props.post.medias.length}`}</div>
+      <div onClick={backBtnHandler} className={styles.back}><BackBtn/></div>
+      <Link key={props.post.postId} to={`/post/${props.post.postId}`}>
+        <img src={imgUrl} alt="content_img" />
+      </Link>
+      <div onClick={nextBtnHandler} className={styles.next}><NextBtn/></div>
+    </div>
+
     <div className={styles.comment}>
       <div className={styles.comment_head}>
         <h2>{dateFormat}</h2>
@@ -109,7 +140,7 @@ const Contents = (props) => {
           <h2 onClick={showCommentPage}>댓글 {props.post.commentCount}개</h2>
         </Link>
       </div>
-      <p className={more ? `${styles.more}` : ''}>{more ? props.post.content.slice(0,60) : props.post.content} {more ? <button onClick={moreHandler}>...더보기</button> : ''}</p>
+      <p className={more ? `${styles.more}` : ''}>{more ? props.post.content.slice(0,60) : props.post.content} {more && props.post.content.length > 40 ? <button onClick={moreHandler}>...더보기</button> : ''}</p>
     </div>
 
   </article>)
