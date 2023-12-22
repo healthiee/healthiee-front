@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const DescriptionWrapper = styled.div`
   display: flex;
@@ -16,6 +17,8 @@ const ImageThumbnail = styled.img`
 
 const Description = () => {
   const [postImages, setPostImages] = useState([]);
+  const [postDetails, setPostDetails] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -26,23 +29,29 @@ const Description = () => {
           },
         });
         const posts = response.data.data.content;
-        const images = posts.flatMap((post) =>
-        post.medias.map((media) => media.url)
-        );
-        setPostImages(images);
+        const details = posts.flatMap((post) => post.medias.map((media) => {
+          return {
+            postId: post.postId,
+            imageUrl: media.url
+          }
+        }));
+        setPostDetails(details);
       } catch (err) {
         console.error(err);
       }
     };
-
     fetchImages();
   }, []);
 
+  const postHandler = (postId) => {
+    navigate(`/post/${postId}`)
+  }
+
   return (
     <DescriptionWrapper>
-      {postImages.map((imgUrl, i) => (
+      {postDetails.map((detail, i) => (
         <React.Fragment key={i}>
-          <ImageThumbnail src={imgUrl} alt={`Image ${i}`} />
+          <ImageThumbnail src={detail.imageUrl} alt={`Image ${i}`} onClick={() => postHandler(detail.postId)} />
         </React.Fragment>
       ))}
     </DescriptionWrapper>
