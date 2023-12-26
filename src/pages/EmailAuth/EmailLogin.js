@@ -168,7 +168,7 @@ function EmailLogin() {
       <BackButton
         type='button'
         onClick={() => {
-          navigate(-1);
+          navigate('/startpage');
         }}>
         <ArrowBackIcon />
       </BackButton>
