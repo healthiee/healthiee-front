@@ -158,7 +158,11 @@ const DescriptionXsm = styled.p`
   color: ${({ theme }) => theme.colors.gray};
 `
 const Event = () => {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const getUTCDate = () => {
+    const now = new Date();
+    return new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+  }
+  const [currentDate, setCurrentDate] = useState(getUTCDate());
   const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(currentDate);
@@ -166,10 +170,10 @@ const Event = () => {
   const endDate = endOfWeek(monthEnd);
   const daysOfMonth = getDaysInMonth(currentDate);
   const [workouts, setWorkouts] = useState([]);
-  const [workoutId, setWorkoutId] = useState('');
+  const [workoutTotalCountForMonth, setWorkoutTotalCountForMonth] = useState(0);
 
   const isWorkoutExist = (date) => {
-    return workouts.some(workout => 
+    return workouts.some(workout =>
       isSameDay(new Date(workout.workoutDate), date)
     );
   };
@@ -179,9 +183,24 @@ const Event = () => {
   let startDay = startDate;
   let formattedDate = "";
 
-  const [isChecked, setIsChecked] = useState(false);
+  const today = format(currentDate, "yyyy-MM-dd");
+  const getCheckboxState = () => {
+    const savedState = localStorage.getItem(`checkbox-${today}`);
+    const savedDate = localStorage.getItem('checkbox-date');
+
+    if(savedDate !== today) {
+      return false;
+    }
+
+    return savedState === 'true';
+  };
+  const [isChecked, setIsChecked] = useState(getCheckboxState());
   const [modal, setModalOpen] = useState(false);
-  
+
+  useEffect(() => {
+    setIsChecked(getCheckboxState());
+  }, [])
+
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
@@ -190,6 +209,7 @@ const Event = () => {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
         })
+        setWorkoutTotalCountForMonth(res.data.data.workoutTotalCountForMonth);
         setWorkouts(res.data.data.workouts);
       } catch (err) {
         console.log(err);
@@ -200,37 +220,43 @@ const Event = () => {
 
 
   const handleChange = async (e) => {
+    localStorage.setItem(`checkbox-${today}`, e.target.checked);
+    localStorage.setItem('checkbox-date', today);
+    setIsChecked(e.target.checked);
+
     if (e.target.checked) {
-      setIsChecked(true);
       try {
         const res = await axios.post('http://prod.healthiee.net/v1/workouts', {}, {
           headers: {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
-        })
+        });
         const newWorkout = {
-          workoutId: res.data.data.workoutId, 
-        }
-        setWorkouts([...workouts, newWorkout])
+          workoutId: res.data.data.workoutId,
+          workoutDate: today
+        };
+        setWorkouts(prevWorkouts => [...prevWorkouts, newWorkout]);
+        setWorkoutTotalCountForMonth(prevCount => prevCount + 1);
       } catch (err) {
-        console.log(err)
+        console.error(err);
       }
     } else {
-      setIsChecked(false);
+      const todayWorkout = workouts.find(workout => workout.workoutDate === today);
       try {
-        await axios.delete(`http://prod.healthiee.net/v1/workouts/${workoutId}`, {}, {
+        await axios.delete(`http://prod.healthiee.net/v1/workouts/${todayWorkout.workoutId}`, {
           headers: {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
-        })
-       
+        });
+        setWorkouts(prevWorkouts => prevWorkouts.filter(workout => workout.workoutId !== todayWorkout.workoutId));
+        setWorkoutTotalCountForMonth(prevCount => prevCount > 0 ? prevCount - 1 : 0);
       } catch (err) {
-        console.log(err)
+        console.error(err);
       }
     }
   };
-  const successfulDays = workouts.length;
-  const successRate = ((successfulDays / daysOfMonth) * 100).toFixed();
+
+  const successRate = ((workoutTotalCountForMonth / daysOfMonth) * 100).toFixed();
   const week = daysOfWeek.map((day, i) => {
     return (
       <Week key={i}>{day}</Week>
@@ -243,7 +269,7 @@ const Event = () => {
       const isToday = isSameDay(startDay, currentDate);
       const isCurrentMonth = isSameMonth(startDay, currentDate);
       const isWorkoutDay = isWorkoutExist(startDay);
-        
+
       startDay = addDays(startDay, 1);
       days.push(
         <DayWrapper
@@ -253,10 +279,10 @@ const Event = () => {
               ? 'rgba(0, 88, 255, 0.5)'
               : 'rgba(255, 255, 255, 0.5)',
             border: isToday && isChecked
-            ? '1px solid #0058FF'
-            : !isToday && isWorkoutDay
-              ?'1px solid rgba(0, 88, 255, 0.5)'
-              :'rgba(255, 255, 255, 0.5)'
+              ? '1px solid #0058FF'
+              : !isToday && isWorkoutDay
+                ? '1px solid rgba(0, 88, 255, 0.5)'
+                : 'rgba(255, 255, 255, 0.5)'
           }}
         >
           <Day
@@ -286,6 +312,7 @@ const Event = () => {
           <DescriptionMd>오늘 운동하셨나요?</DescriptionMd>
           <CheckBox
             type="checkbox"
+            checked={isChecked}
             onChange={handleChange}
           />
         </Top>
@@ -308,9 +335,9 @@ const Event = () => {
       </Calendar>
       <DescriptionMd>• 이번달 달성율</DescriptionMd>
       <AchieveBar>
-        <FillerStyles $fillPercentage={((successfulDays / daysOfMonth) * 100).toFixed()} />
+        <FillerStyles $fillPercentage={((workoutTotalCountForMonth / daysOfMonth) * 100).toFixed()} />
       </AchieveBar>
-      <DescriptionXsm>{successRate}%({daysOfMonth}일 중 {successfulDays}일 성공)</DescriptionXsm>
+      <DescriptionXsm>{successRate}%({daysOfMonth}일 중 {workoutTotalCountForMonth}일 성공)</DescriptionXsm>
     </EventWrapper>
   )
 };
