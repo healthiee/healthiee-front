@@ -1,7 +1,7 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styles from './ProfilePage.module.css';
 import styled from 'styled-components';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {ReactComponent as Menu} from '../../assets/images/menu.svg';
 import {ReactComponent as Description} from '../../assets/images/description.svg';
 import {ReactComponent as EventAvailable} from '../../assets/images/eventAvailable.svg';
@@ -12,6 +12,7 @@ import {ReactComponent as BadgeLevel4} from '../../assets/images/BadgeIllustrati
 import {ReactComponent as BadgeLevel5} from '../../assets/images/BadgeIllustration/badgeLevel5.svg';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import Setting from './SettingPage/Setting';
+import axios from "axios";
 
 const Badge1 = styled(BadgeLevel1)`
   position: absolute;
@@ -56,6 +57,7 @@ const ForthPage = () => {
   const [setting, setSetting] = useState(false);
   const [popup, setPopup] = useState(false);
   const navigate = useNavigate();
+  const [totalWorkoutCount, setTotalWorkoutCount] = useState(0);
 
   const settingHandler = () => {
     setSetting(true);
@@ -66,6 +68,37 @@ const ForthPage = () => {
   const profileEditHandler = () => {
     navigate('/editprofile')
   }
+
+  useEffect(() => {
+    const fetchTotalWorkoutCount = async () => {
+      try {
+        const res = await axios.get('http://prod.healthiee.net/v1/workouts', {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
+          }
+        })
+        setTotalWorkoutCount(res.data.data.totalCount);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    fetchTotalWorkoutCount();
+  }, [])
+
+  const Badges = () => {
+    if (totalWorkoutCount <= 10) {
+      return <Badge1 />;
+    } else if (totalWorkoutCount <= 30) {
+      return <Badge2 />;
+    } else if (totalWorkoutCount <= 100) {
+      return <Badge3 />;
+    } else if (totalWorkoutCount <= 365) {
+      return <Badge4 />;
+    } else {
+      return <Badge5 />;
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -78,11 +111,7 @@ const ForthPage = () => {
 
         <div className={styles.profile}>
           <div className={styles.profile_img}>
-            <Badge1 />
-            {/* <Badge2 />
-            <Badge3 />
-            <Badge4 />
-            <Badge5 /> */}
+            {Badges()}
             <img src={profileDummy.profileimg} alt="profile_img" />
           </div>
           <div className={styles.follow}>
