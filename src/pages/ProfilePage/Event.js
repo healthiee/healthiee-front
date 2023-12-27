@@ -62,13 +62,13 @@ const ImgAndIcon = styled.div`
   align-items: center;
   margin-right: 48px;
 `
-const AtomImg = styled.div`
+const GrowthImg = styled.div`
   width: 88px;
   height: 88px;
-  background: url(${atom});
   margin-bottom: 10px;
   border-radius: 20px;
   box-shadow: 0px 3px 6px #00000029;
+  background: url(${props => props.$img});
 `
 const HelpIcon = styled(Help)`
   width: 20px;
@@ -171,6 +171,7 @@ const Event = () => {
   const daysOfMonth = getDaysInMonth(currentDate);
   const [workouts, setWorkouts] = useState([]);
   const [workoutTotalCountForMonth, setWorkoutTotalCountForMonth] = useState(0);
+  const [totalWorkoutCount, setTotalWorkoutCount] = useState(0);
 
   const isWorkoutExist = (date) => {
     return workouts.some(workout =>
@@ -188,7 +189,7 @@ const Event = () => {
     const savedState = localStorage.getItem(`checkbox-${today}`);
     const savedDate = localStorage.getItem('checkbox-date');
 
-    if(savedDate !== today) {
+    if (savedDate !== today) {
       return false;
     }
 
@@ -209,6 +210,7 @@ const Event = () => {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
         })
+        setTotalWorkoutCount(res.data.data.totalCount);
         setWorkoutTotalCountForMonth(res.data.data.workoutTotalCountForMonth);
         setWorkouts(res.data.data.workouts);
       } catch (err) {
@@ -319,8 +321,37 @@ const Event = () => {
         <Line />
         <Bottom>
           <ImgAndIcon>
-            <AtomImg />
-            <DescriptionMd>지금 나는 원자에요</DescriptionMd>
+            {totalWorkoutCount <= 10 ? (
+              <>
+                <GrowthImg $img={atom} />
+                <DescriptionMd>지금 나는 원자에요</DescriptionMd>
+              </>
+            ) : totalWorkoutCount <= 30 ? (
+              <>
+                <GrowthImg $img={molecule} />
+                <DescriptionMd>지금 나는 분자에요</DescriptionMd>
+              </>
+            ) : totalWorkoutCount <= 100 ? (
+              <>
+                <GrowthImg $img={seed} />
+                <DescriptionMd>지금 나는 씨앗이에요</DescriptionMd>
+              </>
+            ) : totalWorkoutCount <= 365 ? (
+              <>
+                <GrowthImg $img={sapling} />
+                <DescriptionMd>지금 나는 새싹이에요</DescriptionMd>
+              </>
+            ) : totalWorkoutCount <= 1000 ? (
+              <>
+                <GrowthImg $img={sprout} />
+                <DescriptionMd>지금 나는 묘목이에요</DescriptionMd>
+              </>
+            ) : (
+              <>
+                <GrowthImg $img={tree} />
+                <DescriptionMd>지금 나는 나무에요</DescriptionMd>
+              </>
+            )}
           </ImgAndIcon>
           <HelpIcon onClick={showModal} />
           {modal && <HelpIconModal setModalOpen={setModalOpen} />}
