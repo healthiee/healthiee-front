@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styles from './ProfilePage.module.css';
 import styled from 'styled-components';
 import { useState } from "react";
@@ -55,12 +55,17 @@ const ForthPage = () => {
 
   const [setting, setSetting] = useState(false);
   const [popup, setPopup] = useState(false);
+  const navigate = useNavigate();
 
   const settingHandler = () => {
     setSetting(true);
   }
 
   const activeStyle = ({isActive}) => isActive ? `${styles.nav_icon} ${styles.active}` : styles.nav_icon;
+
+  const profileEditHandler = () => {
+    navigate('/editprofile')
+  }
 
   return (
     <div className={styles.container}>
@@ -100,10 +105,10 @@ const ForthPage = () => {
         </div>
 
         <div className={styles.profile_btn}>
-          <button>프로필 편집</button>
+          <button onClick={profileEditHandler}>프로필 편집</button>
         </div>
       </div>
-
+        
       <div className={styles.profile_nav}>
         <div>
           <NavLink to='/profile' className={activeStyle} end><Description/></NavLink>
