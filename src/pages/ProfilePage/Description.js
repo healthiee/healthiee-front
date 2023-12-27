@@ -16,7 +16,6 @@ const ImageThumbnail = styled.img`
 `;
 
 const Description = () => {
-  const [postImages, setPostImages] = useState([]);
   const [postDetails, setPostDetails] = useState([]);
   const navigate = useNavigate();
 
