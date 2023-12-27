@@ -7,8 +7,9 @@ import seed from '../../assets/images/DevelopmentIllusts/seed.png';
 import sprout from '../../assets/images/DevelopmentIllusts/sprout.png';
 import tree from '../../assets/images/DevelopmentIllusts/tree.png';
 import { ReactComponent as Help } from '../../assets/images/help.svg';
-import { format, startOfMonth, endOfMonth, addDays, startOfWeek, endOfWeek, isSameDay, isSameMonth, getDaysInMonth } from 'date-fns';
+import congratulationPopup from '../../assets/images/congratulationWorkout.png';
 import HelpIconModal from './HelpIconModal';
+import { format, startOfMonth, endOfMonth, addDays, startOfWeek, endOfWeek, isSameDay, isSameMonth, getDaysInMonth } from 'date-fns';
 import axios from 'axios';
 
 // TodayWorkout
@@ -44,6 +45,15 @@ const CheckBox = styled.input`
   &:checked {
     background-color: ${({ theme }) => theme.colors.orange}; 
   }
+`
+const ShowPopup = styled.div`
+  position: fixed;
+  top: 213px;
+  left: 35px;
+  width: 284px;
+  height: 212px;
+  background-image: url(${props => props.$img});
+  background-size: cover;
 `
 const Line = styled.div`
   width: 300px;
@@ -197,6 +207,17 @@ const Event = () => {
   };
   const [isChecked, setIsChecked] = useState(getCheckboxState());
   const [modal, setModalOpen] = useState(false);
+  const [popup, setPopupOpen] = useState(false);
+
+  useEffect(() => {
+    if(popup) {
+      const timer = setTimeout(() => {
+        setPopupOpen(false);
+      }, 2000);
+
+    return () => clearTimeout(timer);
+    }
+  }, [popup])
 
   useEffect(() => {
     setIsChecked(getCheckboxState());
@@ -227,6 +248,8 @@ const Event = () => {
     setIsChecked(e.target.checked);
 
     if (e.target.checked) {
+      setPopupOpen(true);
+
       try {
         const res = await axios.post('http://prod.healthiee.net/v1/workouts', {}, {
           headers: {
@@ -315,8 +338,9 @@ const Event = () => {
           <CheckBox
             type="checkbox"
             checked={isChecked}
-            onChange={handleChange}
+            onClick={handleChange}
           />
+          {popup && <ShowPopup $img={congratulationPopup} />}
         </Top>
         <Line />
         <Bottom>
