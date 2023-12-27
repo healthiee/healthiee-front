@@ -9,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     html, body, p {
-      font-family: 'NotoSansRegular';
+      font-family: 'NotoSansKRRegular';
     }
 
     html, body, div, span, h1, h2, h3, h4, h5, h6, p, 
@@ -19,16 +19,10 @@ const GlobalStyle = createGlobalStyle`
       border: 0;
       font-size: 12px;
       vertical-align: baseline;
-      color: '#000000';
-    }
-
-    a {
-      color: inherit;
-      font-size: 12px;
     }
 
     button {
-      font-family: 'NotoSansRegular';
+      font-family: 'NotoSansKRBold';
       border: none;
       background-color: #EFEFEF;
       border-radius: 20px;
@@ -46,7 +40,8 @@ const GlobalStyle = createGlobalStyle`
 
     img {
       display: block;
-      height: 100%;
+      height: auto;
+      width: 100%;
     }
 `;
 

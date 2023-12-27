@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { styled } from 'styled-components';
 import { ReactComponent as sendIcon } from '../../../assets/images/sendIcon.svg';
 import { ReactComponent as closeCircle } from '../../../assets/images/closeCircle.svg';
-import axios from 'axios';
 import Comment from './Comment';
 import { format } from 'date-fns-tz';
+import api from '../../../utils/instance';
+import { styled } from 'styled-components';
 
 const CommentModal = styled.div`
   width: 360px;
@@ -140,7 +140,7 @@ const Comments = () => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await axios.get(`http://prod.healthiee.net/v1/comments?postId=${postId}`, {
+        const response = await api.get(`v1/comments?postId=${postId}`, {
           headers: {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
@@ -203,7 +203,7 @@ const Comments = () => {
       })
 
       try {
-        const res = await axios.post('http://prod.healthiee.net/v1/comments', {
+        const res = await api.post('v1/comments', {
           postId: postId,
           content: input,
           parentCommentId: parentCommentId
@@ -232,7 +232,7 @@ const Comments = () => {
         return comment;
       });
       try {
-        await axios.patch(`http://prod.healthiee.net/v1/comments/${commentToEdit}`, {
+        await api.patch(`v1/comments/${commentToEdit}`, {
           content: input
         }, {
           headers: {
@@ -266,7 +266,7 @@ const Comments = () => {
         childComments: []
       };
       try {
-        const res = await axios.post('http://prod.healthiee.net/v1/comments', {
+        const res = await api.post('v1/comments', {
           postId: postId,
           content: input,
         }, {
@@ -302,7 +302,7 @@ const Comments = () => {
   //Delete Comment
   const deleteComment = async (commentId) => {
     try {
-      const response = await axios.get(`http://prod.healthiee.net/v1/comments/${commentId}`, {
+      const response = await api.get(`v1/comments/${commentId}`, {
         headers: {
           Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
         }
@@ -310,7 +310,7 @@ const Comments = () => {
       const childComments = response.data.data.childComments;
 
       // Delete main comment
-      await axios.delete(`http://prod.healthiee.net/v1/comments/${commentId}`, {
+      await api.delete(`v1/comments/${commentId}`, {
         headers: {
           Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
         }
@@ -319,7 +319,7 @@ const Comments = () => {
       // Delete child comments
       const deleteChildComments = async (childComments) => {
         for (const childComment of childComments) {
-          await axios.delete(`http://prod.healthiee.net/v1/comments/${childComment.commentId}`, {
+          await api.delete(`v1/comments/${childComment.commentId}`, {
             headers: {
               Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
             }

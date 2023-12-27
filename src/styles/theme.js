@@ -1,7 +1,3 @@
-const mobileSize = {
-  mobile: 'screen and (max-width: 360px)',
-};
-
 const fontSize = {
   sm: '12px',
   md: '16px',
@@ -26,7 +22,6 @@ const colors = {
 };
 
 const theme = {
-  mobileSize,
   fontWeight,
   fontSize,
   colors,

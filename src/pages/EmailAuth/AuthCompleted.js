@@ -1,78 +1,64 @@
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import mainLogo from '../../assets/images/mainLogo.png'
-import axios from 'axios';
+import api from '../../utils/instance';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 
 const MainLogo = styled.img`
-  @media ${({theme}) => theme.mobileSize.mobile} {
-    width: 200px;
-    height: 40px;
-    margin: 128px 0 76px;
-  }
-`
+  width: 200px;
+  height: 40px;
+  margin: 128px 0 76px;
+`;
+
 const VertificationMessage = styled.p`
-  @media ${({theme}) => theme.mobileSize.mobile} {
-    font-size: ${({theme}) => theme.fontSize.lg};
-    font-weight: ${({theme}) => theme.fontWeight.bold};
-    margin-bottom: 19px;
-  }
-`
+  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  margin-bottom: 19px;
+`;
 
 const Wrapper = styled.div`
-  @media ${({theme}) => theme.mobileSize.mobile} {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 272px;
-    height: 36px;
-    box-shadow: 0px 3px 6px #00000029;
-    border-radius: 20px;
-    margin-bottom: 100px;
-  }
-`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 272px;
+  height: 36px;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 20px;
+  margin-bottom: 100px;
+`;
 
 const ContinueSingupMessage = styled.p`
-   @media ${({theme}) => theme.mobileSize.mobile} {    
-    font-size: ${({theme}) => theme.fontSize.sm};
-  } 
-`
+  font-size: ${({ theme }) => theme.fontSize.sm};
+`;
 
 const ContinueBtn = styled.button`
-  @media screen and (max-width: 360px) {
-    width: 200px;
-    height: 40px;
-    font-size: ${({ theme }) => theme.fontSize.lg};
-    font-weight: ${({ theme }) => theme.fontWeight.bold};
-    background-color: ${({ theme }) => theme.colors.lighOrange};
-  }
+  width: 200px;
+  height: 40px;
+  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  background-color: ${({ theme }) => theme.colors.lighOrange};
 `;
 
 const AuthCompleted = () => {
   const navigate = useNavigate();
-  const handleContinue = () => {
-    const code = new URLSearchParams(window.location.search).get('code');
-    const AuthCode = {
-      code: code,
-    };
 
-    axios.get(`http://prod.healthiee.net/v1/auth/verify/${code}`, {AuthCode})
-    .then(response => {
+  const handleContinue = async () => {
+    try {
+      const code = new URLSearchParams(window.location.search).get('code');
+      await api.get(`v1/auth/verify/${code}`);
       navigate('/createAccount', {
         state: {
           code: code
         }
       })
-    })
-    .catch(error => {
+    } catch (error) {
       console.log(error);
-    })
+    }
   }
 
   return (

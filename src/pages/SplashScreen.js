@@ -1,15 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import StartPage from '../pages/StartPage';
-import splashScreen from '../assets/images/splashScreen.png'
+import splashScreen from '../assets/images/splashScreen.png';
+import styled from 'styled-components';
 
 const SplashScreenImg = styled.img`
-  @media ${({theme}) => theme.mobileSize.mobile} {
-    width: 360px;
-    height: 640px;
-  }
-`
+  width: 360px;
+  height: 640px;
+`;
+
 const SplashScreen = () => {
   const [showSplash, setShowSplash] = useState(false);
 
@@ -21,13 +19,7 @@ const SplashScreen = () => {
     return () => clearTimeout(timer);
   }, [])
 
-  return (
-    <>
-      {showSplash
-        ? <StartPage />
-        : <SplashScreenImg src={splashScreen} alt="healthiee logo" />}
-    </>
-  );
+  return showSplash ? <StartPage /> : <SplashScreenImg src={splashScreen} alt="healthiee logo" />;
 };
 
 export default SplashScreen;
