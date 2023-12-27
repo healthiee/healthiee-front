@@ -20,6 +20,7 @@ import FirstPage from './pages/First';
 import RecommendTab from './pages/RecommendTab';
 import CreatePost from './pages/CreatePost';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
+import EditProfile from './pages/ProfilePage/EditProfile';
 import Description from './pages/ProfilePage/Description';
 import Event from './pages/ProfilePage/Event';
 import SplashScreen from './pages/SplashScreen';
@@ -47,6 +48,7 @@ function App() {
           <Route index element={<Description />} />
           <Route path="event" element={<Event />} />
         </Route>
+        <Route path="editprofile" element={<EditProfile />} />
       </Route>
       <Route path="/post/:id" loader={PostLoader} id='post-detail'>
         <Route index element={<Post/>}/>
