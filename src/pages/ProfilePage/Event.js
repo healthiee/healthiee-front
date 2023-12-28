@@ -10,7 +10,7 @@ import { ReactComponent as Help } from '../../assets/images/help.svg';
 import congratulationPopup from '../../assets/images/congratulationWorkout.png';
 import HelpIconModal from './HelpIconModal';
 import { format, startOfMonth, endOfMonth, addDays, startOfWeek, endOfWeek, isSameDay, isSameMonth, getDaysInMonth } from 'date-fns';
-import axios from 'axios';
+import api from '../../utils/instance';
 
 // TodayWorkout
 const EventWrapper = styled.div`
@@ -226,7 +226,7 @@ const Event = () => {
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
-        const res = await axios.get('http://prod.healthiee.net/v1/workouts', {
+        const res = await api.get('http://prod.healthiee.net/v1/workouts', {
           headers: {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
@@ -251,7 +251,7 @@ const Event = () => {
       setPopupOpen(true);
 
       try {
-        const res = await axios.post('http://prod.healthiee.net/v1/workouts', {}, {
+        const res = await api.post('http://prod.healthiee.net/v1/workouts', {}, {
           headers: {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
@@ -268,7 +268,7 @@ const Event = () => {
     } else {
       const todayWorkout = workouts.find(workout => workout.workoutDate === today);
       try {
-        await axios.delete(`http://prod.healthiee.net/v1/workouts/${todayWorkout.workoutId}`, {
+        await api.delete(`http://prod.healthiee.net/v1/workouts/${todayWorkout.workoutId}`, {
           headers: {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }

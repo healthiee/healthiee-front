@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from '../../components/CreateAccount/CreateAccount.module.css';
 import useAccountInput from "../../hooks/use-accountInput";
-import axios from "axios";
+import api from "../../utils/instance";
 
 //img
 import { ReactComponent as BackArrow } from '../../assets/images/backArrow.svg';
@@ -39,7 +39,7 @@ const EditProfile = () => {
   const doubleCheckHandler = () => {
     console.log('double')
 
-    axios.get(`http://prod.healthiee.net/v1/members/${inputNickname}/check`)
+    api.get(`http://prod.healthiee.net/v1/members/${inputNickname}/check`)
       .then(
         response => {
           console.log(response);
@@ -148,7 +148,7 @@ const EditProfile = () => {
 
     const memberId = '736cf454-2818-4fd9-a077-300b6f5efe64';
 
-    axios.put(`http://prod.healthiee.net/v1/members/${memberId}`, formData, {
+    api.put(`http://prod.healthiee.net/v1/members/${memberId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
@@ -225,7 +225,7 @@ const EditProfile = () => {
           <h2>자기소개</h2>
           <textarea name="bio" cols="30" rows="10" placeholder="간단하게 자신을 소개해주세요.(50자이내)" ref={presentationRef}></textarea>
         </div>
-        <button disabled={!buttonValid} type="submit">저장</button>
+        <button disabled={!buttonValid} className={styles.next_button} type="submit">다음</button>
       </form>
     </div>
   );
