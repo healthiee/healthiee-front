@@ -12,7 +12,7 @@ import {ReactComponent as BadgeLevel4} from '../../assets/images/BadgeIllustrati
 import {ReactComponent as BadgeLevel5} from '../../assets/images/BadgeIllustration/badgeLevel5.svg';
 import defaultProfile from '../../assets/images/defaultProfile.png';
 import Setting from './SettingPage/Setting';
-import axios from "axios";
+import api from "../../utils/instance";
 
 const Badge1 = styled(BadgeLevel1)`
   position: absolute;
@@ -55,12 +55,15 @@ const profileDummy = {
 const ForthPage = () => {
 
   const [setting, setSetting] = useState(false);
-  const [popup, setPopup] = useState(false);
   const navigate = useNavigate();
   const [totalWorkoutCount, setTotalWorkoutCount] = useState(0);
 
   const settingHandler = () => {
     setSetting(true);
+  }
+
+  const closePopup = () => {
+    setSetting(false);
   }
 
   const activeStyle = ({isActive}) => isActive ? `${styles.nav_icon} ${styles.active}` : styles.nav_icon;
@@ -72,7 +75,7 @@ const ForthPage = () => {
   useEffect(() => {
     const fetchTotalWorkoutCount = async () => {
       try {
-        const res = await axios.get('http://prod.healthiee.net/v1/workouts', {
+        const res = await api.get('http://prod.healthiee.net/v1/workouts', {
           headers: {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
@@ -106,7 +109,7 @@ const ForthPage = () => {
         <div className={styles.header}>
           <h1>{profileDummy.nickname}</h1>
           <div><Menu onClick={settingHandler} style={{cursor:'pointer'}}/></div>
-          {setting && <Setting onPopup={setPopup}/>}
+          {setting && <Setting onClose={closePopup}/>}
         </div>
 
         <div className={styles.profile}>
