@@ -1,26 +1,33 @@
 /* form input */
 
-.input {
+.input_box {
   position: relative;
-  width: 312px;
+  width: 316px;
   height: 50px;
   margin: 10px auto 0;
   border-bottom: 2px solid #D3D3D3;
+  display: flex;
 }
 
 .input input{
-  width: 312px;
+  width: 252px;
   height: 40px;
-  margin: 0 auto;
   background-color: #EFEFEF;
   border-radius: 20px;
   padding-left: 50px;
 }
 
-.btn {
+.icon {
   position: absolute;
   top: 8px;
   left: 10px;
+}
+
+.btn {
+  width: 60px;
+  height: 40px;
+  margin-left: 4px;
+  background-color: #FFC493;
 }
 
 .tag {
@@ -54,8 +61,4 @@
   margin-left: 28px;
   font-size: 16px;
   font-weight: 700;
-}
-
-button:active, button:hover {
-  background-color: #EFEFEF;
 }

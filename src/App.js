@@ -18,6 +18,8 @@ import CreateAccount from './components/CreateAccount/CreateAccount';
 import HomePage from './pages/HomePage';
 import SearchTab from './pages/SearchPage/SearchTab';
 import SearchPage from './pages/SearchPage/SearchPage';
+import SearchName from './components/Search/SearchName';
+import SearchPost from './components/Search/SearchPost';
 import RecommendTab from './pages/RecommendTab';
 import CreatePost from './pages/CreatePost';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
@@ -43,7 +45,10 @@ function App() {
       <Route path='/' element={<MainRoot />}>
         <Route index element={<HomePage />} loader={HomeLoader} />
         <Route path="search" element={<SearchTab />}/>
-        <Route path='result' element={<SearchPage/>}/>
+        <Route path='result' element={<SearchPage/>}>
+          <Route index element={<SearchName/>}/>
+          <Route path='post' element={<SearchPost/>}/>
+        </Route>
         <Route path="recommend" element={<RecommendTab />} />
         <Route path="profile" element={<ProfilePage />}>
           <Route index element={<Description />} />

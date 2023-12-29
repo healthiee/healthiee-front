@@ -19,9 +19,14 @@ const Search = () => {
   return (
     <div>
       <form onSubmit={searchHandler}>
-        <div className={styles.input}>
-          <input type="text" onChange={infoHandler} placeholder='사람, 태그 , 정보 검색하기'/>
-          <button type ='submit' className={styles.btn}><SearchIcon/></button>
+        <div className={styles.input_box}>
+          <div className={styles.icon}><SearchIcon/></div>
+          <div className={styles.input}>
+            <input type="text" onChange={infoHandler} placeholder='사람, 태그 , 정보 검색하기'/>
+          </div>
+          <div>
+            <button className={styles.btn}>확인</button>
+          </div>
         </div>
       </form>
 
