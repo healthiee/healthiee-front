@@ -2,18 +2,27 @@ import {ReactComponent as ArrowBack} from '../../assets/icons/ArrowBack_icon.svg
 import {ReactComponent as SearchIcon} from '../../assets/images/search.svg';
 import {ReactComponent as Person} from '../../assets/images/person.svg';
 import {ReactComponent as Description} from '../../assets/images/description.svg';
-import { NavLink, Outlet, Link, useParams } from "react-router-dom";
+import { NavLink, Outlet, Link, useParams, useNavigate } from "react-router-dom";
 import styles from './SearchPage.module.css';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 
 
 
 const SearchPage = () => {
 
   const params = useParams();
+  const navigate = useNavigate();
+  const [info, setInfo] = useState('');
 
-  const searchHandler = (event) => {
-    event.preventDefault();
+  const searchHandler = () => {
+    if(info.length === 0) {
+      return
+    }
+    navigate(`/result/${info}`);
+  }
+
+  const inputHandler = (event) => {
+    setInfo(event.target.value);
   }
 
   const activeStyle = ({isActive}) => isActive ? `${styles.nav_icon} ${styles.active}` : styles.nav_icon;
@@ -24,17 +33,15 @@ const SearchPage = () => {
         <ArrowBack width='24px' height='24px'/>
       </Link>
 
-      <form onSubmit={searchHandler}>
-        <div className={styles.input_box}>
-          <div className={styles.icon}><SearchIcon/></div>
-          <div className={styles.input}>
-            <input type="text" placeholder='healthiee'/>
-          </div>
-          <div>
-            <button className={styles.btn}>확인</button>
-          </div>
+      <div className={styles.input_box}>
+        <div className={styles.icon}><SearchIcon/></div>
+        <div className={styles.input}>
+          <input type="text" placeholder={params.nickname} onChange={inputHandler}/>
         </div>
-      </form>
+        <div>
+          <button type='button' onClick={searchHandler} className={styles.btn}>확인</button>
+        </div>
+      </div>
 
       <div className={styles.nav}>
         <div>

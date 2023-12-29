@@ -6,12 +6,12 @@ const SearchPost = () => {
 
   const nickname = useLoaderData();
 
-  const posts = nickname.legnth > 0 ? nickname : ''
+  const posts = nickname.length > 0 ? nickname : ''
 
   return (
     <div className={styles.container}>
       {posts && posts.map(post => 
-      <div className={styles.posts}><img src={post.medias[0].url} alt="img" /></div>
+      <div key={post.postId} className={styles.posts}><img src={post.medias[0].url} alt="img" /></div>
       )}
     </div>
   )
