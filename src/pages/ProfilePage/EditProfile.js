@@ -155,10 +155,10 @@ const EditProfile = () => {
       }
     }).then(response => {
       console.log(response.data);
+      navigate('/profile', { state: { updated: true } });
     }).catch(error => {
       console.log('에러발생', error);
     })
-    navigate('/profile');
   };
 
   //button valid style
