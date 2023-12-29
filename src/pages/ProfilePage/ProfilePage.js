@@ -1,16 +1,15 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useLoaderData, useNavigate } from "react-router-dom";
 import styles from './ProfilePage.module.css';
 import styled from 'styled-components';
-import { useEffect, useState } from "react";
-import {ReactComponent as Menu} from '../../assets/images/menu.svg';
-import {ReactComponent as Description} from '../../assets/images/description.svg';
-import {ReactComponent as EventAvailable} from '../../assets/images/eventAvailable.svg';
-import {ReactComponent as BadgeLevel1} from '../../assets/images/BadgeIllustration/badgeLevel1.svg';
-import {ReactComponent as BadgeLevel2} from '../../assets/images/BadgeIllustration/badgeLevel2.svg';
-import {ReactComponent as BadgeLevel3} from '../../assets/images/BadgeIllustration/badgeLevel3.svg';
-import {ReactComponent as BadgeLevel4} from '../../assets/images/BadgeIllustration/badgeLevel4.svg';
-import {ReactComponent as BadgeLevel5} from '../../assets/images/BadgeIllustration/badgeLevel5.svg';
-import defaultProfile from '../../assets/images/defaultProfile.png';
+import { useState } from "react";
+import { ReactComponent as Menu } from '../../assets/images/menu.svg';
+import { ReactComponent as Description } from '../../assets/images/description.svg';
+import { ReactComponent as EventAvailable } from '../../assets/images/eventAvailable.svg';
+import { ReactComponent as BadgeLevel1 } from '../../assets/images/BadgeIllustration/badgeLevel1.svg';
+import { ReactComponent as BadgeLevel2 } from '../../assets/images/BadgeIllustration/badgeLevel2.svg';
+import { ReactComponent as BadgeLevel3 } from '../../assets/images/BadgeIllustration/badgeLevel3.svg';
+import { ReactComponent as BadgeLevel4 } from '../../assets/images/BadgeIllustration/badgeLevel4.svg';
+import { ReactComponent as BadgeLevel5 } from '../../assets/images/BadgeIllustration/badgeLevel5.svg';
 import Setting from './SettingPage/Setting';
 import api from "../../utils/instance";
 
@@ -38,25 +37,15 @@ const Badge5 = styled(BadgeLevel5)`
   position: absolute;
   margin-top: 30px;
 `
-const profileDummy = {
-  profileimg: defaultProfile,
-  follower: 657,
-  following: 343,
-  nickname: 'chorong_2',
-  name: '초롱이',
-  body: '헬띠 화이팅',
-  tags: [{name: '크로스핏', color: '#FCADFF'}, 
-  {name: '테니스', color: '#FFE0E0'}, 
-  {name: '웨이트', color: '#B1E7FF'}, 
-  {name: '축구', color: '#D3D3D3'}, 
-  {name: '필라테스', color: '#C9CDFF'}]
-};
 
 const ForthPage = () => {
 
   const [setting, setSetting] = useState(false);
   const navigate = useNavigate();
-  const [totalWorkoutCount, setTotalWorkoutCount] = useState(0);
+  const userPostsData = useLoaderData().userPostsData;
+  const memberInfoData = useLoaderData().memberInfoData;
+
+  const randomColor = ['#FCADFF', '#FFE0E0', '#A7FFF5', '#DDFFD6', '#B1E7FF', '#FBFF93', '#C9CDFF', '#D3D3D3', '#E6C9FF'];
 
   const settingHandler = () => {
     setSetting(true);
@@ -72,31 +61,14 @@ const ForthPage = () => {
     navigate('/editprofile')
   }
 
-  useEffect(() => {
-    const fetchTotalWorkoutCount = async () => {
-      try {
-        const res = await api.get('http://prod.healthiee.net/v1/workouts', {
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
-          }
-        })
-        setTotalWorkoutCount(res.data.data.totalCount);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    fetchTotalWorkoutCount();
-  }, [])
-
   const Badges = () => {
-    if (totalWorkoutCount <= 10) {
+    if (userPostsData <= 10) {
       return <Badge1 />;
-    } else if (totalWorkoutCount <= 30) {
+    } else if (userPostsData <= 30) {
       return <Badge2 />;
-    } else if (totalWorkoutCount <= 100) {
+    } else if (userPostsData <= 100) {
       return <Badge3 />;
-    } else if (totalWorkoutCount <= 365) {
+    } else if (userPostsData <= 365) {
       return <Badge4 />;
     } else {
       return <Badge5 />;
@@ -107,54 +79,78 @@ const ForthPage = () => {
     <div className={styles.container}>
       <div className={styles.profile_container}>
         <div className={styles.header}>
-          <h1>{profileDummy.nickname}</h1>
-          <div><Menu onClick={settingHandler} style={{cursor:'pointer'}}/></div>
-          {setting && <Setting onClose={closePopup}/>}
+          <h1>{memberInfoData.nickname}</h1>
+          <div><Menu onClick={settingHandler} style={{ cursor: 'pointer' }} /></div>
+          {setting && <Setting onClose={closePopup} />}
         </div>
 
         <div className={styles.profile}>
           <div className={styles.profile_img}>
             {Badges()}
-            <img src={profileDummy.profileimg} alt="profile_img" />
+            <img src={memberInfoData.profileUrl} alt="profile_img" />
           </div>
           <div className={styles.follow}>
-            <p>{profileDummy.follower}</p>
+            <p>{memberInfoData.followerCount}</p>
             <p>팔로워</p>
           </div>
           <div className={styles.follow}>
-            <p>{profileDummy.following}</p>
+            <p>{memberInfoData.followingCount}</p>
             <p>팔로잉</p>
           </div>
         </div>
 
         <div className={styles.profile_info}>
-          <h3>{profileDummy.name}</h3>
-          <p>{profileDummy.body}</p>
+          <h3>{memberInfoData.name}</h3>
+          <p>{memberInfoData.bio}</p>
         </div>
 
         <div className={styles.profile_tags}>
-          {profileDummy.tags.map(tag => <div className={styles.tag} style={{backgroundColor:`${tag.color}`}}>{tag.name}</div>)}
+          {memberInfoData.workouts && memberInfoData.workouts.map(tag => <div className={styles.tag} style={{ backgroundColor: randomColor[Math.floor(Math.random() * randomColor.length)] }}>{tag}</div>)}
         </div>
 
         <div className={styles.profile_btn}>
           <button onClick={profileEditHandler}>프로필 편집</button>
         </div>
       </div>
-        
+
       <div className={styles.profile_nav}>
         <div>
-          <NavLink to='/profile' className={activeStyle} end><Description/></NavLink>
+          <NavLink to='/profile' className={activeStyle} end><Description /></NavLink>
         </div>
         <div>
-          <NavLink to='/profile/event' className={activeStyle}><EventAvailable/></NavLink>
+          <NavLink to='/profile/event' className={activeStyle}><EventAvailable /></NavLink>
         </div>
       </div>
 
       <div className={styles.contents}>
-        <Outlet/>
+        <Outlet />
       </div>
     </div>
   )
 };
 
 export default ForthPage;
+
+export async function loader() {
+  try {
+    //MemberInfo Data
+    const memberId = '736cf454-2818-4fd9-a077-300b6f5efe64';
+    const memberRes = await api.get(`http://prod.healthiee.net/v1/members/${memberId}`, {
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
+      }
+    });
+    const memberInfoData = memberRes.data.data;
+
+    //UserPosts Data
+    const userPostsRes = await api.get('http://prod.healthiee.net/v1/workouts', {
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
+      }
+    })
+    const userPostsData = userPostsRes.data.data.totalCount;
+    return { memberInfoData, userPostsData };
+  } catch (err) {
+    console.error(err);
+  }
+};
