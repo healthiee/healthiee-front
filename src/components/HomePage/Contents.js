@@ -76,12 +76,18 @@ const Contents = (props) => {
   // tag color 
   const workouts = props.post.hashtags;
   const tags = [];
+  const viewTags = [];
   let i = 0;
 
   for( const workout of workouts) {
     const tag = {'name': workout, 'color': shuffleColor[i]};
     tags.push(tag);
     i++;
+  }
+
+  if (tags.length > 2) {
+    viewTags.push(tags[0]);
+    viewTags.push(tags[1]);
   }
 
   const postId = props.post.postId;
@@ -111,13 +117,17 @@ const Contents = (props) => {
         <div className={styles.profile_box}>
           <h1>{props.post.member.nickname}</h1>
           <div className={styles.profile_tags}>
-            {tags.map(tag => <div className={styles.profile_tag} key={tag.name} style={{backgroundColor:`${tag.color}`}}>{tag.name}</div>)}
+            {viewTags.length > 0 ? viewTags.map(tag => <div className={styles.profile_tag} key={tag.name} style={{backgroundColor:`${tag.color}`}}>{tag.name}</div>) : tags.map(tag => <div className={styles.profile_tag} key={tag.name} style={{backgroundColor:`${tag.color}`}}>{tag.name}</div>)}
           </div>
+          {viewTags.length > 0 && <p className={styles.tag_message}>태그 {tags.length - 2}개 더보기</p>}
         </div>
       </div>
       <div className={styles.icons}>
-        <AttachFile style={{marginBottom:'10px'}}/>
-        <div onClick={heartClickHandler}>
+        <div className={styles.category}>
+          {props.post.category && props.post.category.name}
+        </div>
+        <AttachFile className={styles.file_box}/>
+        <div className={styles.heart_box} onClick={heartClickHandler}>
           <Heart className={heartStyle}/>
           <p>{props.post.likeCount}</p>
         </div>
