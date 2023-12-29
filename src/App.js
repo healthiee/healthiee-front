@@ -19,7 +19,8 @@ import HomePage from './pages/HomePage';
 import FirstPage from './pages/First';
 import RecommendTab from './pages/RecommendTab';
 import CreatePost from './pages/CreatePost';
-import ProfilePage from './pages/ProfilePage/ProfilePage';
+import ProfilePage, {loader as ProfileLoader} from './pages/ProfilePage/ProfilePage';
+import EditProfile from './pages/ProfilePage/EditProfile';
 import Description from './pages/ProfilePage/Description';
 import Event from './pages/ProfilePage/Event';
 import SplashScreen from './pages/SplashScreen';
@@ -43,10 +44,11 @@ function App() {
         <Route index element={<HomePage />} loader={HomeLoader} />
         <Route path="first" element={<FirstPage />} />
         <Route path="recommend" element={<RecommendTab />} />
-        <Route path="profile" element={<ProfilePage />}>
+        <Route path="profile" element={<ProfilePage />} loader={ProfileLoader}>
           <Route index element={<Description />} />
           <Route path="event" element={<Event />} />
         </Route>
+        <Route path="editprofile" element={<EditProfile />} />
       </Route>
       <Route path="/post/:id" loader={PostLoader} id='post-detail'>
         <Route index element={<Post/>}/>

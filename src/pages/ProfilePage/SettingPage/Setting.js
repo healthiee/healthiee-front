@@ -5,39 +5,47 @@ import {ReactComponent as Logout} from '../../../assets/images/logout.svg';
 import {ReactComponent as Replay} from '../../../assets/images/replay.svg';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../../utils/instance";
 
 const Setting = (props) => {
   const [deleteAccount, setDeleteAccount] = useState(false);
   const navigate = useNavigate();
-  const postId = props.postId;
 
   const closePopupHandler = () => {
-    props.onPopup(false);
+    props.onClose(false);
   };
 
   const cautionHandler = () => {
     setDeleteAccount(true);
   };
 
-  const logOutHandler = () => {
-    // navigate(`/post/${postId}/edit`);
+  const logOutHandler = async () => {
+    try {
+      const res = await api.post('http://prod.healthiee.net/v1/auth/logout', {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
+        }
+      })
+      console.log(res.data.data);
+      navigate('/screen');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const deleteAccountHandler = () => {
-
-    // axios.delete(`http://prod.healthiee.net/v1/posts/${postId}`, {
-    //   headers: {
-    //     Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
-    //   }
-    // }).then(response => {
-    //   console.log(response);
-    //   navigate('/')
-    // }).catch(error => {
-    //   console.log(error);
-    // })
+  const deleteAccountHandler = async () => {
+    try {
+      const res = await api.delete('http://prod.healthiee.net/v1/members', {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
+        }
+      })
+      console.log(res.data.data);
+      navigate('/screen');
+    } catch (error) {
+      console.log(error);
+    }
   }
-
 
   return (
     <Fragment>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import api from '../../utils/instance';
 
 const DescriptionWrapper = styled.div`
   display: flex;
@@ -16,14 +16,13 @@ const ImageThumbnail = styled.img`
 `;
 
 const Description = () => {
-  const [postImages, setPostImages] = useState([]);
   const [postDetails, setPostDetails] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://prod.healthiee.net/v1/posts', {
+        const response = await api.get('http://prod.healthiee.net/v1/posts', {
           headers: {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
           },
