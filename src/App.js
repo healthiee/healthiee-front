@@ -16,7 +16,8 @@ import {loader as CodeLoader} from '../src/components/PostForm/PostForm';
 // router
 import CreateAccount from './components/CreateAccount/CreateAccount';
 import HomePage from './pages/HomePage';
-import FirstPage from './pages/First';
+import SearchTab from './pages/SearchPage/SearchTab';
+import SearchPage from './pages/SearchPage/SearchPage';
 import RecommendTab from './pages/RecommendTab';
 import CreatePost from './pages/CreatePost';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
@@ -41,7 +42,8 @@ function App() {
       <Route path="/emaillogin" element={<EmailLogin />} />
       <Route path='/' element={<MainRoot />}>
         <Route index element={<HomePage />} loader={HomeLoader} />
-        <Route path="first" element={<FirstPage />} />
+        <Route path="search" element={<SearchTab />}/>
+        <Route path='result' element={<SearchPage/>}/>
         <Route path="recommend" element={<RecommendTab />} />
         <Route path="profile" element={<ProfilePage />}>
           <Route index element={<Description />} />

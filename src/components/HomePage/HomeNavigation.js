@@ -13,7 +13,7 @@ const HomeNavigation = () => {
   return(
     <nav className={styles.nav}>
       <div className={styles.nav_icon}>
-        <NavLink to='first' className={activeStyle}><Search/></NavLink>
+        <NavLink to='search' className={activeStyle}><Search/></NavLink>
       </div>
       <div className={styles.nav_icon}>
         <NavLink to='recommend' className={activeStyle}><Location/></NavLink>

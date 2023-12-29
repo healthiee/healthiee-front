@@ -1,0 +1,35 @@
+.arrow {
+  padding-left: 28px;
+  height: 48px;
+  width: 360px;
+  display: flex;
+  align-items: center;
+}
+
+.box_container {
+  width: 312px;
+  height: 59px;
+  border-bottom: 2px solid #D3D3D3;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.box {
+  width: 312px;
+  height: 40px;
+  margin: 0 auto;
+  border-radius: 20px;
+  background-color: #EFEFEF;
+  display: flex;
+  align-items: center;
+}
+
+.box > * {
+  margin-left: 10px;
+}
+
+.box p {
+  font-size: 16px;
+  font-weight: 600;
+}
