@@ -86,7 +86,7 @@ const PostForm = (props) => {
 
     setShowImgList(showImgList.filter((_, index) => index !== id));
     setImgList(imgList.filter((_, index) => index !== id));
-    imgId.splice(id,1)
+    imgId.slice(id,1)
   }
 
   // form : add tags
