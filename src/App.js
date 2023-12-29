@@ -45,7 +45,7 @@ function App() {
       <Route path='/' element={<MainRoot />}>
         <Route index element={<HomePage />} loader={HomeLoader} />
         <Route path="search" element={<SearchTab />}/>
-        <Route path='result' element={<SearchPage/>}>
+        <Route path='result/:nickname' element={<SearchPage/>}>
           <Route index element={<SearchName/>}/>
           <Route path='post' element={<SearchPost/>}/>
         </Route>
