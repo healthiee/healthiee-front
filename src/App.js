@@ -13,6 +13,7 @@ import MainRoot from './pages/MainRoot';
 import {loader as HomeLoader} from '../src/components/HomePage/Home';
 import {loader as CodeLoader} from '../src/components/PostForm/PostForm';
 import {loader as NicknameLoader} from './components/Search/SearchName';
+import {loader as PostsLoader} from './components/Search/SearchPost';
 
 // router
 import CreateAccount from './components/CreateAccount/CreateAccount';
@@ -48,7 +49,7 @@ function App() {
         <Route path="search" element={<SearchTab />}/>
         <Route path='result/:nickname' element={<SearchPage/>}>
           <Route index element={<SearchName/>} loader={NicknameLoader}/>
-          <Route path='posts' element={<SearchPost/>}/>
+          <Route path='posts' element={<SearchPost/>} loader={PostsLoader}/>
         </Route>
         <Route path="recommend" element={<RecommendTab />} />
         <Route path="profile" element={<ProfilePage />}>
