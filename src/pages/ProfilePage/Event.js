@@ -54,6 +54,7 @@ const ShowPopup = styled.div`
   height: 212px;
   background-image: url(${props => props.$img});
   background-size: cover;
+  z-index: 1;
 `
 const Line = styled.div`
   width: 300px;
