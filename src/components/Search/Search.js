@@ -29,28 +29,23 @@ const Search = () => {
   
   }
 
-  const searchHandler = (event) => {
-    event.preventDefault();
-
+  const searchHandler = () => {
     if (info.length > 0) {
       navigate(`/result/${info}`);
     }
-
   }
 
   return (
     <div>
-      <form onSubmit={searchHandler}>
-        <div className={styles.input_box}>
-          <div className={styles.icon}><SearchIcon/></div>
-          <div className={styles.input}>
-            <input type="text" onChange={infoHandler} placeholder='사람, 태그 , 정보 검색하기'/>
-          </div>
-          <div>
-            <button className={styles.btn}>확인</button>
-          </div>
+      <div className={styles.input_box}>
+        <div className={styles.icon}><SearchIcon/></div>
+        <div className={styles.input}>
+          <input type="text" onChange={infoHandler} placeholder='사람, 태그 , 정보 검색하기'/>
         </div>
-      </form>
+        <div>
+          <button type='button' className={styles.btn} onClick={searchHandler}>확인</button>
+        </div>
+      </div>
 
       <div className={styles.tag}>
         <Tag/>

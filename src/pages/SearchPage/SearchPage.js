@@ -2,13 +2,15 @@ import {ReactComponent as ArrowBack} from '../../assets/icons/ArrowBack_icon.svg
 import {ReactComponent as SearchIcon} from '../../assets/images/search.svg';
 import {ReactComponent as Person} from '../../assets/images/person.svg';
 import {ReactComponent as Description} from '../../assets/images/description.svg';
-import { NavLink, Outlet, Link } from "react-router-dom";
+import { NavLink, Outlet, Link, useParams } from "react-router-dom";
 import styles from './SearchPage.module.css';
 import { Fragment } from 'react';
 
 
 
 const SearchPage = () => {
+
+  const params = useParams();
 
   const searchHandler = (event) => {
     event.preventDefault();
@@ -36,10 +38,10 @@ const SearchPage = () => {
 
       <div className={styles.nav}>
         <div>
-          <NavLink to='/result' className={activeStyle} end><Person/></NavLink>
+          <NavLink to={`/result/${params.nickname}`} className={activeStyle} end><Person/></NavLink>
         </div>
         <div>
-          <NavLink to='/result/post' className={activeStyle}><Description/></NavLink>
+          <NavLink to={`/result/${params.nickname}/posts`} className={activeStyle}><Description/></NavLink>
         </div>
       </div>
 

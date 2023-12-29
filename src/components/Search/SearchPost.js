@@ -1,4 +1,5 @@
 import styles from './SearchPost.module.css'
+import axios from 'axios';
 
 const SearchPost = () => {
   return (
@@ -15,6 +16,18 @@ const SearchPost = () => {
 
 export default SearchPost;
 
-export function loader () {
+export async function loader ({params}) {
+  const nickname = params.nickname;
 
+  const response = await axios.get(`http://prod.healthiee.net/v1/members?nickname=${nickname}`,{
+    headers: {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
+    }
+  })
+
+  if(response.status !== 200) {
+    return <p>response error</p>
+  } else {
+    return response.data.data.content;
+  }
 }
