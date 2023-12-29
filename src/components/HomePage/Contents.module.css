@@ -20,7 +20,7 @@
 /* profile */
 
 .content_info {
-  height: 100px;
+  height: 80px;
   display: flex;
   margin-top: 12px;
 }
@@ -48,8 +48,8 @@
 }
 
 .profile_tags {
-  width: 140px;
-  height: 50px;
+  width: 150px;
+  height: 35px;
   flex-wrap: wrap;
   display: flex;
 }
@@ -64,12 +64,38 @@
   margin-bottom: 8px;
 }
 
+.tag_message {
+  color: #717171;
+  font-size: 10px;
+  text-align: right;
+}
+
 .icons {
   width: 60px;
   display: flex;
-  align-items:flex-end;
   justify-content: space-between;
   padding-bottom: 15px;
+  position: relative;
+}
+
+.category {
+  position: absolute;
+  top: 2px;
+  width: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.heart_box {
+  position: absolute;
+  top: 40px;
+  right: 0;
+}
+
+.file_box {
+  position: absolute;
+  top: 40px;
+  left: 0;
 }
 
 .heart {
