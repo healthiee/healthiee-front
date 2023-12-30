@@ -246,7 +246,7 @@ function EmailLogin() {
           <Checkbox
             type="checkbox"
             checked={isCheckBoxClicked}
-            onClick={handleCheckBoxClick}
+            onChange={handleCheckBoxClick}
           />
           </AgreeMentContainer>
           <AgreementShow onClick={agreementHandler}>약관 보기</AgreementShow>
