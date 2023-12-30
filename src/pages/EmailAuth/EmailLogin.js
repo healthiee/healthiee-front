@@ -137,6 +137,7 @@ function EmailLogin() {
   const [showErrorIcon, setShowErrorIcon] = useState(false);
   const [isSubmitButtonClicked, setIsSubmitButtonClicked] = useState(false);
   const [showAgreement, setShowAgreement] = useState(false);
+  const [hideAgreementForm, setHideAgreementForm] = useState(false);
   const [isCheckBoxClicked, setIsCheckBoxClicked] = useState(false);
   const navigate = useNavigate();
 
@@ -190,6 +191,7 @@ function EmailLogin() {
           if (response.status === 200) {
             setIsSubmitButtonClicked(true);
             setEmailMessage('회원가입 링크가 위의 이메일로 전송되었습니다.');
+            setHideAgreementForm(true);
           } else {
             setEmailMessage('이메일 등록에 실패했습니다.');
           }
@@ -238,20 +240,22 @@ function EmailLogin() {
           {showErrorIcon && <ErrorIcon />}
         </EmailInputWrapper>
         <EmailMessage $success={isSubmitButtonClicked}>{emailMessage}</EmailMessage>
-        <AgreeMentWrapper>
-          <AgreeMentContainer>
-            <AgreeMentWords>
-            개인정보 수집 및 이용에 동의합니다.
-            </AgreeMentWords>
-          <Checkbox
-            type="checkbox"
-            checked={isCheckBoxClicked}
-            onChange={handleCheckBoxClick}
-          />
-          </AgreeMentContainer>
-          <AgreementShow onClick={agreementHandler}>약관 보기</AgreementShow>
-          {showAgreement && <Agreement setShowAgreement={setShowAgreement} /> }
-        </AgreeMentWrapper>
+        {!hideAgreementForm && (
+          <AgreeMentWrapper>
+            <AgreeMentContainer>
+              <AgreeMentWords>
+                개인정보 수집 및 이용에 동의합니다.
+              </AgreeMentWords>
+              <Checkbox
+                type="checkbox"
+                checked={isCheckBoxClicked}
+                onChange={handleCheckBoxClick}
+              />
+            </AgreeMentContainer>
+            <AgreementShow onClick={agreementHandler}>약관 보기</AgreementShow>
+            {showAgreement && <Agreement setShowAgreement={setShowAgreement} />}
+          </AgreeMentWrapper>
+        )}
         {!isSubmitButtonClicked && (
           <SubmitButton
             type="button"
