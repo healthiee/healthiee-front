@@ -40,19 +40,18 @@ const InformationWrapper = styled.div`
   margin-left: 30px;
 `;
 
-const InformationContainer = styled.p`
-  line-height: 1.2;
-  text-align: left;
-`;
-
 const DescriptionMd = styled.p`
   font-size: ${({ theme }) => theme.fontSize.md};
   margin-bottom: 30px;
+  line-height: 1.2;
+  text-align: left;
 `;
 
 const DescriptionSm = styled.p`
   font-size: ${({ theme }) => theme.fontSize.sm};
   margin-bottom: 50px;
+  line-height: 1.2;
+  text-align: left;
 `;
 
 const Agreement = ({ setShowAgreement }) => {
@@ -69,16 +68,14 @@ const Agreement = ({ setShowAgreement }) => {
       </BackButton>
       <Description>개인정보 이용 안내</Description>
       <InformationWrapper>
-        <InformationContainer>
-          <DescriptionMd>[헬띠의 개인정보 수집 목적]</DescriptionMd>
-          <DescriptionSm>헬띠는 회원가입과 로그인 단계에서 본인인증과 로그인을 위한 링크가 회원님의 이메일로 전송되며, 이를 위한 이메일 주소를 수집하고 있습니다.</DescriptionSm>
+        <DescriptionMd>[헬띠의 개인정보 수집 목적]</DescriptionMd>
+        <DescriptionSm>헬띠는 회원가입과 로그인 단계에서 본인인증과 로그인을 위한 링크가 회원님의 이메일로 전송되며, 이를 위한 이메일 주소를 수집하고 있습니다.</DescriptionSm>
 
-          <DescriptionMd>[수집하는 개인정보 항목]</DescriptionMd>
-          <DescriptionSm>이메일 주소</DescriptionSm>
+        <DescriptionMd>[수집하는 개인정보 항목]</DescriptionMd>
+        <DescriptionSm>이메일 주소</DescriptionSm>
 
-          <DescriptionMd>[개인정보의 이용 및 보유 기간]</DescriptionMd>
-          <DescriptionSm>회원가입시부터 탈퇴시까지 보유</DescriptionSm>
-        </InformationContainer>
+        <DescriptionMd>[개인정보의 이용 및 보유 기간]</DescriptionMd>
+        <DescriptionSm>회원가입시부터 탈퇴시까지 보유</DescriptionSm>
       </InformationWrapper>
     </AgreementWrapper>
   );
