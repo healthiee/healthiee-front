@@ -1,7 +1,7 @@
 import styles from './SearchName.module.css'
 import axios from 'axios';
 import { Fragment } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, Link } from 'react-router-dom';
 
 const SearchName = () => {
 
@@ -10,11 +10,11 @@ const SearchName = () => {
   return (
     <Fragment>
       {nickname && nickname.map(name => 
-      <div key={name.memberId} className={styles.container}>
+      <Link to='/profile' key={name.memberId} className={styles.container}>
         <div className={styles.img}></div>
         <div className={styles.name}>{name.nickname}</div>
         <p>사람</p>
-      </div>)}
+      </Link>)}
     </Fragment>
   )
 };

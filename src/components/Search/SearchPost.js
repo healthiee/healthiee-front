@@ -1,6 +1,6 @@
 import styles from './SearchPost.module.css'
 import axios from 'axios';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, Link } from 'react-router-dom';
 
 const SearchPost = () => {
 
@@ -11,7 +11,7 @@ const SearchPost = () => {
   return (
     <div className={styles.container}>
       {posts && posts.map(post => 
-      <div key={post.postId} className={styles.posts}><img src={post.medias[0].url} alt="img" /></div>
+      <Link to={`/post/${post.postId}`} key={post.postId} className={styles.posts}><img src={post.medias[0].url} alt="img" /></Link>
       )}
     </div>
   )
