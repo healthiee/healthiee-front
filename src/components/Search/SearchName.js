@@ -2,6 +2,7 @@ import styles from './SearchName.module.css'
 import axios from 'axios';
 import { Fragment } from 'react';
 import { useLoaderData, Link } from 'react-router-dom';
+import defaultProfile from '../../assets/images/defaultProfile.png';
 
 const SearchName = () => {
 
@@ -11,7 +12,7 @@ const SearchName = () => {
     <Fragment>
       {nickname && nickname.map(name => 
       <Link to='/profile' key={name.memberId} className={styles.container}>
-        <div className={styles.img}></div>
+        <div className={styles.img}><img src={name.profileUrl? name.profileUrl : defaultProfile} alt="profile_img" /></div>
         <div className={styles.name}>{name.nickname}</div>
         <p>사람</p>
       </Link>)}
