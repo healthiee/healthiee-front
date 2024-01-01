@@ -1,5 +1,5 @@
 import styles from './Post.module.css';
-import { useRouteLoaderData, Link, useParams } from 'react-router-dom';
+import { useRouteLoaderData, Link, useParams} from 'react-router-dom';
 import {useState} from 'react';
 import axios from 'axios';
 import defaultProfile from '../../../assets/images/defaultProfile.png';
@@ -16,8 +16,7 @@ const shuffleColor = randomColor.sort(()=> Math.random() - 0.5);
 const Post = () => {
   
   const [popup, setPopup] = useState(false);
-  const loaderdata = useRouteLoaderData('post-detail');
-  const data = loaderdata[0]
+  const data = useRouteLoaderData('post-detail');
   const [heart, setHeart] = useState(data.liked? true : false);
 
   const params = useParams();
@@ -124,7 +123,7 @@ export async function loader ({params}) {
 
   const id = params.id;
 
-  const response = await axios.get('http://prod.healthiee.net/v1/posts',{
+  const response = await axios.get(`http://prod.healthiee.net/v1/posts/${id}`,{
       headers: {
         Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
       }
@@ -133,7 +132,6 @@ export async function loader ({params}) {
   if(response.status !== 200) {
     return <p>response error</p>
   } else {
-    const responseArray = response.data.data.content.filter(post => post.postId === id)
-    return responseArray;
+    return response.data.data
   }
 };
