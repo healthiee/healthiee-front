@@ -9,9 +9,14 @@ import {ReactComponent as Heart} from '../../../assets/images/heart.svg';
 import {ReactComponent as ArrowBack} from '../../../assets/icons/ArrowBack_icon.svg';
 import {ReactComponent as Menu} from '../../../assets/images/menu.svg';
 import Popup from './Popup';
+import {ReactComponent as NextBtn} from '../../../assets/images/nextBtn.svg';
+import {ReactComponent as BackBtn} from '../../../assets/images/backBtn.svg';
 
 const randomColor = ['#FCADFF', '#FFE0E0', '#A7FFF5', '#DDFFD6', '#B1E7FF', '#FBFF93', '#C9CDFF', '#D3D3D3', '#E6C9FF'];
 const shuffleColor = randomColor.sort(()=> Math.random() - 0.5);
+
+let k = 0;
+let count = 1;
 
 const Post = () => {
   
@@ -19,7 +24,28 @@ const Post = () => {
   const data = useRouteLoaderData('post-detail');
   const [heart, setHeart] = useState(data.liked? true : false);
 
+  //게시물 이미지 업로드
+
+  const [imgUrl, setImgUrl] = useState(data.medias.length > 0 ? data.medias[0].url : defaultImg);
+
   const params = useParams();
+
+  // Image button (이전, 다음)
+  const nextBtnHandler = () => {
+    if( k < data.medias.length - 1) {
+      k++
+      count++
+      setImgUrl(data.medias[k].url);
+    }
+  };
+
+  const backBtnHandler = () => {
+    if( k > 0 ) {
+      k--
+      count--
+      setImgUrl(data.medias[k].url);
+    }
+  };
 
   //팝업창
   const popupHandler = () => {
@@ -87,7 +113,7 @@ const Post = () => {
       <div className={styles.content_info}>
         <div className={styles.profile}>
           <div className={styles.profile_img}>
-          <img src={defaultProfile} alt="profile_img" />
+          <img src={data.member.profileUrl? data.member.profileUrl : defaultProfile} alt="profile_img" />
           </div>
           <div className={styles.profile_box}>
             <h1>{data.member.nickname}</h1>
@@ -106,7 +132,10 @@ const Post = () => {
       </div>
 
       <div className={styles.content_img}>
-        <img src={defaultImg} alt="content_img" />
+        <div className={styles.img_count}>{`${count} / ${data.medias.length}`}</div>
+        <div onClick={nextBtnHandler} className={styles.next}><NextBtn/></div>
+        <img src={imgUrl} alt="content_img" />
+        <div onClick={backBtnHandler} className={styles.back}><BackBtn/></div>
       </div>
 
       <div className={styles.content}>

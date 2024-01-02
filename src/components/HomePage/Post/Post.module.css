@@ -102,7 +102,43 @@
   height: 328px;
   margin: 0 auto;
   overflow: hidden;
+  position: relative;
 }
+
+.img_count {
+  position: absolute;
+  width: 42px;
+  height: 20px;
+  top: 8px;
+  right: 8px;
+  background-color: white;
+  opacity: 0.8;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.back {
+  position: absolute;
+  border: 1px solid white;
+  background-color: white;
+  border-radius: 15px;
+  top: 148px;
+  left: 5px;
+}
+
+.next {
+  position: absolute;
+  border: 1px solid white;
+  background-color: white;
+  border-radius: 15px;
+  top: 148px;
+  right: 5px;
+}
+
+/* content */
 
 .content {
   width: 300px;
@@ -110,3 +146,4 @@
   padding-top: 20px;
   line-height: 15px;
 }
+

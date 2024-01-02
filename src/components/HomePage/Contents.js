@@ -137,9 +137,7 @@ const Contents = (props) => {
     <div className={styles.content_img}>
       <div className={styles.img_count}>{`${count} / ${props.post.medias.length}`}</div>
       <div onClick={backBtnHandler} className={styles.back}><BackBtn/></div>
-      <div key={props.post.postId} to={`/post/${props.post.postId}`}>
-        <img src={imgUrl} alt="content_img" />
-      </div>
+      <img src={imgUrl} alt="content_img" />
       <div onClick={nextBtnHandler} className={styles.next}><NextBtn/></div>
     </div>
 
