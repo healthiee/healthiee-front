@@ -63,7 +63,6 @@ function App() {
         <Route index element={<Post/>}/>
         <Route path="edit" element={<EditPage/>} loader={CodeLoader}/>
       </Route>
-      <Route path="/post/:id" element={<Post />} loader={PostLoader}/>
       <Route path="/comments" element={<Comments />} />
       <Route path="/comments/:commentId" element={<ReplyCommentsModal />} />
       <Route path="/createPost" element={<CreatePost />} loader={CodeLoader}/>
