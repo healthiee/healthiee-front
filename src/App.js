@@ -21,7 +21,7 @@ import RecommendTab from './pages/RecommendTab';
 import CreatePost from './pages/CreatePost';
 import ProfilePage, {loader as ProfileLoader} from './pages/ProfilePage/ProfilePage';
 import EditProfile from './pages/ProfilePage/EditProfile';
-import Description from './pages/ProfilePage/Description';
+import Description, { loader as DescriptionLoader } from './pages/ProfilePage/Description';
 import Event, {loader as EventLoader} from './pages/ProfilePage/Event';
 import SplashScreen from './pages/SplashScreen';
 import StartPage from './pages/StartPage';
@@ -45,7 +45,7 @@ function App() {
         <Route path="first" element={<FirstPage />} />
         <Route path="recommend" element={<RecommendTab />} />
         <Route path="profile" element={<ProfilePage />} loader={ProfileLoader}>
-          <Route index element={<Description />} />
+          <Route index element={<Description />} loader={DescriptionLoader} />
           <Route path="event" element={<Event />} loader={EventLoader} />
         </Route>
         <Route path="editprofile" element={<EditProfile />} />
