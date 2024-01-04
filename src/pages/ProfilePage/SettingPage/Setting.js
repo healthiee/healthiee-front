@@ -21,7 +21,7 @@ const Setting = (props) => {
 
   const logOutHandler = async () => {
     try {
-      await api.post('http://prod.healthiee.net/v1/auth/logout', {
+      await api.post('v1/auth/logout', {
         headers: {
           Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
         }
@@ -34,7 +34,7 @@ const Setting = (props) => {
 
   const deleteAccountHandler = async () => {
     try {
-      await api.delete('http://prod.healthiee.net/v1/members', {
+      await api.delete('v1/members', {
         headers: {
           Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
         }

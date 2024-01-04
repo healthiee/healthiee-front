@@ -39,7 +39,7 @@ const EditProfile = () => {
   const doubleCheckHandler = () => {
     console.log('double')
 
-    api.get(`http://prod.healthiee.net/v1/members/${inputNickname}/check`)
+    api.get(`v1/members/${inputNickname}/check`)
       .then(
         response => {
           console.log(response);
@@ -148,7 +148,7 @@ const EditProfile = () => {
 
     const memberId = '736cf454-2818-4fd9-a077-300b6f5efe64';
 
-    api.put(`http://prod.healthiee.net/v1/members/${memberId}`, formData, {
+    api.put(`v1/members/${memberId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
