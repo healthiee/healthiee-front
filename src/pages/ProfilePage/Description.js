@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, useLoaderData } from 'react-router-dom';
 import styled from 'styled-components';
 import api from '../../utils/instance';
 
@@ -16,31 +16,9 @@ const ImageThumbnail = styled.img`
 `;
 
 const Description = () => {
-  const [postDetails, setPostDetails] = useState([]);
+  const detailsData = useLoaderData().details;
+  const [postDetails, setPostDetails] = useState(detailsData);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const response = await api.get('http://prod.healthiee.net/v1/posts', {
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
-          },
-        });
-        const posts = response.data.data.content;
-        const details = posts.flatMap((post) => post.medias.map((media) => {
-          return {
-            postId: post.postId,
-            imageUrl: media.url
-          }
-        }));
-        setPostDetails(details);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchImages();
-  }, []);
 
   const postHandler = (postId) => {
     navigate(`/post/${postId}`)
@@ -58,3 +36,24 @@ const Description = () => {
 };
 
 export default Description;
+
+export async function loader() {
+  try {
+    const response = await api.get('v1/posts', {
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
+      },
+    });
+
+    const posts = response.data.data.content;
+    console.log(posts);
+    const details = posts.map(post => ({
+      postId: post.postId,
+      imageUrl: post.medias[0].url
+    }))
+
+    return { details };
+  } catch (err) {
+    console.error(err);
+  }
+}
