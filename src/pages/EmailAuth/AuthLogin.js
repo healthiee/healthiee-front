@@ -10,7 +10,7 @@ const AuthLogin = () => {
     const AuthCode = {
       code: code,
     };
-    api.post('http://prod.healthiee.net/v1/auth/login', AuthCode, {
+    api.post('v1/auth/login', AuthCode, {
       withCredentials: true
     })
       .then(response => {

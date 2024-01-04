@@ -145,7 +145,7 @@ export async function loader() {
   try {
     //MemberInfo Data
     const memberId = '736cf454-2818-4fd9-a077-300b6f5efe64';
-    const memberRes = await api.get(`http://prod.healthiee.net/v1/members/${memberId}`, {
+    const memberRes = await api.get(`v1/members/${memberId}`, {
       headers: {
         Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
       }
@@ -153,7 +153,7 @@ export async function loader() {
     const memberInfoData = memberRes.data.data;
 
     //UserPosts Data
-    const userPostsRes = await api.get('http://prod.healthiee.net/v1/workouts', {
+    const userPostsRes = await api.get('v1/workouts', {
       headers: {
         Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
       }
