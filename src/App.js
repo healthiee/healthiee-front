@@ -22,7 +22,7 @@ import CreatePost from './pages/CreatePost';
 import ProfilePage, {loader as ProfileLoader} from './pages/ProfilePage/ProfilePage';
 import EditProfile from './pages/ProfilePage/EditProfile';
 import Description from './pages/ProfilePage/Description';
-import Event from './pages/ProfilePage/Event';
+import Event, {loader as EventLoader} from './pages/ProfilePage/Event';
 import SplashScreen from './pages/SplashScreen';
 import StartPage from './pages/StartPage';
 import EmailLogin from './pages/EmailAuth/EmailLogin';
@@ -46,7 +46,7 @@ function App() {
         <Route path="recommend" element={<RecommendTab />} />
         <Route path="profile" element={<ProfilePage />} loader={ProfileLoader}>
           <Route index element={<Description />} />
-          <Route path="event" element={<Event />} />
+          <Route path="event" element={<Event />} loader={EventLoader} />
         </Route>
         <Route path="editprofile" element={<EditProfile />} />
       </Route>

@@ -11,6 +11,7 @@ import congratulationPopup from '../../assets/images/congratulationWorkout.png';
 import HelpIconModal from './HelpIconModal';
 import { format, startOfMonth, endOfMonth, addDays, startOfWeek, endOfWeek, isSameDay, isSameMonth, getDaysInMonth } from 'date-fns';
 import api from '../../utils/instance';
+import { useLoaderData } from 'react-router-dom';
 
 // TodayWorkout
 const EventWrapper = styled.div`
@@ -169,10 +170,16 @@ const DescriptionXsm = styled.p`
   color: ${({ theme }) => theme.colors.gray};
 `
 const Event = () => {
+  // Load Data
+  const totalWorkoutCountData = useLoaderData().totalWorkoutCountData;
+  const workoutTotalCountForMonthData = useLoaderData().workoutTotalCountForMonthData;
+  const workoutsData = useLoaderData().workoutsData;
+  
   const getUTCDate = () => {
     const now = new Date();
     return new Date(now.getTime() + now.getTimezoneOffset() * 60000);
   }
+
   const [currentDate, setCurrentDate] = useState(getUTCDate());
   const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
   const monthStart = startOfMonth(currentDate);
@@ -180,9 +187,8 @@ const Event = () => {
   const startDate = startOfWeek(monthStart);
   const endDate = endOfWeek(monthEnd);
   const daysOfMonth = getDaysInMonth(currentDate);
-  const [workouts, setWorkouts] = useState([]);
-  const [workoutTotalCountForMonth, setWorkoutTotalCountForMonth] = useState(0);
-  const [totalWorkoutCount, setTotalWorkoutCount] = useState(0);
+  const [workouts, setWorkouts] = useState(workoutsData);
+  const [workoutTotalCountForMonth, setWorkoutTotalCountForMonth] = useState(workoutTotalCountForMonthData);
 
   const isWorkoutExist = (date) => {
     return workouts.some(workout =>
@@ -224,25 +230,6 @@ const Event = () => {
     setIsChecked(getCheckboxState());
   }, [])
 
-  useEffect(() => {
-    const fetchWorkouts = async () => {
-      try {
-        const res = await api.get('http://prod.healthiee.net/v1/workouts', {
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
-          }
-        })
-        setTotalWorkoutCount(res.data.data.totalCount);
-        setWorkoutTotalCountForMonth(res.data.data.workoutTotalCountForMonth);
-        setWorkouts(res.data.data.workouts);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetchWorkouts();
-  }, [])
-
-
   const handleChange = async (e) => {
     localStorage.setItem(`checkbox-${today}`, e.target.checked);
     localStorage.setItem('checkbox-date', today);
@@ -252,7 +239,7 @@ const Event = () => {
       setPopupOpen(true);
 
       try {
-        const res = await api.post('http://prod.healthiee.net/v1/workouts', {}, {
+        const res = await api.post('v1/workouts', {}, {
           headers: {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
@@ -269,7 +256,7 @@ const Event = () => {
     } else {
       const todayWorkout = workouts.find(workout => workout.workoutDate === today);
       try {
-        await api.delete(`http://prod.healthiee.net/v1/workouts/${todayWorkout.workoutId}`, {
+        await api.delete(`v1/workouts/${todayWorkout.workoutId}`, {
           headers: {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`
           }
@@ -346,27 +333,27 @@ const Event = () => {
         <Line />
         <Bottom>
           <ImgAndIcon>
-            {totalWorkoutCount <= 10 ? (
+            {totalWorkoutCountData <= 10 ? (
               <>
                 <GrowthImg $img={atom} />
                 <DescriptionMd>지금 나는 원자에요</DescriptionMd>
               </>
-            ) : totalWorkoutCount <= 30 ? (
+            ) : totalWorkoutCountData <= 30 ? (
               <>
                 <GrowthImg $img={molecule} />
                 <DescriptionMd>지금 나는 분자에요</DescriptionMd>
               </>
-            ) : totalWorkoutCount <= 100 ? (
+            ) : totalWorkoutCountData <= 100 ? (
               <>
                 <GrowthImg $img={seed} />
                 <DescriptionMd>지금 나는 씨앗이에요</DescriptionMd>
               </>
-            ) : totalWorkoutCount <= 365 ? (
+            ) : totalWorkoutCountData <= 365 ? (
               <>
                 <GrowthImg $img={sapling} />
                 <DescriptionMd>지금 나는 새싹이에요</DescriptionMd>
               </>
-            ) : totalWorkoutCount <= 1000 ? (
+            ) : totalWorkoutCountData <= 1000 ? (
               <>
                 <GrowthImg $img={sprout} />
                 <DescriptionMd>지금 나는 묘목이에요</DescriptionMd>
@@ -399,3 +386,20 @@ const Event = () => {
 };
 
 export default Event;
+
+export async function loader () {
+  try {
+    const res = await api.get('v1/workouts',{
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwic3ViIjoiNzM2Y2Y0NTQtMjgxOC00ZmQ5LWEwNzctMzAwYjZmNWVmZTY0IiwiaWF0IjoxNjk5ODUyMjU4LCJleHAiOjE3ODYyNTIyNTh9.4-aiUFJpIEmhUlehg5YPVHPYjTQ7GP-2jTV63JYqXho`,
+      }
+    });
+    const totalWorkoutCountData = res.data.data.totalCount;
+    const workoutTotalCountForMonthData = res.data.data.workoutTotalCountForMonth;
+    const workoutsData = res.data.data.workouts;
+
+    return { totalWorkoutCountData, workoutTotalCountForMonthData, workoutsData };
+  } catch (error) {
+    console.log(error);
+  }
+};
