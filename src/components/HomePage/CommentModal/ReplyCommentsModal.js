@@ -168,19 +168,11 @@ const ReplyCommentsModal = () => {
   const [parentCommentId, setParentCommentId] = useState('');
   const [input, setInput] = useState('');
   const [isValid, setIsValid] = useState(false);
-  const [heart, setHeart] = useState(() => {
-  const savedHeart = localStorage.getItem(`comment_${comment.commentId}_heart`);
-    return savedHeart === 'true';
-  });
+  const [heart, setHeart] = useState(localStorage.getItem(`comment_${comment.commentId}_heart`) === 'true');
   const [isEdit, setIsEdit] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState('');
 
   // Save heart
-  useEffect(() => {
-    const savedHeart = localStorage.getItem(`comment_${comment.commentId}_heart`);
-    setHeart(savedHeart === 'true');
-  }, [comment.commentId]);
-
   useEffect(() => {
     localStorage.setItem(`comment_${comment.commentId}_heart`, heart);
   }, [comment.commentId, heart]);
