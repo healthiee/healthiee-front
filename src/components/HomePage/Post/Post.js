@@ -106,7 +106,7 @@ const Post = () => {
       {popup && <Popup postId={data.postId} onPopup={setPopup}/>}
 
       <div className={styles.arrow}>
-        <Link to='..'><ArrowBack/></Link>
+        <Link to='/profile'><ArrowBack/></Link>
         <div style={{cursor:'pointer'}}><Menu onClick={popupHandler}/></div>
       </div>
 

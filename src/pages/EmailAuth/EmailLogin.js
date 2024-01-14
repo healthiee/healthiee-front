@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ReactComponent as ArrowBack_Icon } from '../../assets/icons/ArrowBack_icon.svg';
 import { ReactComponent as Done_Icon } from '../../assets/icons/Done_icon.svg';
 import { ReactComponent as Error_Icon } from '../../assets/icons/Error_icon.svg'
+import Agreement from './Agreement';
 import styled from 'styled-components';
 import api from '../../utils/instance';
 
@@ -39,7 +40,6 @@ const EmailInputWrapper = styled.div`
   position: relative;
   width: 300px;
   height: 40px;
-  margin-bottom: 4px;
   border-radius: 20px;
   background-color: ${props => (props.$isError ? '#FFE0E0' : '#EFEFEF')};
 `;
@@ -76,8 +76,45 @@ const EmailMessage = styled.span`
   color: ${props => (props.$success ? '#000000' : '#FF0000')};
 `;
 
-const SubmitButton = styled.button`
+const AgreeMentWrapper = styled.div`
   position: fixed;
+  top: 234px;
+  left: 34px;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  z-index: 2;
+`;
+
+const AgreeMentContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+`;
+
+const AgreeMentWords = styled.p`
+`;
+
+const Checkbox = styled.input`
+  width: 20px;
+  height: 20px;
+  border: 1px solid #707070;
+  border-radius: 8px;
+  appearance: none;
+  background-color: #FFFFFF;
+
+  &:checked {
+    background-color: ${({ theme }) => theme.colors.orange}; 
+  }
+`;
+
+const AgreementShow = styled.p`
+  color: ${({ theme }) => theme.colors.gray};
+  text-decoration: underline;
+`;
+
+const SubmitButton = styled.button`
+  position: absolute;
   top: 304px;
   width: 200px;
   height: 40px;
@@ -99,6 +136,9 @@ function EmailLogin() {
   const [showDoneIcon, setShowDoneIcon] = useState(false);
   const [showErrorIcon, setShowErrorIcon] = useState(false);
   const [isSubmitButtonClicked, setIsSubmitButtonClicked] = useState(false);
+  const [showAgreement, setShowAgreement] = useState(false);
+  const [hideAgreementForm, setHideAgreementForm] = useState(false);
+  const [isCheckBoxClicked, setIsCheckBoxClicked] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -141,7 +181,7 @@ function EmailLogin() {
   }
 
   const onSubmitEmail = () => {
-    if (isEmail) {
+    if (isEmail && isCheckBoxClicked) {
       const requestPayload = {
         email: email,
       };
@@ -151,6 +191,7 @@ function EmailLogin() {
           if (response.status === 200) {
             setIsSubmitButtonClicked(true);
             setEmailMessage('회원가입 링크가 위의 이메일로 전송되었습니다.');
+            setHideAgreementForm(true);
           } else {
             setEmailMessage('이메일 등록에 실패했습니다.');
           }
@@ -158,9 +199,20 @@ function EmailLogin() {
         .catch(error => {
           setEmailMessage('이메일 전송 중 오류가 발생했습니다.');
         });
-    } else {
+    } else if (!isCheckBoxClicked) {
+      setEmailMessage('개인정보 수집 및 이용 동의 시 회원가입이 가능합니다.');
+
+    } else if (!isEmail) {
       setEmailMessage('올바른 형식의 이메일을 입력해 주세요.');
     }
+  }
+
+  const agreementHandler = () => {
+    setShowAgreement(true);
+  }
+
+  const handleCheckBoxClick = () => {
+    setIsCheckBoxClicked(prev => !prev);
   }
 
   return (
@@ -188,6 +240,22 @@ function EmailLogin() {
           {showErrorIcon && <ErrorIcon />}
         </EmailInputWrapper>
         <EmailMessage $success={isSubmitButtonClicked}>{emailMessage}</EmailMessage>
+        {!hideAgreementForm && (
+          <AgreeMentWrapper>
+            <AgreeMentContainer>
+              <AgreeMentWords>
+                개인정보 수집 및 이용에 동의합니다.
+              </AgreeMentWords>
+              <Checkbox
+                type="checkbox"
+                checked={isCheckBoxClicked}
+                onChange={handleCheckBoxClick}
+              />
+            </AgreeMentContainer>
+            <AgreementShow onClick={agreementHandler}>약관 보기</AgreementShow>
+            {showAgreement && <Agreement setShowAgreement={setShowAgreement} />}
+          </AgreeMentWrapper>
+        )}
         {!isSubmitButtonClicked && (
           <SubmitButton
             type="button"
