@@ -1,0 +1,64 @@
+.arrow {
+  padding-left: 28px;
+  height: 48px;
+  width: 360px;
+  display: flex;
+  align-items: center;
+}
+
+/* form input */
+
+.input_box {
+  position: relative;
+  width: 316px;
+  height: 50px;
+  margin: 10px auto 0;
+  border-bottom: 2px solid #D3D3D3;
+  display: flex;
+}
+
+.input input{
+  width: 252px;
+  height: 40px;
+  background-color: #EFEFEF;
+  border-radius: 20px;
+  padding-left: 50px;
+  color: black;
+  font-size: 16px;
+}
+
+.icon {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+}
+
+.btn {
+  width: 60px;
+  height: 40px;
+  margin-left: 4px;
+  background-color: #FFC493;
+}
+
+/* NavLink */
+
+.nav {
+  width: 360px;
+  height: 48px;
+  display: flex;
+}
+
+.nav_icon {
+  width: 180px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  fill: #717171;
+}
+
+.active {
+  border-bottom: 8px solid #FFC493;
+  fill: #FF9F4E;
+  padding-top: 8px;
+}

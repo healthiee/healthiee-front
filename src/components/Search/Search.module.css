@@ -1,0 +1,65 @@
+/* form input */
+
+.input_box {
+  position: relative;
+  width: 316px;
+  height: 50px;
+  margin: 10px auto 0;
+  border-bottom: 2px solid #D3D3D3;
+  display: flex;
+}
+
+.input input{
+  width: 252px;
+  height: 40px;
+  background-color: #EFEFEF;
+  border-radius: 20px;
+  padding-left: 50px;
+}
+
+.icon {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+}
+
+.btn {
+  width: 60px;
+  height: 40px;
+  margin-left: 4px;
+  background-color: #FFC493;
+}
+
+.tag {
+  width: 360px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  padding-left: 36px;
+  padding-right: 36px;
+  position: relative;
+  box-shadow: 0px 3px 6px #00000029;
+}
+
+.tag p {
+  position: absolute;
+  right: 36px;
+  color: #717171;
+}
+
+.info {
+  height: 32px;
+  background-color: #B1E7FF;
+  border-radius: 16px;
+  margin-left: 28px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px 0;
+}
+
+.person {
+  margin-left: 28px;
+  font-size: 16px;
+  font-weight: 700;
+  color: black;
+}
